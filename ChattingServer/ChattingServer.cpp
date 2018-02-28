@@ -2,6 +2,8 @@
 
 ChattingServer::ChattingServer()
 {
+	InitServer();
+
 	// accept 스레드 생성
 	thread acceptThread{ &ChattingServer::AcceptThread, this };
 	acceptThread.join();
@@ -10,6 +12,25 @@ ChattingServer::ChattingServer()
 
 ChattingServer::~ChattingServer()
 {
+}
+
+
+// 서버 초기화
+void ChattingServer::InitServer()
+{
+	//m_b_server_shut_down = false;
+	//mClients.reserve(MAX_USER);
+
+	WSADATA wsa;
+	WSAStartup(MAKEWORD(2, 2), &wsa);
+
+	m_hiocp = CreateIoCompletionPort(INVALID_HANDLE_VALUE, 0, NULL, 0);
+	if (NULL == m_hiocp) { err_quit("Init_Server"); }
+}
+
+void ChattingServer::ReleaseServer()
+{
+
 }
 
 
@@ -49,8 +70,9 @@ void ChattingServer::AcceptThread()
 	int retval;
 
 	//socket()
-	SOCKET listen_sock = socket(AF_INET, SOCK_STREAM, 0);
-	if (listen_sock == INVALID_SOCKET) err_quit("socket()");
+	SOCKET listen_sock = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP,
+									NULL, 0, WSA_FLAG_OVERLAPPED);
+	if (INVALID_SOCKET == listen_sock) { err_quit("socket()"); };
 
 	//bind()
 	SOCKADDR_IN serveraddr;
@@ -73,13 +95,41 @@ void ChattingServer::AcceptThread()
 	{
 		//accept()
 		addrlen = sizeof(clientaddr);
-		client_sock = accept(listen_sock, (SOCKADDR*)&clientaddr, &addrlen);
+		SOCKET client_sock = WSAAccept(listen_sock, reinterpret_cast<sockaddr *>(&clientaddr), &addrlen, NULL, NULL);
 		if (client_sock == INVALID_SOCKET) {
-			err_display("accept() : ", WSAGetLastError());
+			err_display("WSAAccept() : ", WSAGetLastError());
 			break;
 		}
 
+		printf("\n[서버] 클라이언트 접속: IP 주소=%s, 포트 번호=%d\n",
+			inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
+
+		if (INVALID_SOCKET == client_sock)
+		{
+			int error = WSAGetLastError();
+			err_display("Accept::WSAAccept error\n", error);
+			while (true);
+		}
+
+		// 유저 수 제한 : 10명
 		clientId += 1;
-		userArr[clientId]
+		CreateIoCompletionPort(reinterpret_cast<HANDLE>(client_sock), m_hiocp, clientId, 0);
+		//mClients.emplace_back(new User(client_sock, true, clientId));
+		mClients[clientId].SetUserInfo(client_sock, true, clientId);
+		
+		retval = mClients[clientId].WsaRecv();
+		if (SOCKET_ERROR == retval)
+		{
+
+		}
+		//int ret = WSARecv(client_sock, &mClients[clientId].recv_over.wsabuf, 1, NULL,
+		//	&flags, &mClients[clientId].recv_over.overlap, NULL);
+		//if (0 != ret)
+		//{
+		//	int error = WSAGetLastError();
+		//	if (ERROR_IO_PENDING != error)
+		//		err_display("AcceptThread::WSARecv error!", error);
+		//	//while (true);
+		//}
 	}
 }

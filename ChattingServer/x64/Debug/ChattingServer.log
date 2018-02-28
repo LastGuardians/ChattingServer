@@ -1,11 +1,11 @@
-﻿  server.cpp
-  User.cpp
+﻿  User.cpp
   ChattingServer.cpp
-c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(25): warning C4477: 'printf' : 서식 문자열 '%s'에 'char *' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'LPCTSTR'입니다.
-  c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(25): note: 서식 문자열에서 '%ls'을(를) 사용하는 것이 좋습니다.
-  c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(25): note: 서식 문자열에서 '%lls'을(를) 사용하는 것이 좋습니다.
-  c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(25): note: 서식 문자열에서 '%Ls'을(를) 사용하는 것이 좋습니다.
-  c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(25): note: 서식 문자열에서 '%ws'을(를) 사용하는 것이 좋습니다.
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(48): warning C4477: 'printf' : 서식 문자열 '%s'에 'char *' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'LPCTSTR'입니다.
+  c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(48): note: 서식 문자열에서 '%ls'을(를) 사용하는 것이 좋습니다.
+  c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(48): note: 서식 문자열에서 '%lls'을(를) 사용하는 것이 좋습니다.
+  c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(48): note: 서식 문자열에서 '%Ls'을(를) 사용하는 것이 좋습니다.
+  c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(48): note: 서식 문자열에서 '%ws'을(를) 사용하는 것이 좋습니다.
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(90): warning C4101: 'client_sock' :참조되지 않은 지역 변수입니다.
   코드를 생성하고 있습니다...
   ChattingServer.vcxproj -> C:\Users\song\Documents\Visual Studio 2015\Projects\ChattingServer\x64\Debug\ChattingServer.exe
   ChattingServer.vcxproj -> C:\Users\song\Documents\Visual Studio 2015\Projects\ChattingServer\x64\Debug\ChattingServer.pdb (Full PDB)

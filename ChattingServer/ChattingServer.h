@@ -9,15 +9,20 @@ public:
 	virtual ~ChattingServer();
 
 private:
-	vector<User*> m_clients;
-	int clientId;
+	User		mClients[MAX_USER];
+	int			clientId = { -1 };
+	HANDLE		m_hiocp = { 0 };
+	//bool m_b_server_shut_down = { false };
 
 public:	
 
-	void err_display(char *msg, int err_no);
-	void err_quit(char *msg);
+	void		err_display(char *msg, int err_no);
+	void		err_quit(char *msg);
 
-	void AcceptThread();
-	void WorkerThread();
+	void		InitServer();
+	void		ReleaseServer();
+
+	void		AcceptThread();
+	void		WorkerThread();
 };
 

@@ -13,7 +13,14 @@
 #include <string>
 #include <thread>
 
-#define MAX_USER 10
+#define MAX_USER	10
+#define BUFSIZE		1024
+
+enum EVENT_TYPE
+{
+	OV_SEND = 1,
+	OV_RECV = 2
+};
 
 #include "User.h"
 #include "ChattingServer.h"
