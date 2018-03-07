@@ -126,7 +126,7 @@ void ChattingServer::AcceptThread()
 		enter_channel_packet.size = sizeof(enter_channel_packet);
 		enter_channel_packet.id = clientId;
 		enter_channel_packet.channelIndex = rand() % 5;
-		mClients[clientId].SetChannelIndex(enter_channel_packet.channelIndex);
+		mClients[clientId].SetChannelIndex(enter_channel_packet.channelIndex);		
 
 		// 채널에 유저 입장
 		Singletone::GetInstance()->channel[enter_channel_packet.channelIndex].AddUserIndex(mClients);

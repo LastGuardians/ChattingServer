@@ -1,2 +1,10 @@
-﻿  ChattingServer.vcxproj -> C:\Users\song\Documents\Visual Studio 2015\Projects\ChattingServer\x64\Debug\ChattingServer.exe
+﻿  server.cpp
+  ChattingServer.cpp
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(66): warning C4474: 'printf' : 서식 문자열에 전달된 인수가 너무 많습니다.
+  c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(66): note: 자리 표시자 및 해당 매개 변수에는 variadic 인수가 1개 필요하지만 2개가 제공되었습니다.
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(123): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(93): warning C4101: 'client_sock' :참조되지 않은 지역 변수입니다.
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(176): warning C4244: '인수': 'unsigned __int64'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
+  ChattingServer.vcxproj -> C:\Users\song\Documents\Visual Studio 2015\Projects\ChattingServer\x64\Debug\ChattingServer.exe
   ChattingServer.vcxproj -> C:\Users\song\Documents\Visual Studio 2015\Projects\ChattingServer\x64\Debug\ChattingServer.pdb (Full PDB)

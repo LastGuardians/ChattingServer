@@ -4,6 +4,7 @@
 
 int main()
 {
+	Room room;
 	ChattingServer	cServer;
 }
 

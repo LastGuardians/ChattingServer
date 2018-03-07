@@ -22,9 +22,6 @@ public:
 	void			AddUserIndex(User* user);
 	void			DeleteUserIndex(int id);
 
-	void			CreateRoom();		// 채팅룸 생성
-	void			EnterChannel();		// 채널 입장
-	bool			LeaveChannel();		// 채널 퇴장
 
 };
 

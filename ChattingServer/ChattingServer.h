@@ -20,7 +20,7 @@ public:
 	
 	void			SetUserInfo(User* user);
 	inline int		GetClientID() { return clientId; }
-	//static User*	GetUserInfo() { return mClients; }
+	User*			GetUserInfo() { return mClients; }
 
 	void		InitServer();
 	void		ReleaseServer();
