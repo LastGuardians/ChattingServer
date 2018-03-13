@@ -49,9 +49,12 @@ public:
 	void		ProcessLeaveChannelPacket(int id, unsigned char *buf);
 	void		ProcessCreateRoomPacket(int id, unsigned char *buf);
 	void		ProcessChangeChannelPacket(int id, unsigned char *buf);
+	void		ProcessRoomChattingPacket(int id, unsigned char *buf);
 
 	int			WsaRecv();
 	int			SendPacket(unsigned char *packet);
+	void		SendNotifyExistRoomPacket(int room, bool exist);
+
 
 	void		CloseSocket();
 

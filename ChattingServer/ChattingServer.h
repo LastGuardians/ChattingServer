@@ -1,11 +1,15 @@
 #pragma once
 
+
+
 // 통신 클래스
 class ChattingServer
 {
 public:
 	ChattingServer();
 	virtual ~ChattingServer();
+
+	DECLARE_SINGLETON(ChattingServer);
 
 private:
 	User			mClients[MAX_USER];
@@ -20,7 +24,7 @@ public:
 	
 	void			SetUserInfo(User* user);
 	inline int		GetClientID() { return clientId; }
-	//static User*	GetUserInfo() { return mClients; }
+	User*			GetUserInfo() { return mClients; }
 
 	void		InitServer();
 	void		ReleaseServer();

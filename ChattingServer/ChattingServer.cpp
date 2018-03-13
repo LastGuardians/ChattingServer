@@ -1,17 +1,34 @@
 #include "stdafx.h"
 
+IMPLEMENT_SINGLETON(ChattingServer);
+
 //User ChattingServer::mClients[MAX_USER] = { 0,0,0 };
 ChattingServer::ChattingServer()
 {
-	// 서버 초기화
-	InitServer();
+	//std::thread acceptThread{ &ChattingServer::AcceptThread , this };
+	
+}
+
+ChattingServer::~ChattingServer()
+{
+}
+
+
+// 서버 초기화
+void ChattingServer::InitServer()
+{
+	WSADATA wsa;
+	WSAStartup(MAKEWORD(2, 2), &wsa);
+
+	m_hiocp = CreateIoCompletionPort(INVALID_HANDLE_VALUE, 0, NULL, 0);
+	if (NULL == m_hiocp) { err_display("InitServer() : ", WSAGetLastError()); }
 
 	SYSTEM_INFO si;
 	GetSystemInfo(&si);
 	int m_cpu_core = static_cast<int>(si.dwNumberOfProcessors) / 2;
 
 	// accept 스레드 생성
-	std::thread acceptThread{ &ChattingServer::AcceptThread, this };
+	std::thread acceptThread{ &ChattingServer::AcceptThread , this };
 
 	// worker 스레드 생성
 	std::vector<std::thread *> workerThreads;
@@ -26,25 +43,8 @@ ChattingServer::ChattingServer()
 	}
 
 	acceptThread.join();
+
 	
-}
-
-ChattingServer::~ChattingServer()
-{
-}
-
-
-// 서버 초기화
-void ChattingServer::InitServer()
-{
-	//m_b_server_shut_down = false;
-	//mClients.reserve(MAX_USER);
-
-	WSADATA wsa;
-	WSAStartup(MAKEWORD(2, 2), &wsa);
-
-	m_hiocp = CreateIoCompletionPort(INVALID_HANDLE_VALUE, 0, NULL, 0);
-	if (NULL == m_hiocp) { err_display("InitServer() : ", WSAGetLastError()); }
 }
 
 void ChattingServer::ReleaseServer()
@@ -87,7 +87,7 @@ void ChattingServer::AcceptThread()
 	if (retval == SOCKET_ERROR) err_display("bind() : ", WSAGetLastError());
 
 	//listen() 
-	retval = listen(listen_sock, SOMAXCONN);
+	retval = ::listen(listen_sock, SOMAXCONN);
 	if (retval == SOCKET_ERROR) err_display("listen() : ", WSAGetLastError());
 
 	SOCKET client_sock;
@@ -121,7 +121,7 @@ void ChattingServer::AcceptThread()
 		mClients[clientId].SetUserInfo(client_sock, true, clientId);
 
 		srand(time(NULL));
-		// 접속한 클라이언트에게 랜덤한 채널 인덱스 부여
+		// 접속한 클라이언트에게 랜덤한 채널 인덱스 부여 = 접속과 동시에 채널 입장
 		Enter_Channel enter_channel_packet;
 		enter_channel_packet.size = sizeof(enter_channel_packet);
 		enter_channel_packet.id = clientId;
