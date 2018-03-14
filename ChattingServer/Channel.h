@@ -26,6 +26,7 @@ public:
 	void			AddUserIndex(User* user);
 	void			DeleteUserIndex(User* user);
 	void			AddNewRoom(int roomIndex, Room* room);
+	//Room*			GetChannelRoomInfo() { return roomList; }
 
 	void			NotifyCreateRoom();			// 채팅룸 생성 알림
 	void			NotifyEnterChannel();		// 채널 입장 알림

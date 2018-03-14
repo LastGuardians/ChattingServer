@@ -34,15 +34,15 @@ private:
 	RecvBuffInfo	recv_buff;
 
 public:
-	void		SetUserInfo(SOCKET s, bool connect, int id);
-	int			PacketRessembly(int id, DWORD packetSize);
-	void		SetChannelIndex(int channel);
-	void		SetRoomIndex(int room);
+	void			SetUserInfo(SOCKET s, bool connect, int id);
+	int				PacketRessembly(int id, DWORD packetSize);
+	void			SetChannelIndex(int channel);
+	void			SetRoomIndex(int room);
 
-	inline int	GetChannelIndex() { return channel_index; }
-	inline int	GetRoomIndex() { return room_index; }
-	inline int	GetUserId() { return userId; }
-	inline SOCKET GetUserSocket() { return userSocket; }
+	inline int		GetChannelIndex() { return channel_index; }
+	inline int		GetRoomIndex() { return room_index; }
+	inline int		GetUserId() { return userId; }
+	inline SOCKET	GetUserSocket() { return userSocket; }
 
 	void		ProcessPacket(int id, unsigned char *buf);
 	void		ProcessEneterChannelPacket(int id, unsigned char *buf);
@@ -50,11 +50,12 @@ public:
 	void		ProcessCreateRoomPacket(int id, unsigned char *buf);
 	void		ProcessChangeChannelPacket(int id, unsigned char *buf);
 	void		ProcessRoomChattingPacket(int id, unsigned char *buf);
+	void		ProcessEnterRoomPacket(int id, unsigned char *buf);
 
 	int			WsaRecv();
 	int			SendPacket(unsigned char *packet);
 	void		SendNotifyExistRoomPacket(int room, bool exist);
-
+	void		SendRoomListPacket();
 
 	void		CloseSocket();
 

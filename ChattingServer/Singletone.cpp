@@ -7,7 +7,7 @@ Singletone::Singletone()
 	roomList.reserve(50);
 }
 
-
+ 
 Singletone::~Singletone()
 {
 }

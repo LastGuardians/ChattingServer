@@ -59,6 +59,36 @@ void User::SendNotifyExistRoomPacket(int room, bool exist)
 	SendPacket(reinterpret_cast<unsigned char*>(&exist_packet));
 }
 
+void User::SendRoomListPacket()
+{
+	Room_List list_packet;
+
+	if (Singletone::GetInstance()->roomList.size() == 0)
+	{
+		list_packet.id = userId;
+		list_packet.type = ROOM_LIST;
+		list_packet.size = sizeof(Room_List);
+		list_packet.roomCnt = 0;
+		SendPacket(reinterpret_cast<unsigned char*>(&list_packet));
+		return;
+	}
+
+	list_packet.size = sizeof(Room_List);
+
+	int cnt = 0;
+	for (auto iter = Singletone::GetInstance()->roomList.begin(); iter != Singletone::GetInstance()->roomList.end(); ++iter)
+	{
+		list_packet.roomList[cnt++] = *iter;
+	}
+	cnt = 0;
+
+	list_packet.id = userId;
+	list_packet.type = ROOM_LIST;
+	list_packet.roomCnt = Singletone::GetInstance()->roomList.size();
+	SendPacket(reinterpret_cast<unsigned char*>(&list_packet));
+
+}
+
 int User::WsaRecv()
 {
 	DWORD flags = { 0 };
@@ -114,6 +144,9 @@ void User::ProcessPacket(int id, unsigned char *buf)
 		break;
 	case ROOM_CHATTING:
 		ProcessRoomChattingPacket(id, buf);
+	case ENTER_ROOM:
+		ProcessEnterRoomPacket(id, buf);
+		break;
 	default:
 		break;
 	}
@@ -153,11 +186,11 @@ void User::ProcessCreateRoomPacket(int id, unsigned char *buf)
 
 		Room *newRoom = new Room(packet->roomIndex, userInfo->channel_index);	// 새로운 방 생성
 		Singletone::GetInstance()->roomList.emplace_back(packet->roomIndex);
-		Channel::GetInstance()->AddNewRoom(packet->roomIndex, newRoom);			// 채널에 방 추가
+		//Channel::GetInstance()->AddNewRoom(packet->roomIndex, newRoom);			
+		Singletone::GetInstance()->channel[userInfo->channel_index].AddNewRoom(packet->roomIndex, newRoom); // 채널에 방 추가
 
 		std::cout << "[" << id << "] 유저가 " << "[" << packet->roomIndex
 			<< "] 번 방을 생성하였습니다." << std::endl;
-		std::cout << "TT" << std::endl;
 	}
 
 	// 방이 하나 이상일 때
@@ -177,6 +210,8 @@ void User::ProcessCreateRoomPacket(int id, unsigned char *buf)
 		// 존재하는 방이 없을 때
 		Room *newRoom = new Room(packet->roomIndex, userInfo->channel_index);	// 새로운 방 생성
 		Singletone::GetInstance()->roomList.emplace_back(packet->roomIndex);
+		//Channel::GetInstance()->AddNewRoom(packet->roomIndex, newRoom);			
+		Singletone::GetInstance()->channel[userInfo->channel_index].AddNewRoom(packet->roomIndex, newRoom); // 채널에 방 추가
 
 		SendNotifyExistRoomPacket(packet->roomIndex, false);
 
@@ -186,7 +221,20 @@ void User::ProcessCreateRoomPacket(int id, unsigned char *buf)
 
 }
 
+// 채팅방 입장 패킷 처리 -> 생성되어 있는 방의 리스트를 보내준다.
+void User::ProcessEnterRoomPacket(int id, unsigned char * buf)
+{
+	SendRoomListPacket();
+	Enter_Room *enter_packet = reinterpret_cast<Enter_Room*>(buf);
+
+	
+}
+
+// 채팅 메시지 패킷 처리
 void User::ProcessRoomChattingPacket(int id, unsigned char *buf)
 {
+	Room_Chatting *room_packet = reinterpret_cast<Room_Chatting*>(buf);
 
+	//for(auto user : )
 }
+
