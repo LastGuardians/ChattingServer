@@ -24,7 +24,7 @@ public:
 	
 	void			SetUserInfo(User* user);
 	inline int		GetClientID() { return clientId; }
-	User*			GetUserInfo() { return mClients; }
+	User*			GetUserInfo(int clientId);
 
 	void		InitServer();
 	void		ReleaseServer();

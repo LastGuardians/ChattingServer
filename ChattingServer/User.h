@@ -17,6 +17,9 @@ struct RecvBuffInfo {
 // 유저 클래스 (소켓)
 class User
 {
+	friend class ChannelManager;
+	friend class Room;
+
 public:
 	User();
 	User(int id);
@@ -32,6 +35,9 @@ private:
 
 	Overlap			recv_over;
 	RecvBuffInfo	recv_buff;
+
+	ChannelManager*	_channelManager;	
+	Room*			_roomMananger;			// 룸 매니저 객체
 
 public:
 	void			SetUserInfo(SOCKET s, bool connect, int id);

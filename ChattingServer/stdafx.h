@@ -15,11 +15,17 @@
 #include <random>
 #include <ctime>
 #include <unordered_map>
+#include <memory>
 //#include <google/protobuf/io/zero_copy_stream_impl_lite.h>
-
+//#include <google/protobuf/text_format.h>
+//#include <google/protobuf/io/zero_copy_stream_impl_lite.h>
+//#include "test.pb.h"
 
 #define MAX_USER	10
 #define BUFSIZE		1024
+#define	NO_CHANNEL	-1
+
+static int g_roomId;
 
 
 #define NO_COPY(CLASSNAME)							\
@@ -59,7 +65,7 @@ enum EVENT_TYPE
 
 #include "protocol.h"
 #include "User.h"
-#include "ChattingServer.h"
 #include "Channel.h"
+#include "ChannelManager.h"
+#include "ChattingServer.h"
 #include "Room.h"
-#include "Singletone.h"

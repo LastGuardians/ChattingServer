@@ -14,6 +14,17 @@ ChattingServer::~ChattingServer()
 }
 
 
+User* ChattingServer::GetUserInfo(int clientId)
+{
+	for (int i = 0; i < MAX_USER; ++i)
+	{
+		if (mClients[i].GetUserId() == clientId)
+			return &mClients[i];
+	}
+
+	return nullptr;
+}
+
 // 서버 초기화
 void ChattingServer::InitServer()
 {
@@ -121,16 +132,17 @@ void ChattingServer::AcceptThread()
 		mClients[clientId].SetUserInfo(client_sock, true, clientId);
 
 		srand(time(NULL));
-		// 접속한 클라이언트에게 랜덤한 채널 인덱스 부여 = 접속과 동시에 채널 입장
+		// 접속한 클라이언트에게 랜덤한 채널 인덱스 부여 = 서버 접속과 동시에 채널 입장
 		Enter_Channel enter_channel_packet;
 		enter_channel_packet.size = sizeof(enter_channel_packet);
 		enter_channel_packet.id = clientId;
-		enter_channel_packet.channelIndex = rand() % 5;
+		enter_channel_packet.channelIndex = rand() % 5 + 1;		// 채널 인덱스 범위 1~5
 		mClients[clientId].SetChannelIndex(enter_channel_packet.channelIndex);
 
-		// 채널에 유저 입장
-		Singletone::GetInstance()->channel[enter_channel_packet.channelIndex].AddUserIndex(mClients);
-
+		// 새로운 채널 추가
+		Channel channel(enter_channel_packet.channelIndex);
+		channel.channelManager()->addChannel(&channel);
+				
 		int result = mClients[clientId].SendPacket
 						(reinterpret_cast<unsigned char*>(&enter_channel_packet));
 		if (SOCKET_ERROR == result) {
@@ -140,8 +152,7 @@ void ChattingServer::AcceptThread()
 		} 
 				
 		retval = mClients[clientId].WsaRecv();
-		//retval = WSARecv(mClients[clientId].GetUserSocket(), &recv_over.wsabuf, 1, NULL, &flags, &recv_over.overlap, NULL);
-
+		
 		if (SOCKET_ERROR == retval)
 		{
 			if (ERROR_IO_PENDING != WSAGetLastError()) {

@@ -30,7 +30,10 @@
     <ClCompile Include="Room.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Singletone.cpp">
+    <ClCompile Include="test.pb.cc">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ChannelManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,8 +56,16 @@
     <ClInclude Include="protocol.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Singletone.h">
+    <ClInclude Include="test.pb.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="ChannelManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test.proto">
+      <Filter>소스 파일</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -37,7 +37,7 @@ struct Change_Channel {
 	BYTE			type = { CHANGE_CHANNEL };
 	BYTE			size;
 	unsigned int	id;
-	unsigned int	channelIndex;
+	unsigned int	channelIndex;		// 클라이언트가 바꾸려는 채널 인덱스
 };
 
 struct Create_Room {

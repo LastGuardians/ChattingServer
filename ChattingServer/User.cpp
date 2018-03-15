@@ -34,6 +34,11 @@ void User::SetChannelIndex(int channel)
 	channel_index = channel;
 }
 
+void User::SetRoomIndex(int room)
+{
+	room_index = room;
+}
+
 int User::SendPacket(unsigned char *packet)
 {
 	Overlap *over = new Overlap;
@@ -61,9 +66,9 @@ void User::SendNotifyExistRoomPacket(int room, bool exist)
 
 void User::SendRoomListPacket()
 {
-	Room_List list_packet;
+	/*Room_List list_packet;
 
-	if (Singletone::GetInstance()->roomList.size() == 0)
+	if (ChannelManager::GetInstance()->roomList.size() == 0)
 	{
 		list_packet.id = userId;
 		list_packet.type = ROOM_LIST;
@@ -76,7 +81,7 @@ void User::SendRoomListPacket()
 	list_packet.size = sizeof(Room_List);
 
 	int cnt = 0;
-	for (auto iter = Singletone::GetInstance()->roomList.begin(); iter != Singletone::GetInstance()->roomList.end(); ++iter)
+	for (auto iter = ChannelManager::GetInstance()->roomList.begin(); iter != ChannelManager::GetInstance()->roomList.end(); ++iter)
 	{
 		list_packet.roomList[cnt++] = *iter;
 	}
@@ -84,9 +89,9 @@ void User::SendRoomListPacket()
 
 	list_packet.id = userId;
 	list_packet.type = ROOM_LIST;
-	list_packet.roomCnt = Singletone::GetInstance()->roomList.size();
+	list_packet.roomCnt = ChannelManager::GetInstance()->roomList.size();
 	SendPacket(reinterpret_cast<unsigned char*>(&list_packet));
-
+*/
 }
 
 int User::WsaRecv()
@@ -156,14 +161,24 @@ void User::ProcessPacket(int id, unsigned char *buf)
 void User::ProcessChangeChannelPacket(int id, unsigned char *buf)
 {
 	// ChattingServer 클래스의 멤버변수 mClients를 가져와야 한다.
-	// 해결법 : ChattingServer 클래스를 싱글톤으로 만든다.
-	int _currentChannelIndex = GetChannelIndex();
-	User *userInfo = ChattingServer::GetInstance()->GetUserInfo();
+	// 해결법 : ChattingServer 클래스를 싱글턴으로 만든다. -> 싱글턴으로 바꾸는게 아닌 ClientMananger 클래스 만들어서 관리하는게 더 낫다.
+
+	User *userInfo = ChattingServer::GetInstance()->GetUserInfo(id);
+	int _currentChannelIndex = userInfo->GetChannelIndex();
 
 	Change_Channel *packet = reinterpret_cast<Change_Channel*>(buf);
-	Singletone::GetInstance()->channel[_currentChannelIndex].DeleteUserIndex(userInfo);
-	Singletone::GetInstance()->channel[packet->channelIndex].AddUserIndex(userInfo);
 
+	//_channelManager->getChannel(_currentChannelIndex)->leaveChannel(userInfo);
+	Channel* _curChannel = _channelManager->getChannel(_currentChannelIndex);
+	_curChannel->leaveChannel(userInfo);				// 현재 채널에서 유저를 삭제하고
+
+	Channel* _newChannel = _channelManager->getChannel(packet->channelIndex);
+	if (nullptr == _newChannel)						// 채널이 없다면 새로 생성한다.
+	{
+		Channel channel(packet->channelIndex);
+		channel.channelManager()->addChannel(&channel);
+	}
+	_newChannel->enterChannel(userInfo);			// 이동하려는 채널에 유저 삽입
 
 	std::cout << "[" << id << "] 유저가 " << "[" << packet->channelIndex
 		<< "] 번 채널로 이동했습니다." << std::endl;
@@ -172,53 +187,26 @@ void User::ProcessChangeChannelPacket(int id, unsigned char *buf)
 // 방 생성 패킷 처리
 void User::ProcessCreateRoomPacket(int id, unsigned char *buf)
 {
-	User *userInfo = ChattingServer::GetInstance()->GetUserInfo();
+	User *userInfo = ChattingServer::GetInstance()->GetUserInfo(id);
 	Create_Room *packet = reinterpret_cast<Create_Room*>(buf);
 	
+	auto _currChannel = userInfo->GetChannelIndex();
+
 	// 새로운 방 생성 (추후-> 생성된 방에 접근은 어떻게?)
-	// 계속 싱글톤 변수에 접근하는 것이 맘에 안든다. -> 상속?
-
-	// 방이 하나도 없을 때는 바로 생성한다.
-	if (Singletone::GetInstance()->roomList.size() == 0) {
-		Singletone::GetInstance()->roomList.emplace_back(packet->roomIndex);
-
-		SendNotifyExistRoomPacket(packet->roomIndex, false);
-
-		Room *newRoom = new Room(packet->roomIndex, userInfo->channel_index);	// 새로운 방 생성
-		Singletone::GetInstance()->roomList.emplace_back(packet->roomIndex);
-		//Channel::GetInstance()->AddNewRoom(packet->roomIndex, newRoom);			
-		Singletone::GetInstance()->channel[userInfo->channel_index].AddNewRoom(packet->roomIndex, newRoom); // 채널에 방 추가
+	// 계속 싱글턴 변수에 접근하는 것이 맘에 안든다. -> 상속?
+	Room room(packet->roomIndex, userInfo->GetChannelIndex());
+	
+	Channel* _channel = _channelManager->getChannel(_currChannel);
+	if (true == _channel->CreateRoom(packet->roomIndex, &room))
+	{
+		_roomMananger->createRoom(userInfo);
 
 		std::cout << "[" << id << "] 유저가 " << "[" << packet->roomIndex
 			<< "] 번 방을 생성하였습니다." << std::endl;
 	}
 
-	// 방이 하나 이상일 때
-	else {		
-		// 이미 존재하는 방인지 체크한다. 이미 존재하면 방 생성을 하지 않는다.
-		for (auto iter = Singletone::GetInstance()->roomList.begin(); iter != Singletone::GetInstance()->roomList.end(); ++iter)
-		{
-			if ((*iter) == packet->roomIndex)
-			{
-				std::cout << packet->roomIndex << "번 방이 이미 있습니다." << std::endl;
-
-				SendNotifyExistRoomPacket(packet->roomIndex, true);
-				return;
-			}
-		}
-
-		// 존재하는 방이 없을 때
-		Room *newRoom = new Room(packet->roomIndex, userInfo->channel_index);	// 새로운 방 생성
-		Singletone::GetInstance()->roomList.emplace_back(packet->roomIndex);
-		//Channel::GetInstance()->AddNewRoom(packet->roomIndex, newRoom);			
-		Singletone::GetInstance()->channel[userInfo->channel_index].AddNewRoom(packet->roomIndex, newRoom); // 채널에 방 추가
-
-		SendNotifyExistRoomPacket(packet->roomIndex, false);
-
-		std::cout << "[" << id << "] 유저가 " << "[" << packet->roomIndex
-			<< "] 번 방을 생성하였습니다." << std::endl;
-	}	
-
+	std::cout << packet->roomIndex << "번 방이 이미 있습니다." << std::endl;
+	
 }
 
 // 채팅방 입장 패킷 처리 -> 생성되어 있는 방의 리스트를 보내준다.

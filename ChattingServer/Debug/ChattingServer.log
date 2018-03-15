@@ -1,16 +1,3 @@
-﻿  ChattingServer.cpp
-c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(25): warning C4477: 'printf' : 서식 문자열 '%s'에 'char *' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'LPCTSTR'입니다.
-  c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(25): note: 서식 문자열에서 '%ls'을(를) 사용하는 것이 좋습니다.
-  c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(25): note: 서식 문자열에서 '%lls'을(를) 사용하는 것이 좋습니다.
-  c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(25): note: 서식 문자열에서 '%Ls'을(를) 사용하는 것이 좋습니다.
-  c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(25): note: 서식 문자열에서 '%ws'을(를) 사용하는 것이 좋습니다.
-c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(66): warning C4101: 'client_sock' :참조되지 않은 지역 변수입니다.
-c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(67): warning C4101: 'clientaddr' :참조되지 않은 지역 변수입니다.
-c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(68): warning C4101: 'addrlen' :참조되지 않은 지역 변수입니다.
-ChattingServer.obj : error LNK2019: __imp__bind@12 외부 기호(참조 위치: "public: void __thiscall ChattingServer::AcceptThread(void)" (?AcceptThread@ChattingServer@@QAEXXZ) 함수)에서 확인하지 못했습니다.
-ChattingServer.obj : error LNK2019: __imp__htonl@4 외부 기호(참조 위치: "public: void __thiscall ChattingServer::AcceptThread(void)" (?AcceptThread@ChattingServer@@QAEXXZ) 함수)에서 확인하지 못했습니다.
-ChattingServer.obj : error LNK2019: __imp__htons@4 외부 기호(참조 위치: "public: void __thiscall ChattingServer::AcceptThread(void)" (?AcceptThread@ChattingServer@@QAEXXZ) 함수)에서 확인하지 못했습니다.
-ChattingServer.obj : error LNK2019: __imp__listen@8 외부 기호(참조 위치: "public: void __thiscall ChattingServer::AcceptThread(void)" (?AcceptThread@ChattingServer@@QAEXXZ) 함수)에서 확인하지 못했습니다.
-ChattingServer.obj : error LNK2019: __imp__socket@12 외부 기호(참조 위치: "public: void __thiscall ChattingServer::AcceptThread(void)" (?AcceptThread@ChattingServer@@QAEXXZ) 함수)에서 확인하지 못했습니다.
-ChattingServer.obj : error LNK2019: "public: void __thiscall ChattingServer::err_quit(char *)" (?err_quit@ChattingServer@@QAEXPAD@Z) 외부 기호(참조 위치: "public: void __thiscall ChattingServer::AcceptThread(void)" (?AcceptThread@ChattingServer@@QAEXXZ) 함수)에서 확인하지 못했습니다.
-C:\Users\song\Documents\Visual Studio 2015\Projects\ChattingServer\Debug\ChattingServer.exe : fatal error LNK1120: 6개의 확인할 수 없는 외부 참조입니다.
+﻿  User.cpp
+  ChattingServer.vcxproj -> C:\Users\songyikim\Source\Repos\ChattingServer\Debug\ChattingServer.exe
+  ChattingServer.vcxproj -> C:\Users\songyikim\Source\Repos\ChattingServer\Debug\ChattingServer.pdb (Full PDB)
