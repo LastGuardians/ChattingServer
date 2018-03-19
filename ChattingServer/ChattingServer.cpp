@@ -2,11 +2,10 @@
 
 IMPLEMENT_SINGLETON(ChattingServer);
 
-//User ChattingServer::mClients[MAX_USER] = { 0,0,0 };
 ChattingServer::ChattingServer()
 {
-	//std::thread acceptThread{ &ChattingServer::AcceptThread , this };
-	
+	recv_over.wsabuf.buf = reinterpret_cast<CHAR*>(recv_over.iocp_buff);
+	recv_over.wsabuf.len = sizeof(recv_over.iocp_buff);	
 }
 
 ChattingServer::~ChattingServer()
@@ -16,10 +15,12 @@ ChattingServer::~ChattingServer()
 
 User* ChattingServer::GetUserInfo(int clientId)
 {
-	for (int i = 0; i < MAX_USER; ++i)
+	for (auto iter : mClients)
 	{
-		if (mClients[i].GetUserId() == clientId)
-			return &mClients[i];
+		if (iter->GetUserId() == clientId)
+		{
+			return iter;
+		}
 	}
 
 	return nullptr;
@@ -61,6 +62,12 @@ void ChattingServer::InitServer()
 void ChattingServer::ReleaseServer()
 {
 
+}
+
+void ChattingServer::CloseSocket(int id)
+{
+	closesocket(mClients[id]->GetUserSocket());
+	//mClients[id]-> = false;
 }
 
 void ChattingServer::err_display(char *msg, int err_no)
@@ -126,33 +133,33 @@ void ChattingServer::AcceptThread()
 		}
 
 		// 유저 수 제한 : 10명
+		if (clientId > 10) {
+			std::cout << "Max User Connect!" << std::endl;
+		}
 		clientId += 1;
 		CreateIoCompletionPort(reinterpret_cast<HANDLE>(client_sock), m_hiocp, clientId, 0);
-		//mClients.emplace_back(new User(client_sock, true, clientId));
-		mClients[clientId].SetUserInfo(client_sock, true, clientId);
+		mClients.emplace_back(&User(client_sock, true, clientId));
 
 		srand(time(NULL));
-		// 접속한 클라이언트에게 랜덤한 채널 인덱스 부여 = 서버 접속과 동시에 채널 입장
+		// 접속한 클라이언트에게 랜덤한 채널 인덱스 부여 = 접속과 동시에 채널 입장
 		Enter_Channel enter_channel_packet;
 		enter_channel_packet.size = sizeof(enter_channel_packet);
 		enter_channel_packet.id = clientId;
-		enter_channel_packet.channelIndex = rand() % 5 + 1;		// 채널 인덱스 범위 1~5
-		mClients[clientId].SetChannelIndex(enter_channel_packet.channelIndex);
+		enter_channel_packet.channelIndex = rand() % 5;
+		mClients[clientId]->SetChannelIndex(enter_channel_packet.channelIndex);
+		
 
-		// 새로운 채널 추가
-		Channel channel(enter_channel_packet.channelIndex);
-		channel.channelManager()->addChannel(&channel);
-				
-		int result = mClients[clientId].SendPacket
-						(reinterpret_cast<unsigned char*>(&enter_channel_packet));
+		// 채널에 유저 입장
+		Singleton::GetInstance()->channel[enter_channel_packet.channelIndex].AddUser(mClients[clientId]);
+
+		int result = SendPacket(clientId, reinterpret_cast<unsigned char*>(&enter_channel_packet));
 		if (SOCKET_ERROR == result) {
 			if (ERROR_IO_PENDING != WSAGetLastError()) {
 				err_display("Accept::WSASend Error! : ", WSAGetLastError());
 			}
 		} 
 				
-		retval = mClients[clientId].WsaRecv();
-		
+		retval = WsaRecv(clientId);	
 		if (SOCKET_ERROR == retval)
 		{
 			if (ERROR_IO_PENDING != WSAGetLastError()) {
@@ -180,11 +187,11 @@ void ChattingServer::WorkerThread()
 
 		if (0 == io_size) {
 			// 접속 종료한 클라 disconnect
-			mClients[id].CloseSocket();
+			CloseSocket(id);
 			continue;
 		}
 		if (OV_RECV == ovlp->event_type) {
-			int retval = mClients[id].PacketRessembly(id, io_size);
+			int retval = PacketRessembly(id, io_size);
 			if (SOCKET_ERROR == retval) {
 				int err_no = WSAGetLastError();
 				if (ERROR_IO_PENDING != err_no) { err_display("WorkerThread::WSARecv", err_no); }
@@ -200,4 +207,186 @@ void ChattingServer::WorkerThread()
 			exit(-1);
 		}
 	}
+}
+
+int ChattingServer::PacketRessembly(int id, DWORD packetSize)
+{
+	unsigned char *buf_ptr = recv_over.iocp_buff;
+	ProcessPacket(id, buf_ptr);
+
+	return WsaRecv(id);
+}
+
+void ChattingServer::ProcessPacket(int id, unsigned char * buf)
+{
+	switch (buf[0])
+	{
+	case ENTER_CHANNEL:
+		break;
+	case CREATE_ROOM:
+		ProcessCreateRoomPacket(id, buf);
+		break;
+	case CHANGE_CHANNEL:
+		ProcessChangeChannelPacket(id, buf);
+		break;
+	case ROOM_CHATTING:
+		ProcessRoomChattingPacket(id, buf);
+		break;
+	case ENTER_ROOM:
+		ProcessEnterRoomPacket(id, buf);
+		break;
+	default:
+		break;
+	}
+}
+
+void ChattingServer::ProcessCreateRoomPacket(int id, unsigned char * buf)
+{
+	Create_Room *packet = reinterpret_cast<Create_Room*>(buf);
+
+	// 새로운 방 생성 (추후-> 생성된 방에 접근은 어떻게?)
+	// 계속 싱글톤 변수에 접근하는 것이 맘에 안든다. -> 상속?
+
+	// 방이 하나도 없을 때는 바로 생성한다.
+	if (Singleton::GetInstance()->roomList.size() == 0) 
+	{
+		Singleton::GetInstance()->roomList.emplace_back(packet->roomIndex);
+
+		SendNotifyExistRoomPacket(packet->roomIndex, false);
+
+		Room *newRoom = new Room(packet->roomIndex, mClients[id]->GetChannelIndex());	// 새로운 방 생성
+		Singleton::GetInstance()->roomList.emplace_back(packet->roomIndex);
+		//Channel::GetInstance()->AddNewRoom(packet->roomIndex, newRoom);			
+		Singleton::GetInstance()->channel[mClients[id]->GetChannelIndex()].AddNewRoom(packet->roomIndex, newRoom); // 채널에 방 추가
+		mClients[id]->SetRoomIndex(packet->roomIndex);
+
+		std::cout << "[" << id << "] 유저가 " << "[" << packet->roomIndex
+			<< "] 번 방을 생성하였습니다." << std::endl;
+	}
+
+	// 방이 하나 이상일 때
+	else 
+	{
+		// 이미 존재하는 방인지 체크한다. 이미 존재하면 방 생성을 하지 않는다.
+		for (auto iter = Singleton::GetInstance()->roomList.begin(); iter != Singleton::GetInstance()->roomList.end(); ++iter)
+		{
+			if ((*iter) == packet->roomIndex)
+			{
+				std::cout << packet->roomIndex << "번 방이 이미 있습니다." << std::endl;
+
+				SendNotifyExistRoomPacket(packet->roomIndex, true);
+				return;
+			}
+		}
+
+		// 존재하는 방이 없을 때
+		Room *newRoom = new Room(packet->roomIndex, mClients[id]->GetChannelIndex());	// 새로운 방 생성
+		Singleton::GetInstance()->roomList.emplace_back(packet->roomIndex);
+		//Channel::GetInstance()->AddNewRoom(packet->roomIndex, newRoom);			
+		Singleton::GetInstance()->channel[mClients[id]->GetChannelIndex()].AddNewRoom(packet->roomIndex, newRoom); // 채널에 방 추가
+		mClients[id]->SetRoomIndex(packet->roomIndex);
+		
+		std::cout << "[" << id << "] 유저가 " << "[" << packet->roomIndex
+			<< "] 번 방을 생성하였습니다." << std::endl;
+	}
+
+}
+
+void ChattingServer::ProcessChangeChannelPacket(int id, unsigned char * buf)
+{
+	int _currentChannelIndex = mClients[id]->GetChannelIndex();
+	User* userInfo = mClients[id];
+
+	Change_Channel *packet = reinterpret_cast<Change_Channel*>(buf);
+	Singleton::GetInstance()->channel[_currentChannelIndex].DeleteUser(userInfo);
+	Singleton::GetInstance()->channel[packet->channelIndex].AddUser(userInfo);
+
+
+	std::cout << "[" << id << "] 유저가 " << "[" << packet->channelIndex
+		<< "] 번 채널로 이동했습니다." << std::endl;
+}
+
+void ChattingServer::ProcessRoomChattingPacket(int id, unsigned char * buf)
+{
+	Room_Chatting *room_packet = reinterpret_cast<Room_Chatting*>(buf);
+	
+	for (auto iter : mClients)
+	{
+		//if(iter->GetUserId() == id) continue;
+		if (iter->GetChannelIndex() == mClients[id]->GetChannelIndex())		// 채널이 같고
+		{
+			if (iter->GetRoomIndex() == mClients[id]->GetRoomIndex())		// 방이 같아야 메시지를 보낸다.
+			{
+				SendRoomChatting(iter->GetUserId(), room_packet->message);
+			}
+		}
+	}
+}
+
+// 방 입장 패킷 처리
+void ChattingServer::ProcessEnterRoomPacket(int id, unsigned char * buf)
+{
+	Enter_Room *enter_packet = reinterpret_cast<Enter_Room*>(buf);
+
+	for (auto iter = Singleton::GetInstance()->roomList.begin(); iter != Singleton::GetInstance()->roomList.end(); ++iter)
+	{
+		if ((*iter) == enter_packet->roomIndex)
+		{
+			std::cout << "[" << id << "] 유저가 " << "[" << enter_packet->roomIndex
+				<< "] 번 방에 입장하였습니다." << std::endl;
+			mClients[id]->SetRoomIndex(enter_packet->roomIndex);
+
+
+			// 방 입장 성공 패킷 만들어야함
+		}
+	}
+
+	std::cout << enter_packet->roomIndex << " 번 방이 없습니다." << std::endl;
+}
+
+int ChattingServer::WsaRecv(int id)
+{
+	DWORD flags = { 0 };
+	return WSARecv(mClients[id]->GetUserSocket(), &recv_over.wsabuf, 1, NULL, &flags, &recv_over.overlap, NULL);
+}
+
+int ChattingServer::SendPacket(int id, unsigned char * packet)
+{
+	Overlap *over = new Overlap;
+	memset(over, 0, sizeof(Overlap));
+	over->event_type = OV_SEND;
+	over->wsabuf.buf = reinterpret_cast<CHAR *>(over->iocp_buff);
+	over->wsabuf.len = packet[1];
+	memcpy(over->iocp_buff, packet, packet[1]);
+
+	int ret = WSASend(mClients[id]->GetUserSocket(), &over->wsabuf, 1, NULL, 0,
+		&over->overlap, NULL);
+	return ret;
+}
+
+void ChattingServer::SendNotifyExistRoomPacket(int room, bool exist)
+{
+	Notify_Exist_Room exist_packet;
+	exist_packet.size = sizeof(Notify_Exist_Room);
+	exist_packet.type = NOTIFY_EXIST_ROOM;
+	exist_packet.id = clientId;
+	exist_packet.roomIndex = room;
+	exist_packet.exist = exist;
+	SendPacket(clientId, reinterpret_cast<unsigned char*>(&exist_packet));
+}
+
+void ChattingServer::SendRoomListPacket()
+{
+}
+
+void ChattingServer::SendRoomChatting(int target, char * msg)
+{
+	Room_Chatting chat_packet;
+	chat_packet.id = clientId;
+	chat_packet.type = ROOM_CHATTING;
+	chat_packet.roomIndex = mClients[target]->GetRoomIndex();
+	strncpy(chat_packet.message, msg, MSG_SIZE);
+	chat_packet.size = 1037;
+	//*chat_packet.message = *msg;
+	SendPacket(target, reinterpret_cast<unsigned char*>(&chat_packet));
 }

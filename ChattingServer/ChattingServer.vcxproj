@@ -151,7 +151,7 @@
     <ClCompile Include="ChattingServer.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="server.cpp" />
-    <ClCompile Include="ChannelManager.cpp" />
+    <ClCompile Include="Singleton.cpp" />
     <ClCompile Include="test.pb.cc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -163,7 +163,7 @@
     <ClInclude Include="ChattingServer.h" />
     <ClInclude Include="protocol.h" />
     <ClInclude Include="Room.h" />
-    <ClInclude Include="ChannelManager.h" />
+    <ClInclude Include="Singleton.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="test.pb.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

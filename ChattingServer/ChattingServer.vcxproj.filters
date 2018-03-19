@@ -33,7 +33,7 @@
     <ClCompile Include="test.pb.cc">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="ChannelManager.cpp">
+    <ClCompile Include="Singleton.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,7 +59,7 @@
     <ClInclude Include="test.pb.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ChannelManager.h">
+    <ClInclude Include="Singleton.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

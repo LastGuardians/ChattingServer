@@ -37,7 +37,7 @@ struct Change_Channel {
 	BYTE			type = { CHANGE_CHANNEL };
 	BYTE			size;
 	unsigned int	id;
-	unsigned int	channelIndex;		// 클라이언트가 바꾸려는 채널 인덱스
+	unsigned int	channelIndex;
 };
 
 struct Create_Room {
@@ -49,7 +49,7 @@ struct Create_Room {
 
 struct Room_Chatting {
 	BYTE			type = { ROOM_CHATTING };
-	BYTE			size;
+	ULONG			size;
 	unsigned int	id;
 	unsigned int	roomIndex;
 	char			message[MSG_SIZE];
