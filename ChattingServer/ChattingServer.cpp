@@ -138,8 +138,10 @@ void ChattingServer::AcceptThread()
 		}
 		clientId += 1;
 		CreateIoCompletionPort(reinterpret_cast<HANDLE>(client_sock), m_hiocp, clientId, 0);
-		mClients.emplace_back(&User(client_sock, true, clientId));
-
+				
+		User* userInfo = new User(client_sock, true, clientId);
+		mClients.push_back(userInfo);
+		
 		srand(time(NULL));
 		// 접속한 클라이언트에게 랜덤한 채널 인덱스 부여 = 접속과 동시에 채널 입장
 		Enter_Channel enter_channel_packet;
@@ -149,7 +151,7 @@ void ChattingServer::AcceptThread()
 		mClients[clientId]->SetChannelIndex(enter_channel_packet.channelIndex);
 		
 
-		// 채널에 유저 입장
+		// 채널에 유저 입장		
 		Singleton::GetInstance()->channel[enter_channel_packet.channelIndex].AddUser(mClients[clientId]);
 
 		int result = SendPacket(clientId, reinterpret_cast<unsigned char*>(&enter_channel_packet));
@@ -191,6 +193,7 @@ void ChattingServer::WorkerThread()
 			continue;
 		}
 		if (OV_RECV == ovlp->event_type) {
+			
 			int retval = PacketRessembly(id, io_size);
 			if (SOCKET_ERROR == retval) {
 				int err_no = WSAGetLastError();
@@ -240,6 +243,38 @@ void ChattingServer::ProcessPacket(int id, unsigned char * buf)
 	}
 }
 
+void ChattingServer::PacketProcess(protobuf::io::CodedInputStream & input_stream, const ChattingServer & handler)
+{
+	MessageHeader messageHeader;
+		// 헤더를 읽어냄
+	while (input_stream.ReadRaw(&messageHeader, MessageHeaderSize))
+	{
+		// 직접 억세스 할수 있는 버퍼 포인터와 남은 길이를 알아냄
+
+		const void* payload_ptr = NULL;
+		int remainSize = 0;
+		input_stream.GetDirectBufferPointer(&payload_ptr, &remainSize);
+		if (remainSize < (signed)messageHeader.size)
+			break;
+
+
+		// 메세지 본체를 읽어내기 위한 스트림을 생성
+		protobuf::io::ArrayInputStream payload_array_stream(payload_ptr, messageHeader.size);
+		protobuf::io::CodedInputStream payload_input_stream(&payload_array_stream);
+
+
+		// 메세지 본체 사이즈 만큼 포인터 전진
+		input_stream.Skip(messageHeader.size);
+
+		// 메세지 종류별로 역직렬화해서 적절한 메서드를 호출해줌
+		Channel_P::channel_chatting message;
+		if (false == message.ParseFromCodedStream(&payload_input_stream))
+			break;
+
+	}
+}
+
+
 void ChattingServer::ProcessCreateRoomPacket(int id, unsigned char * buf)
 {
 	Create_Room *packet = reinterpret_cast<Create_Room*>(buf);
@@ -252,11 +287,12 @@ void ChattingServer::ProcessCreateRoomPacket(int id, unsigned char * buf)
 	{
 		Singleton::GetInstance()->roomList.emplace_back(packet->roomIndex);
 
-		SendNotifyExistRoomPacket(packet->roomIndex, false);
+		SendNotifyExistRoomPacket(id, packet->roomIndex, false);
 
 		Room *newRoom = new Room(packet->roomIndex, mClients[id]->GetChannelIndex());	// 새로운 방 생성
 		Singleton::GetInstance()->roomList.emplace_back(packet->roomIndex);
 		//Channel::GetInstance()->AddNewRoom(packet->roomIndex, newRoom);			
+		
 		Singleton::GetInstance()->channel[mClients[id]->GetChannelIndex()].AddNewRoom(packet->roomIndex, newRoom); // 채널에 방 추가
 		mClients[id]->SetRoomIndex(packet->roomIndex);
 
@@ -274,7 +310,7 @@ void ChattingServer::ProcessCreateRoomPacket(int id, unsigned char * buf)
 			{
 				std::cout << packet->roomIndex << "번 방이 이미 있습니다." << std::endl;
 
-				SendNotifyExistRoomPacket(packet->roomIndex, true);
+				SendNotifyExistRoomPacket(id, packet->roomIndex, true);
 				return;
 			}
 		}
@@ -282,9 +318,11 @@ void ChattingServer::ProcessCreateRoomPacket(int id, unsigned char * buf)
 		// 존재하는 방이 없을 때
 		Room *newRoom = new Room(packet->roomIndex, mClients[id]->GetChannelIndex());	// 새로운 방 생성
 		Singleton::GetInstance()->roomList.emplace_back(packet->roomIndex);
-		//Channel::GetInstance()->AddNewRoom(packet->roomIndex, newRoom);			
+		
 		Singleton::GetInstance()->channel[mClients[id]->GetChannelIndex()].AddNewRoom(packet->roomIndex, newRoom); // 채널에 방 추가
 		mClients[id]->SetRoomIndex(packet->roomIndex);
+
+		SendNotifyExistRoomPacket(id, packet->roomIndex, false);
 		
 		std::cout << "[" << id << "] 유저가 " << "[" << packet->roomIndex
 			<< "] 번 방을 생성하였습니다." << std::endl;
@@ -301,26 +339,33 @@ void ChattingServer::ProcessChangeChannelPacket(int id, unsigned char * buf)
 	Singleton::GetInstance()->channel[_currentChannelIndex].DeleteUser(userInfo);
 	Singleton::GetInstance()->channel[packet->channelIndex].AddUser(userInfo);
 
+	userInfo->SetChannelIndex(packet->channelIndex);
 
 	std::cout << "[" << id << "] 유저가 " << "[" << packet->channelIndex
 		<< "] 번 채널로 이동했습니다." << std::endl;
 }
 
 void ChattingServer::ProcessRoomChattingPacket(int id, unsigned char * buf)
-{
-	Room_Chatting *room_packet = reinterpret_cast<Room_Chatting*>(buf);
-	
+{	
+	Room_Chatting *chat_packet = reinterpret_cast<Room_Chatting*>(buf);
+
 	for (auto iter : mClients)
 	{
-		//if(iter->GetUserId() == id) continue;
+		//if(iter->GetUserId() == id) continue;								// 내 자신은 건너뛴다.
 		if (iter->GetChannelIndex() == mClients[id]->GetChannelIndex())		// 채널이 같고
 		{
 			if (iter->GetRoomIndex() == mClients[id]->GetRoomIndex())		// 방이 같아야 메시지를 보낸다.
 			{
-				SendRoomChatting(iter->GetUserId(), room_packet->message);
+				SendRoomChattingPacket(id, iter->GetUserId(), chat_packet->message, chat_packet->size);
 			}
 		}
-	}
+	}		
+
+	/*	Channel_P::channel_chatting* recv_msg = new Channel_P::channel_chatting();
+	bool result = recv_msg->ParseFromArray(buf, 1000);
+	if (false == result)
+	printf("Deserialize Failed! \n");*/
+
 }
 
 // 방 입장 패킷 처리
@@ -336,12 +381,13 @@ void ChattingServer::ProcessEnterRoomPacket(int id, unsigned char * buf)
 				<< "] 번 방에 입장하였습니다." << std::endl;
 			mClients[id]->SetRoomIndex(enter_packet->roomIndex);
 
-
-			// 방 입장 성공 패킷 만들어야함
+			// 방 입장 성공
+			SendEnterRoomPacket(id, true, enter_packet->roomIndex);
 		}
 	}
-
+	// 방 입장 실패 
 	std::cout << enter_packet->roomIndex << " 번 방이 없습니다." << std::endl;
+	SendEnterRoomPacket(id, false, enter_packet->roomIndex);
 }
 
 int ChattingServer::WsaRecv(int id)
@@ -364,29 +410,40 @@ int ChattingServer::SendPacket(int id, unsigned char * packet)
 	return ret;
 }
 
-void ChattingServer::SendNotifyExistRoomPacket(int room, bool exist)
+void ChattingServer::SendNotifyExistRoomPacket(int id, int room, bool exist)
 {
 	Notify_Exist_Room exist_packet;
 	exist_packet.size = sizeof(Notify_Exist_Room);
 	exist_packet.type = NOTIFY_EXIST_ROOM;
-	exist_packet.id = clientId;
+	exist_packet.id = id;
 	exist_packet.roomIndex = room;
 	exist_packet.exist = exist;
-	SendPacket(clientId, reinterpret_cast<unsigned char*>(&exist_packet));
+	SendPacket(id, reinterpret_cast<unsigned char*>(&exist_packet));
 }
 
 void ChattingServer::SendRoomListPacket()
 {
 }
 
-void ChattingServer::SendRoomChatting(int target, char * msg)
+void ChattingServer::SendRoomChattingPacket(int id, int target, char * msg, int len)
 {
 	Room_Chatting chat_packet;
-	chat_packet.id = clientId;
+	chat_packet.id = id;
 	chat_packet.type = ROOM_CHATTING;
 	chat_packet.roomIndex = mClients[target]->GetRoomIndex();
-	strncpy(chat_packet.message, msg, MSG_SIZE);
-	chat_packet.size = 1037;
-	//*chat_packet.message = *msg;
+	//strncpy(chat_packet->message, msg, len);
+	strcpy(chat_packet.message, msg);
+	chat_packet.size = len;
 	SendPacket(target, reinterpret_cast<unsigned char*>(&chat_packet));
+}
+
+void ChattingServer::SendEnterRoomPacket(int id, bool enter, int room)
+{
+	Enter_Room enter_packet;
+	enter_packet.id = id;
+	enter_packet.type = ENTER_ROOM;
+	enter_packet.size = sizeof(Enter_Room);
+	enter_packet.isEnter = enter;
+	enter_packet.roomIndex = room;
+	SendPacket(id, reinterpret_cast<unsigned char*>(&enter_packet));
 }

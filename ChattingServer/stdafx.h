@@ -1,7 +1,10 @@
 #pragma once
+#define PROTOBUF_USE_DLLS
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
+
 #pragma comment(lib, "ws2_32")
+#pragma comment(lib, "libprotobufd.lib")
 
 #include <iostream>
 #include <thread>
@@ -15,11 +18,17 @@
 #include <random>
 #include <ctime>
 #include <unordered_map>
-//#include <google/protobuf/io/zero_copy_stream_impl_lite.h>
+
+#include <google/protobuf/io/zero_copy_stream_impl_lite.h>
+#include <google/protobuf/text_format.h>
+//#include "channel.pb.h"
+#include "Channel_P.pb.h"
 
 
 #define MAX_USER	10
 #define BUFSIZE		1024
+
+using namespace google;
 
 
 #define NO_COPY(CLASSNAME)							\
@@ -63,3 +72,4 @@ enum EVENT_TYPE
 #include "Channel.h"
 #include "Room.h"
 #include "Singleton.h"
+#include "PacketHandler.h"

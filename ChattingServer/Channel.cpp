@@ -1,9 +1,14 @@
 #include "stdafx.h"
 
-IMPLEMENT_SINGLETON(Channel);
+//IMPLEMENT_SINGLETON(Channel);
 
 Channel::Channel() : maxRoom{ 5 }, maxUser{ 10 }
 {
+	/*for (int i = 0; i < 5; ++i)
+	{
+		channelList[i]->channelNo = i;
+	}
+	*/
 }
 
 

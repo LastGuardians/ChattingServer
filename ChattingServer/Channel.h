@@ -10,7 +10,7 @@ public:
 	Channel(int num);
 	virtual ~Channel();
 
-	DECLARE_SINGLETON(Channel);
+	//DECLARE_SINGLETON(Channel);
 
 private:
 	int								maxRoom;
@@ -18,6 +18,8 @@ private:
 	int								channelNo;
 	std::list<User*>				userList;		// 채널 유저 리스트
 	std::unordered_map<int, Room>   roomList;		// 방 생성되면 여기에 추가
+
+	//std::vector<Channel*>			channelList;
 
 public:
 	inline int		GetMaxRoom()	{ return maxRoom; }

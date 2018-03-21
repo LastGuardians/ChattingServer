@@ -19,6 +19,7 @@ enum PacketType {
 
 #pragma pack(push, 1)
 
+
 struct Enter_Channel {
 	BYTE			type = { ENTER_CHANNEL };
 	BYTE			size;
@@ -49,7 +50,7 @@ struct Create_Room {
 
 struct Room_Chatting {
 	BYTE			type = { ROOM_CHATTING };
-	ULONG			size;
+	BYTE			size;
 	unsigned int	id;
 	unsigned int	roomIndex;
 	char			message[MSG_SIZE];
@@ -60,6 +61,7 @@ struct Enter_Room {
 	BYTE			size;
 	unsigned int	id;
 	unsigned int	roomIndex;
+	bool			isEnter;
 };
 
 struct Notify_Exist_Room {

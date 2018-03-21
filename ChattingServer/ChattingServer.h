@@ -14,8 +14,15 @@ struct RecvBuffInfo {
 	int				sizeCurr = { 0 };
 };
 
+struct MessageHeader
+{
+	protobuf::uint32 size;
+};
+const int MessageHeaderSize = sizeof(MessageHeader);
+
+
 // 통신 클래스
-class ChattingServer
+class ChattingServer 
 {
 public:
 	ChattingServer();
@@ -35,7 +42,7 @@ private:
 
 public:	
 
-	void			err_display(char *msg, int err_no);
+	void						err_display(char *msg, int err_no);
 	
 	void						SetUserInfo(User* user);
 	inline int					GetClientID() { return clientId; }
@@ -51,6 +58,7 @@ public:
 
 	int			PacketRessembly(int id, DWORD packetSize);
 	void		ProcessPacket(int id, unsigned char *buf);
+	void		PacketProcess(protobuf::io::CodedInputStream& input_stream, const ChattingServer& handler);
 	void		ProcessEneterChannelPacket(int id, unsigned char *buf);
 	void		ProcessLeaveChannelPacket(int id, unsigned char *buf);
 	void		ProcessCreateRoomPacket(int id, unsigned char *buf);
@@ -60,8 +68,10 @@ public:
 
 	int			WsaRecv(int id);
 	int			SendPacket(int id, unsigned char *packet);
-	void		SendNotifyExistRoomPacket(int room, bool exist);
+	void		SendNotifyExistRoomPacket(int id, int room, bool exist);
 	void		SendRoomListPacket();
-	void		SendRoomChatting(int target, char* msg);
+	void		SendRoomChattingPacket(int id, int target, char* msg, int len);
+	void		SendEnterRoomPacket(int id, bool enter, int room);
+		
 };
 
