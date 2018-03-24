@@ -10,6 +10,6 @@ public:
 
 public:
 	Channel *channel = new Channel[5];
-	std::vector<Room*> roomList;
+
 };
 

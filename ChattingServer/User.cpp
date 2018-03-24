@@ -48,11 +48,6 @@ int User::SendPacket(unsigned char *packet)
 	return ret;
 }
 
-User* User::SetUserStruct(User* user)
-{
-	return user;
-}
-
 int User::WsaRecv()
 {
 	DWORD flags = { 0 };

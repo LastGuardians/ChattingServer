@@ -38,7 +38,6 @@ public:
 	int			PacketRessembly(int id, DWORD packetSize);
 	void		SetChannelIndex(int channel);
 	void		SetRoomIndex(int room);
-	User*		SetUserStruct(User* user);
 
 	inline int	GetChannelIndex() { return channel_index; }
 	inline int	GetRoomIndex() { return room_index; }
