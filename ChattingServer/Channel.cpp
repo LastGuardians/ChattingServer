@@ -1,7 +1,14 @@
 #include "stdafx.h"
 
+//IMPLEMENT_SINGLETON(Channel);
+
 Channel::Channel() : maxRoom{ 5 }, maxUser{ 10 }
 {
+	/*for (int i = 0; i < 5; ++i)
+	{
+		channelList[i]->channelNo = i;
+	}
+	*/
 }
 
 
@@ -15,17 +22,29 @@ Channel::~Channel()
 }
 
 // 채널에 유저 삽입
-void Channel::AddUserIndex(User* user)
+void Channel::AddUser(User* user)
 {
 	userList.insert(userList.end(), user);
 }
 
 // 유저 삭제
-void Channel::DeleteUserIndex(int id)
+void Channel::DeleteUser(User* user)
 {
-	for (auto i = userList.begin(); i != userList.end(); ++i)
+	for (auto iter = userList.begin(); iter != userList.end(); ++iter)
 	{
-		if((*i)->GetUserId() == id)
-			userList.erase(i);
+		auto info = *iter;
+		if (info->GetUserId() == user->GetUserId())
+			iter = userList.erase(iter);
+		return;
 	}
+}
+
+void Channel::AddNewRoom(int roomIndex, Room * room)
+{
+	roomList[roomIndex] = *room;
+}
+
+void Channel::NotifyCreateRoom()
+{
+
 }
