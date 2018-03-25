@@ -7,12 +7,31 @@ c:\users\songyikim\source\repos\chattingserver\chattingserver\debug\server.obj
 c:\users\songyikim\source\repos\chattingserver\chattingserver\debug\singleton.obj
 c:\users\songyikim\source\repos\chattingserver\chattingserver\debug\user.obj
 c:\users\songyikim\source\repos\chattingserver\chattingserver\debug\test.pb.obj
+c:\users\songyikim\source\repos\chattingserver\chattingserver\debug\channel.pb.obj
+c:\users\songyikim\source\repos\chattingserver\chattingserver\debug\channel_p.pb.obj
+c:\users\songyikim\source\repos\chattingserver\chattingserver\debug\packethandler.obj
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\vc140.pdb
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\vc140.idb
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\channel.obj
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\chattingserver.obj
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\packethandler.obj
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\room.obj
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\singleton.obj
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\user.obj
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\server.obj
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\channel_p.pb.obj
 c:\users\songyikim\source\repos\chattingserver\debug\chattingserver.ilk
 c:\users\songyikim\source\repos\chattingserver\debug\chattingserver.exe
 c:\users\songyikim\source\repos\chattingserver\debug\chattingserver.pdb
-c:\users\songyikim\source\repos\chattingserver\chattingserver\debug\chattingserver.tlog\cl.command.1.tlog
-c:\users\songyikim\source\repos\chattingserver\chattingserver\debug\chattingserver.tlog\cl.read.1.tlog
-c:\users\songyikim\source\repos\chattingserver\chattingserver\debug\chattingserver.tlog\cl.write.1.tlog
-c:\users\songyikim\source\repos\chattingserver\chattingserver\debug\chattingserver.tlog\link.command.1.tlog
-c:\users\songyikim\source\repos\chattingserver\chattingserver\debug\chattingserver.tlog\link.read.1.tlog
-c:\users\songyikim\source\repos\chattingserver\chattingserver\debug\chattingserver.tlog\link.write.1.tlog
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\test.pb.obj
+c:\users\song\documents\visual studio 2015\projects\chattingserver\debug\chattingserver.pdb
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\chattingserver.tlog\cl.command.1.tlog
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\chattingserver.tlog\cl.read.1.tlog
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\chattingserver.tlog\cl.write.1.tlog
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\chattingserver.tlog\link-cvtres.read.1.tlog
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\chattingserver.tlog\link-cvtres.write.1.tlog
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\chattingserver.tlog\link-rc.read.1.tlog
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\chattingserver.tlog\link-rc.write.1.tlog
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\chattingserver.tlog\link.command.1.tlog
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\chattingserver.tlog\link.read.1.tlog
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\debug\chattingserver.tlog\link.write.1.tlog

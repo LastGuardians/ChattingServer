@@ -2,7 +2,6 @@
 // source: Channel_P.proto
 
 #define PROTOBUF_USE_DLLS
-#define INTERNAL_SUPPRESS_PROTOBUF_FIELD_DEPRECATION
 #include "Channel_P.pb.h"
 
 #include <algorithm>
@@ -16,43 +15,62 @@
 #include <google/protobuf/generated_message_reflection.h>
 #include <google/protobuf/reflection_ops.h>
 #include <google/protobuf/wire_format.h>
+// This is a temporary google only hack
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+#include "third_party/protobuf/version.h"
+#endif
 // @@protoc_insertion_point(includes)
-
 namespace Channel_P {
-class channel_chattingDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<channel_chatting> {
+class channel_chattingDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<channel_chatting>
+      _instance;
 } _channel_chatting_default_instance_;
-
+}  // namespace Channel_P
 namespace protobuf_Channel_5fP_2eproto {
+void InitDefaultschannel_chattingImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
 
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::Channel_P::_channel_chatting_default_instance_;
+    new (ptr) ::Channel_P::channel_chatting();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::Channel_P::channel_chatting::InitAsDefaultInstance();
+}
 
-namespace {
+void InitDefaultschannel_chatting() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultschannel_chattingImpl);
+}
 
 ::google::protobuf::Metadata file_level_metadata[1];
 
-}  // namespace
-
-const ::google::protobuf::uint32 TableStruct::offsets[] = {
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(channel_chatting, _has_bits_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(channel_chatting, _internal_metadata_),
+const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::Channel_P::channel_chatting, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::Channel_P::channel_chatting, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(channel_chatting, id_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(channel_chatting, target_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(channel_chatting, message_),
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::Channel_P::channel_chatting, id_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::Channel_P::channel_chatting, target_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::Channel_P::channel_chatting, message_),
   1,
   2,
   0,
 };
-
-static const ::google::protobuf::internal::MigrationSchema schemas[] = {
-  { 0, 7, sizeof(channel_chatting)},
+static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+  { 0, 8, sizeof(::Channel_P::channel_chatting)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::google::protobuf::Message*>(&_channel_chatting_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::Channel_P::_channel_chatting_default_instance_),
 };
-
-namespace {
 
 void protobuf_AssignDescriptors() {
   AddDescriptors();
@@ -67,33 +85,15 @@ void protobuf_AssignDescriptorsOnce() {
   ::google::protobuf::GoogleOnceInit(&once, &protobuf_AssignDescriptors);
 }
 
-void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
+void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 1);
 }
 
-}  // namespace
-
-void TableStruct::Shutdown() {
-  _channel_chatting_default_instance_.Shutdown();
-  delete file_level_metadata[0].reflection;
-}
-
-void TableStruct::InitDefaultsImpl() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  ::google::protobuf::internal::InitProtobufDefaults();
-  _channel_chatting_default_instance_.DefaultConstruct();
-}
-
-void InitDefaults() {
-  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
-  ::google::protobuf::GoogleOnceInit(&once, &TableStruct::InitDefaultsImpl);
-}
 void AddDescriptorsImpl() {
   InitDefaults();
-  static const char descriptor[] = {
+  static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\017Channel_P.proto\022\tChannel_P\"\?\n\020channel_"
       "chatting\022\n\n\002id\030\001 \002(\005\022\016\n\006target\030\002 \002(\005\022\017\n\007"
       "message\030\003 \002(\t"
@@ -102,25 +102,25 @@ void AddDescriptorsImpl() {
       descriptor, 93);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Channel_P.proto", &protobuf_RegisterTypes);
-  ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
 }
 
 void AddDescriptors() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
   ::google::protobuf::GoogleOnceInit(&once, &AddDescriptorsImpl);
 }
-// Force AddDescriptors() to be called at static initialization time.
+// Force AddDescriptors() to be called at dynamic initialization time.
 struct StaticDescriptorInitializer {
   StaticDescriptorInitializer() {
     AddDescriptors();
   }
 } static_descriptor_initializer;
-
 }  // namespace protobuf_Channel_5fP_2eproto
-
+namespace Channel_P {
 
 // ===================================================================
 
+void channel_chatting::InitAsDefaultInstance() {
+}
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int channel_chatting::kIdFieldNumber;
 const int channel_chatting::kTargetFieldNumber;
@@ -130,7 +130,7 @@ const int channel_chatting::kMessageFieldNumber;
 channel_chatting::channel_chatting()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
-    protobuf_Channel_5fP_2eproto::InitDefaults();
+    ::protobuf_Channel_5fP_2eproto::InitDefaultschannel_chatting();
   }
   SharedCtor();
   // @@protoc_insertion_point(constructor:Channel_P.channel_chatting)
@@ -146,16 +146,17 @@ channel_chatting::channel_chatting(const channel_chatting& from)
     message_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.message_);
   }
   ::memcpy(&id_, &from.id_,
-    reinterpret_cast<char*>(&target_) -
-    reinterpret_cast<char*>(&id_) + sizeof(target_));
+    static_cast<size_t>(reinterpret_cast<char*>(&target_) -
+    reinterpret_cast<char*>(&id_)) + sizeof(target_));
   // @@protoc_insertion_point(copy_constructor:Channel_P.channel_chatting)
 }
 
 void channel_chatting::SharedCtor() {
   _cached_size_ = 0;
   message_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&id_, 0, reinterpret_cast<char*>(&target_) -
-    reinterpret_cast<char*>(&id_) + sizeof(target_));
+  ::memset(&id_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&target_) -
+      reinterpret_cast<char*>(&id_)) + sizeof(target_));
 }
 
 channel_chatting::~channel_chatting() {
@@ -173,12 +174,12 @@ void channel_chatting::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
 const ::google::protobuf::Descriptor* channel_chatting::descriptor() {
-  protobuf_Channel_5fP_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_Channel_5fP_2eproto::file_level_metadata[0].descriptor;
+  ::protobuf_Channel_5fP_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_Channel_5fP_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
 const channel_chatting& channel_chatting::default_instance() {
-  protobuf_Channel_5fP_2eproto::InitDefaults();
+  ::protobuf_Channel_5fP_2eproto::InitDefaultschannel_chatting();
   return *internal_default_instance();
 }
 
@@ -192,13 +193,19 @@ channel_chatting* channel_chatting::New(::google::protobuf::Arena* arena) const 
 
 void channel_chatting::Clear() {
 // @@protoc_insertion_point(message_clear_start:Channel_P.channel_chatting)
-  if (has_message()) {
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     GOOGLE_DCHECK(!message_.IsDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited()));
     (*message_.UnsafeRawStringPointer())->clear();
   }
-  if (_has_bits_[0 / 32] & 6u) {
-    ::memset(&id_, 0, reinterpret_cast<char*>(&target_) -
-      reinterpret_cast<char*>(&id_) + sizeof(target_));
+  if (cached_has_bits & 6u) {
+    ::memset(&id_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&target_) -
+        reinterpret_cast<char*>(&id_)) + sizeof(target_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear();
@@ -216,7 +223,8 @@ bool channel_chatting::MergePartialFromCodedStream(
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // required int32 id = 1;
       case 1: {
-        if (tag == 8u) {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
           set_has_id();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -229,7 +237,8 @@ bool channel_chatting::MergePartialFromCodedStream(
 
       // required int32 target = 2;
       case 2: {
-        if (tag == 16u) {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
           set_has_target();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -242,11 +251,12 @@ bool channel_chatting::MergePartialFromCodedStream(
 
       // required string message = 3;
       case 3: {
-        if (tag == 26u) {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_message()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-            this->message().data(), this->message().length(),
+            this->message().data(), static_cast<int>(this->message().length()),
             ::google::protobuf::internal::WireFormat::PARSE,
             "Channel_P.channel_chatting.message");
         } else {
@@ -257,13 +267,11 @@ bool channel_chatting::MergePartialFromCodedStream(
 
       default: {
       handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+        if (tag == 0) {
           goto success;
         }
         DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
     }
@@ -280,20 +288,24 @@ failure:
 void channel_chatting::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:Channel_P.channel_chatting)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
   // required int32 id = 1;
-  if (has_id()) {
+  if (cached_has_bits & 0x00000002u) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->id(), output);
   }
 
   // required int32 target = 2;
-  if (has_target()) {
+  if (cached_has_bits & 0x00000004u) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->target(), output);
   }
 
   // required string message = 3;
-  if (has_message()) {
+  if (cached_has_bits & 0x00000001u) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->message().data(), this->message().length(),
+      this->message().data(), static_cast<int>(this->message().length()),
       ::google::protobuf::internal::WireFormat::SERIALIZE,
       "Channel_P.channel_chatting.message");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
@@ -302,29 +314,33 @@ void channel_chatting::SerializeWithCachedSizes(
 
   if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
+        _internal_metadata_.unknown_fields(), output);
   }
   // @@protoc_insertion_point(serialize_end:Channel_P.channel_chatting)
 }
 
 ::google::protobuf::uint8* channel_chatting::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
+  (void)deterministic; // Unused
   // @@protoc_insertion_point(serialize_to_array_start:Channel_P.channel_chatting)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
   // required int32 id = 1;
-  if (has_id()) {
+  if (cached_has_bits & 0x00000002u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->id(), target);
   }
 
   // required int32 target = 2;
-  if (has_target()) {
+  if (cached_has_bits & 0x00000004u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->target(), target);
   }
 
   // required string message = 3;
-  if (has_message()) {
+  if (cached_has_bits & 0x00000001u) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->message().data(), this->message().length(),
+      this->message().data(), static_cast<int>(this->message().length()),
       ::google::protobuf::internal::WireFormat::SERIALIZE,
       "Channel_P.channel_chatting.message");
     target =
@@ -334,7 +350,7 @@ void channel_chatting::SerializeWithCachedSizes(
 
   if (_internal_metadata_.have_unknown_fields()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
+        _internal_metadata_.unknown_fields(), target);
   }
   // @@protoc_insertion_point(serialize_to_array_end:Channel_P.channel_chatting)
   return target;
@@ -374,7 +390,7 @@ size_t channel_chatting::ByteSizeLong() const {
   if (_internal_metadata_.have_unknown_fields()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
+        _internal_metadata_.unknown_fields());
   }
   if (((_has_bits_[0] & 0x00000007) ^ 0x00000007) == 0) {  // All required fields are present.
     // required string message = 3;
@@ -421,17 +437,22 @@ void channel_chatting::MergeFrom(const channel_chatting& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:Channel_P.channel_chatting)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from._has_bits_[0 / 32] & 7u) {
-    if (from.has_message()) {
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._has_bits_[0];
+  if (cached_has_bits & 7u) {
+    if (cached_has_bits & 0x00000001u) {
       set_has_message();
       message_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.message_);
     }
-    if (from.has_id()) {
-      set_id(from.id());
+    if (cached_has_bits & 0x00000002u) {
+      id_ = from.id_;
     }
-    if (from.has_target()) {
-      set_target(from.target());
+    if (cached_has_bits & 0x00000004u) {
+      target_ = from.target_;
     }
+    _has_bits_[0] |= cached_has_bits;
   }
 }
 
@@ -459,136 +480,22 @@ void channel_chatting::Swap(channel_chatting* other) {
   InternalSwap(other);
 }
 void channel_chatting::InternalSwap(channel_chatting* other) {
+  using std::swap;
   message_.Swap(&other->message_);
-  std::swap(id_, other->id_);
-  std::swap(target_, other->target_);
-  std::swap(_has_bits_[0], other->_has_bits_[0]);
+  swap(id_, other->id_);
+  swap(target_, other->target_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  std::swap(_cached_size_, other->_cached_size_);
+  swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata channel_chatting::GetMetadata() const {
   protobuf_Channel_5fP_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_Channel_5fP_2eproto::file_level_metadata[0];
+  return ::protobuf_Channel_5fP_2eproto::file_level_metadata[kIndexInFileMessages];
 }
 
-#if PROTOBUF_INLINE_NOT_IN_HEADERS
-// channel_chatting
-
-// required int32 id = 1;
-bool channel_chatting::has_id() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-void channel_chatting::set_has_id() {
-  _has_bits_[0] |= 0x00000002u;
-}
-void channel_chatting::clear_has_id() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-void channel_chatting::clear_id() {
-  id_ = 0;
-  clear_has_id();
-}
-::google::protobuf::int32 channel_chatting::id() const {
-  // @@protoc_insertion_point(field_get:Channel_P.channel_chatting.id)
-  return id_;
-}
-void channel_chatting::set_id(::google::protobuf::int32 value) {
-  set_has_id();
-  id_ = value;
-  // @@protoc_insertion_point(field_set:Channel_P.channel_chatting.id)
-}
-
-// required int32 target = 2;
-bool channel_chatting::has_target() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-void channel_chatting::set_has_target() {
-  _has_bits_[0] |= 0x00000004u;
-}
-void channel_chatting::clear_has_target() {
-  _has_bits_[0] &= ~0x00000004u;
-}
-void channel_chatting::clear_target() {
-  target_ = 0;
-  clear_has_target();
-}
-::google::protobuf::int32 channel_chatting::target() const {
-  // @@protoc_insertion_point(field_get:Channel_P.channel_chatting.target)
-  return target_;
-}
-void channel_chatting::set_target(::google::protobuf::int32 value) {
-  set_has_target();
-  target_ = value;
-  // @@protoc_insertion_point(field_set:Channel_P.channel_chatting.target)
-}
-
-// required string message = 3;
-bool channel_chatting::has_message() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-void channel_chatting::set_has_message() {
-  _has_bits_[0] |= 0x00000001u;
-}
-void channel_chatting::clear_has_message() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-void channel_chatting::clear_message() {
-  message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_message();
-}
-const ::std::string& channel_chatting::message() const {
-  // @@protoc_insertion_point(field_get:Channel_P.channel_chatting.message)
-  return message_.GetNoArena();
-}
-void channel_chatting::set_message(const ::std::string& value) {
-  set_has_message();
-  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Channel_P.channel_chatting.message)
-}
-#if LANG_CXX11
-void channel_chatting::set_message(::std::string&& value) {
-  set_has_message();
-  message_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:Channel_P.channel_chatting.message)
-}
-#endif
-void channel_chatting::set_message(const char* value) {
-  set_has_message();
-  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Channel_P.channel_chatting.message)
-}
-void channel_chatting::set_message(const char* value, size_t size) {
-  set_has_message();
-  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Channel_P.channel_chatting.message)
-}
-::std::string* channel_chatting::mutable_message() {
-  set_has_message();
-  // @@protoc_insertion_point(field_mutable:Channel_P.channel_chatting.message)
-  return message_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-::std::string* channel_chatting::release_message() {
-  // @@protoc_insertion_point(field_release:Channel_P.channel_chatting.message)
-  clear_has_message();
-  return message_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-void channel_chatting::set_allocated_message(::std::string* message) {
-  if (message != NULL) {
-    set_has_message();
-  } else {
-    clear_has_message();
-  }
-  message_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), message);
-  // @@protoc_insertion_point(field_set_allocated:Channel_P.channel_chatting.message)
-}
-
-#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
 // @@protoc_insertion_point(namespace_scope)
-
 }  // namespace Channel_P
 
 // @@protoc_insertion_point(global_scope)

@@ -16,13 +16,20 @@ Room::~Room()
 {
 }
 
-//void Room::SetChannelIndex(int id)
-//{
-//
-//}
-
-// 방에 입장한 유저 처리
-void Room::SetUserInfo(User* user)
+// 방에 유저 추가
+void Room::AddUserInfo(User* user)
 {
 	userList.emplace_back(user);
+}
+
+// 방에서 유저 삭제
+void Room::DeleteUserInfo(User * user)
+{
+	for (auto iter = userList.begin(); iter != userList.end(); ++iter)
+	{
+		auto info = *iter;
+		if (info->GetUserId() == user->GetUserId())
+			iter = userList.erase(iter);
+		return;
+	}
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #define MSG_SIZE		1024
-#define MAX_ROOM_SIZE	50
+#define MAX_USER_SIZE	50
 
 enum PacketType {
 	ENTER_CHANNEL		= 1,
@@ -14,6 +14,8 @@ enum PacketType {
 	ROOM_CHATTING		= 8,
 	ENTER_ROOM			= 9,
 	ROOM_LIST			= 10,
+	CHANNEL_CHATTING	= 11,
+	LEAVE_ROOM			= 12,
 	//EXIT_SERVER			= 10
 };
 
@@ -41,6 +43,14 @@ struct Change_Channel {
 	unsigned int	channelIndex;
 };
 
+struct Channel_Chatting {
+	BYTE			type = { CHANNEL_CHATTING };
+	BYTE			size;
+	unsigned int	id;
+	unsigned int	channelIndex;
+	char			message[MSG_SIZE];
+};
+
 struct Create_Room {
 	BYTE			type = { CREATE_ROOM };
 	BYTE			size;
@@ -64,6 +74,13 @@ struct Enter_Room {
 	bool			isEnter;
 };
 
+struct Leave_Room {
+	BYTE			type = { LEAVE_ROOM };
+	BYTE			size;
+	unsigned int	id;
+	unsigned int	roomIndex;
+};
+
 struct Notify_Exist_Room {
 	BYTE			type = { NOTIFY_EXIST_ROOM };
 	BYTE			size;
@@ -72,12 +89,26 @@ struct Notify_Exist_Room {
 	bool			exist;
 };
 
+struct Notify_Enter_Room {
+	BYTE			type = { NOTIFY_ENTER_ROOM };
+	BYTE			size;
+	unsigned int	id;
+};
+
+struct Notify_Leave_Room {
+	BYTE			type = { NOTIFY_LEAVE_ROOM };
+	BYTE			size;
+	unsigned int	id;
+};
+
+
 struct Room_List {
 	BYTE			type = { ROOM_LIST };
 	BYTE			size;
 	unsigned int	id;
-	int				roomList[MAX_ROOM_SIZE];
-	int				roomCnt;
+	int				userList[MAX_USER_SIZE];
+	int				roomIndex;
+	int				userCount;
 };
 
 
