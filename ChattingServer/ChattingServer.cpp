@@ -200,7 +200,8 @@ void ChattingServer::WorkerThread()
 		}
 		if (OV_RECV == ovlp->event_type) {
 			
-			int retval = PacketRessembly(id, io_size);
+			//int retval = PacketRessembly(id, io_size);
+			//int ret = PacketProcess()
 			if (SOCKET_ERROR == retval) {
 				int err_no = WSAGetLastError();
 				if (ERROR_IO_PENDING != err_no) { err_display("WorkerThread::WSARecv", err_no); }
@@ -258,36 +259,50 @@ void ChattingServer::ProcessPacket(int id, unsigned char * buf)
 	}
 }
 
-//void ChattingServer::PacketProcess(protobuf::io::CodedInputStream & input_stream, const ChattingServer & handler)
-//{
-//	MessageHeader messageHeader;
-//		// 헤더를 읽어냄
-//	while (input_stream.ReadRaw(&messageHeader, MessageHeaderSize))
-//	{
-//		// 직접 억세스 할수 있는 버퍼 포인터와 남은 길이를 알아냄
-//
-//		const void* payload_ptr = NULL;
-//		int remainSize = 0;
-//		input_stream.GetDirectBufferPointer(&payload_ptr, &remainSize);
-//		if (remainSize < (signed)messageHeader.size)
-//			break;
-//
-//
-//		// 메세지 본체를 읽어내기 위한 스트림을 생성
-//		protobuf::io::ArrayInputStream payload_array_stream(payload_ptr, messageHeader.size);
-//		protobuf::io::CodedInputStream payload_input_stream(&payload_array_stream);
-//
-//
-//		// 메세지 본체 사이즈 만큼 포인터 전진
-//		input_stream.Skip(messageHeader.size);
-//
-//		// 메세지 종류별로 역직렬화해서 적절한 메서드를 호출해줌
-//		Channel_P::channel_chatting message;
-//		if (false == message.ParseFromCodedStream(&payload_input_stream))
-//			break;
-//
-//	}
-//}
+void ChattingServer::PacketProcess(protobuf::io::CodedInputStream & input_stream, const ChattingServer & handler)
+{
+	MessageHeader messageHeader;
+	
+	// 헤더를 읽어냄
+	while (input_stream.ReadRaw(&messageHeader, MessageHeaderSize))
+	{
+		// 직접 억세스 할수 있는 버퍼 포인터와 남은 길이를 알아냄
+		const void* payload_ptr = NULL;
+		int remainSize = 0;
+		input_stream.GetDirectBufferPointer(&payload_ptr, &remainSize);
+		if (remainSize < (signed)messageHeader.size)
+			break;
+
+
+		// 메세지 본체를 읽어내기 위한 스트림을 생성
+		protobuf::io::ArrayInputStream payload_array_stream(payload_ptr, messageHeader.size);
+		protobuf::io::CodedInputStream payload_input_stream(&payload_array_stream);
+
+
+		// 메세지 본체 사이즈 만큼 포인터 전진
+		input_stream.Skip(messageHeader.size);
+
+		// 메세지 종류별로 역직렬화해서 적절한 메서드를 호출해줌
+		switch (messageHeader.type)
+		{
+		case Protocols::CREATE_ROOM: {
+			Protocols::Create_Room message;
+			if (false == message.ParseFromCodedStream(&payload_input_stream))
+				break;
+			handler.ProcessCreateRoomPacket(message);
+
+			break;
+		}
+		}
+	}
+}
+
+void ChattingServer::ProcessCreateRoomPacket(const Protocols::Create_Room message) const
+{
+	std::string textFormatStr;
+	protobuf::TextFormat::PrintToString(message, &textFormatStr);
+	printf("%s\n", textFormatStr.c_str());
+}
 
 
 void ChattingServer::ProcessCreateRoomPacket(int id, unsigned char * buf)
@@ -451,7 +466,7 @@ void ChattingServer::ProcessEnterRoomPacket(int id, unsigned char * buf)
 	SendEnterRoomPacket(id, false, enter_packet->roomIndex);
 }
 
-void ChattingServer::ProcessChannelChattingPacket(int id, unsigned char * buf)
+void ChattingServer::ProcessChannelChattingPacket(int id, unsigned char * buf) const
 {
 	Channel_Chatting *chat_packet = reinterpret_cast<Channel_Chatting*>(buf);
 
@@ -512,7 +527,7 @@ int ChattingServer::WsaRecv(int id)
 	return WSARecv(mClients[id]->GetUserSocket(), &recv_over.wsabuf, 1, NULL, &flags, &recv_over.overlap, NULL);
 }
 
-int ChattingServer::SendPacket(int id, unsigned char * packet)
+int ChattingServer::SendPacket(int id, unsigned char * packet) const
 {
 	Overlap *over = new Overlap;
 	memset(over, 0, sizeof(Overlap));
@@ -560,7 +575,7 @@ void ChattingServer::SendEnterRoomPacket(int id, bool enter, int room)
 	SendPacket(id, reinterpret_cast<unsigned char*>(&enter_packet));
 }
 
-void ChattingServer::SendChannelChattingPacket(int id, int target, char * msg, int len)
+void ChattingServer::SendChannelChattingPacket(int id, int target, char * msg, int len) const
 {
 	Channel_Chatting chat_packet;
 	chat_packet.id = id;

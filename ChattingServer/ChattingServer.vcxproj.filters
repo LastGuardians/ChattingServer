@@ -36,13 +36,13 @@
     <ClCompile Include="Singleton.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="channel.pb.cc">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="PacketHandler.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Channel_P.pb.cc">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Documents\protobuf-3.2.x\protobuf-3.2.x\solution\Debug\Protocols.pb.cc">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,13 +71,13 @@
     <ClInclude Include="Singleton.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="channel.pb.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="PacketHandler.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Channel_P.pb.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Documents\protobuf-3.2.x\protobuf-3.2.x\solution\Debug\Protocols.pb.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -88,7 +88,7 @@
     <None Include="test.proto">
       <Filter>헤더 파일</Filter>
     </None>
-    <None Include="Channel_P.proto">
+    <None Include="Protocols.proto">
       <Filter>헤더 파일</Filter>
     </None>
   </ItemGroup>

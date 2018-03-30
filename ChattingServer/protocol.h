@@ -5,7 +5,7 @@
 
 enum PacketType {
 	ENTER_CHANNEL		= 1,
-	LEAVE_CHANNEL		= 2,
+	//LEAVE_CHANNEL		= 2,
 	CREATE_ROOM			= 3,
 	CHANGE_CHANNEL		= 4,
 	NOTIFY_ENTER_ROOM	= 5,
@@ -29,12 +29,12 @@ struct Enter_Channel {
 	unsigned int	channelIndex; // (0~4 »çÀÌ°ª)
 };
 
-struct Leave_Channel {
-	BYTE			type = { LEAVE_CHANNEL };
-	BYTE			size;
-	unsigned int	id;
-	unsigned int	channelIndex;
-};
+//struct Leave_Channel {
+//	BYTE			type = { LEAVE_CHANNEL };
+//	BYTE			size;
+//	unsigned int	id;
+//	unsigned int	channelIndex;
+//};
 
 struct Change_Channel {
 	BYTE			type = { CHANGE_CHANNEL };

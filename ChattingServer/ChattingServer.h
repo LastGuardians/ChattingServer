@@ -14,11 +14,13 @@ struct RecvBuffInfo {
 	int				sizeCurr = { 0 };
 };
 
-//struct MessageHeader
-//{
-//	protobuf::uint32 size;
-//};
-//const int MessageHeaderSize = sizeof(MessageHeader);
+// 패킷 헤더
+struct MessageHeader
+{
+	Protocols::PacketType type;
+	protobuf::uint32 size;
+};
+const int MessageHeaderSize = sizeof(MessageHeader);
 
 
 // 통신 클래스
@@ -57,24 +59,33 @@ public:
 	void		WorkerThread();
 
 	int			PacketRessembly(int id, DWORD packetSize);
-	void		ProcessPacket(int id, unsigned char *buf);
-	//void		PacketProcess(protobuf::io::CodedInputStream& input_stream, const ChattingServer& handler);
-	void		ProcessEneterChannelPacket(int id, unsigned char *buf);
-	void		ProcessLeaveChannelPacket(int id, unsigned char *buf);
+	void		ProcessPacket(int id, unsigned char *buf);	
+	void		ProcessEneterChannelPacket(int id, unsigned char *buf);	
 	void		ProcessCreateRoomPacket(int id, unsigned char *buf);
 	void		ProcessChangeChannelPacket(int id, unsigned char *buf);
 	void		ProcessRoomChattingPacket(int id, unsigned char *buf);
 	void		ProcessEnterRoomPacket(int id, unsigned char *buf);
-	void		ProcessChannelChattingPacket(int id, unsigned char *buf);
+	void		ProcessChannelChattingPacket(int id, unsigned char *buf) const;
 	void		ProcessLeaveRoomPacket(int id, unsigned char *buf);
 	void		ProcessRoomUserListPacket(int id, unsigned char *buf);
 
+	//// protobuf 적용 함수 ////
+	void		PacketProcess(protobuf::io::CodedInputStream& input_stream, const ChattingServer& handler);
+	void		ProcessCreateRoomPacket(const Protocols::Create_Room message) const; 
+	void		ProcessChangeChannelPacket(const Protocols::Change_Channel message) const;
+	void		ProcessRoomChattingPacket(const Protocols::Room_Chatting message) const;
+	void		ProcessEnterRoomPacket(const Protocols::Enter_Room message) const;
+	void		ProcessChannelChattingPacket(const Protocols::Channel_Chatting message) const;
+	void		ProcessLeaveRoomPacket(const Protocols::Leave_Room message) const;
+	void		ProcessRoomUserListPacket(const Protocols::Room_List message) const;
+	//////////////////////////
+
 	int			WsaRecv(int id);
-	int			SendPacket(int id, unsigned char *packet);
+	int			SendPacket(int id, unsigned char *packet) const;
 	void		SendNotifyExistRoomPacket(int id, int room, bool exist);
 	void		SendRoomChattingPacket(int id, int target, char* msg, int len);
 	void		SendEnterRoomPacket(int id, bool enter, int room);
-	void		SendChannelChattingPacket(int id, int target, char* msg, int len);
+	void		SendChannelChattingPacket(int id, int target, char* msg, int len) const;
 	void		SendNotifyEnterRoomPacket(int id, int target);
 	void		SendNotifyLeaveRoomPacket(int id, int target);
 	void		SendRoomUserListPacket(int id, int room, int* user, int userCnt);

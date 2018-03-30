@@ -1,0 +1,87 @@
+package Protocols;
+
+enum PacketType
+{
+	ENTER_CHANNEL		= 1;
+	CREATE_ROOM			= 3;
+	CHANGE_CHANNEL		= 4;
+	NOTIFY_ENTER_ROOM	= 5;
+	NOTIFY_LEAVE_ROOM	= 6;
+	NOTIFY_EXIST_ROOM	= 7;
+	ROOM_CHATTING		= 8;
+	ENTER_ROOM			= 9;
+	ROOM_LIST			= 10;
+	CHANNEL_CHATTING	= 11;
+	LEAVE_ROOM			= 12;
+}
+
+message Enter_Channel
+{
+	required int32 id				= 1;
+	required int32 channelIndex		= 2;
+}
+
+message Change_Channel
+{
+	required int32 id				= 1;
+	required int32 channelIndex		= 2;
+}
+
+message Channel_Chatting
+{
+	required int32 id				= 1;
+	required int32 channelIndex		= 2;
+	required string message			= 3;
+}
+
+message Create_Room
+{
+	required int32 id			= 1;
+	required int32 roomIndex	= 2;
+}
+
+message Room_Chatting
+{
+	required int32 id			= 1;
+	required int32 roomIndex	= 2;
+	required string message		= 3;
+}
+
+message Enter_Room
+{
+	required int32 id			= 1;
+	required int32 roomIndex	= 2;
+	required bool  isEnter		= 3;
+}
+
+message Leave_Room
+{
+	required int32 id			= 1;
+	required int32 roomIndex	= 2;
+}
+
+message Notify_Exist_Room
+{
+	required int32 id			= 1;
+	required int32 roomIndex	= 2;
+	required bool  exist		= 3;
+}
+
+message Notify_Enter_Room
+{
+	required int32 id		= 1;
+}
+
+message Notify_Leave_Room
+{
+	required int32 id		= 1;
+}
+
+message Room_List
+{
+	required int32 id			= 1;
+	repeated int32 userList		= 2;
+	required int32 roomIndex	= 3;
+	required int32 userCount	= 4;
+
+}
