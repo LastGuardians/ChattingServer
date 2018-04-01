@@ -23,7 +23,6 @@
 #include <google/protobuf/text_format.h>
 #include "Protocols.pb.h"
 
-
 #define MAX_USER	50
 #define BUFSIZE		1024
 

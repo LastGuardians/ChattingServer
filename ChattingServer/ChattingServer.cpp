@@ -150,17 +150,37 @@ void ChattingServer::AcceptThread()
 		
 		srand(time(NULL));
 		// 접속한 클라이언트에게 랜덤한 채널 인덱스 부여 = 접속과 동시에 채널 입장
-		Enter_Channel enter_channel_packet;
+		Protocols::Enter_Channel enter;
+		enter.set_id(clientId);
+		enter.set_channelindex(rand() % 5);
+
+		size_t bufSize = enter.ByteSizeLong();
+		char* outputBuf = new char[bufSize];
+
+		// 헤더 생성
+		MessageHeader header;
+		header.size = MessageHeaderSize + bufSize;
+		header.type = Protocols::ENTER_CHANNEL;
+		char* header_seri = reinterpret_cast<char*>(&header);
+
+		int rtn = enter.SerializeToArray(outputBuf, bufSize);
+
+		// 전송 버퍼 생성
+		unsigned char* resultBuf = new unsigned char[bufSize + MessageHeaderSize];
+		memcpy(resultBuf, header_seri, MessageHeaderSize);
+		memcpy(resultBuf + MessageHeaderSize, outputBuf, bufSize);
+
+		/*Enter_Channel enter_channel_packet;
 		enter_channel_packet.size = sizeof(enter_channel_packet);
 		enter_channel_packet.id = clientId;
-		enter_channel_packet.channelIndex = rand() % 5;
-		mClients[clientId]->SetChannelIndex(enter_channel_packet.channelIndex);
+		enter_channel_packet.channelIndex = rand() % 5;*/
+		mClients[clientId]->SetChannelIndex(enter.channelindex());
 		mClients[clientId]->SetRoomIndex(-1);
 
 		// 채널에 유저 입장		
-		Singleton::GetInstance()->channel[enter_channel_packet.channelIndex].AddUserToChannel(mClients[clientId]);
+		Singleton::GetInstance()->channel[enter.channelindex()].AddUserToChannel(mClients[clientId]);
 
-		int result = SendPacket(clientId, reinterpret_cast<unsigned char*>(&enter_channel_packet));
+		int result = SendPacket(clientId, resultBuf);
 		if (SOCKET_ERROR == result) {
 			if (ERROR_IO_PENDING != WSAGetLastError()) {
 				err_display("Accept::WSASend Error! : ", WSAGetLastError());
@@ -199,9 +219,15 @@ void ChattingServer::WorkerThread()
 			continue;
 		}
 		if (OV_RECV == ovlp->event_type) {
-			
+			ChattingServer handler;
+			protobuf::io::ArrayInputStream input_array_stream(recv_over.iocp_buff, BUFSIZE);
+			protobuf::io::CodedInputStream input_coded_stream(&input_array_stream);
+
+			// 패킷 분석
+			PacketProcess(input_coded_stream, handler);
+			int retval = WsaRecv(id);
+
 			//int retval = PacketRessembly(id, io_size);
-			//int ret = PacketProcess()
 			if (SOCKET_ERROR == retval) {
 				int err_no = WSAGetLastError();
 				if (ERROR_IO_PENDING != err_no) { err_display("WorkerThread::WSARecv", err_no); }
@@ -299,9 +325,47 @@ void ChattingServer::PacketProcess(protobuf::io::CodedInputStream & input_stream
 
 void ChattingServer::ProcessCreateRoomPacket(const Protocols::Create_Room message) const
 {
-	std::string textFormatStr;
-	protobuf::TextFormat::PrintToString(message, &textFormatStr);
-	printf("%s\n", textFormatStr.c_str());
+	int id = message.id();
+
+	// 방이 하나도 없을 때는 바로 생성한다.
+	if (true == Singleton::GetInstance()->channel[mClients[id]->GetChannelIndex()].GetRoomIsEmpty())
+	{
+		//Singleton::GetInstance()->roomList.emplace_back(packet->roomIndex);
+
+		SendNotifyExistRoomPacket(id, message.roomindex(), false);
+
+		Room *newRoom = new Room(message.roomindex(), mClients[id]->GetChannelIndex());	// 새로운 방 생성
+		Singleton::GetInstance()->channel[mClients[id]->GetChannelIndex()].AddNewRoom(message.roomindex(), newRoom);  // 채널에 방 추가
+		Singleton::GetInstance()->channel[mClients[id]->GetChannelIndex()].AddUserToRoom(message.roomindex(), mClients[id]);	// 방에 유저 추가
+		mClients[id]->SetRoomIndex(message.roomindex());
+
+		std::cout << "[" << message.id() << "] 유저가 " << "[" << message.roomindex()
+			<< "] 번 방을 생성하였습니다." << std::endl;
+	}
+
+	// 방이 하나 이상일 때
+	else
+	{
+		// 이미 존재하는 방인지 체크한다. 이미 존재하면 방 생성을 하지 않는다.
+		if (true == Singleton::GetInstance()->channel[mClients[message.id()]->GetChannelIndex()].GetRoomIsExist(message.roomindex()))
+		{
+			std::cout << message.roomindex() << "번 방이 이미 있습니다." << std::endl;
+
+			SendNotifyExistRoomPacket(message.id(), message.roomindex(), true);
+			return;
+		}
+
+		// 존재하는 방이 없을 때
+		Room *newRoom = new Room(message.roomindex(), mClients[id]->GetChannelIndex());	// 새로운 방 생성
+		Singleton::GetInstance()->channel[mClients[id]->GetChannelIndex()].AddNewRoom(message.roomindex(), newRoom); // 채널에 방 추가
+		Singleton::GetInstance()->channel[mClients[id]->GetChannelIndex()].AddUserToRoom(message.roomindex(), mClients[id]);	// 방에 유저 추가
+		mClients[id]->SetRoomIndex(message.roomindex());
+
+		SendNotifyExistRoomPacket(id, message.roomindex(), false);
+
+		std::cout << "[" << message.id() << "] 유저가 " << "[" << message.roomindex()
+			<< "] 번 방을 생성하였습니다." << std::endl;
+	}
 }
 
 
@@ -533,23 +597,44 @@ int ChattingServer::SendPacket(int id, unsigned char * packet) const
 	memset(over, 0, sizeof(Overlap));
 	over->event_type = OV_SEND;
 	over->wsabuf.buf = reinterpret_cast<CHAR *>(over->iocp_buff);
-	over->wsabuf.len = packet[1];
-	memcpy(over->iocp_buff, packet, packet[1]);
+	over->wsabuf.len = packet[4];
+	memcpy(over->iocp_buff, packet, packet[4]);
 
 	int ret = WSASend(mClients[id]->GetUserSocket(), &over->wsabuf, 1, NULL, 0,
 		&over->overlap, NULL);
 	return ret;
 }
 
-void ChattingServer::SendNotifyExistRoomPacket(int id, int room, bool exist)
+void ChattingServer::SendNotifyExistRoomPacket(google::protobuf::int32 id, google::protobuf::int32 room, bool exist) const
 {
-	Notify_Exist_Room exist_packet;
-	exist_packet.size = sizeof(Notify_Exist_Room);
-	exist_packet.type = NOTIFY_EXIST_ROOM;
-	exist_packet.id = id;
-	exist_packet.roomIndex = room;
-	exist_packet.exist = exist;
-	SendPacket(id, reinterpret_cast<unsigned char*>(&exist_packet));
+	Protocols::Notify_Exist_Room exist_room;
+	exist_room.set_id(id);
+	exist_room.set_roomindex(room);
+	exist_room.set_exist(exist);
+
+	size_t bufSize = exist_room.ByteSizeLong();
+	char* outputBuf = new char[bufSize];
+
+	// 헤더 생성
+	MessageHeader header;
+	header.size = MessageHeaderSize + bufSize;
+	header.type = Protocols::NOTIFY_EXIST_ROOM;
+	char* header_seri = reinterpret_cast<char*>(&header);
+
+	int rtn = exist_room.SerializeToArray(outputBuf, bufSize);
+
+	// 전송 버퍼 생성
+	unsigned char* resultBuf = new unsigned char[bufSize + MessageHeaderSize];
+	memcpy(resultBuf, header_seri, MessageHeaderSize);
+	memcpy(resultBuf + MessageHeaderSize, outputBuf, bufSize);
+
+	//Notify_Exist_Room exist_packet;
+	//exist_packet.size = sizeof(Notify_Exist_Room);
+	//exist_packet.type = NOTIFY_EXIST_ROOM;
+	//exist_packet.id = id;
+	//exist_packet.roomIndex = room;
+	//exist_packet.exist = exist;
+	SendPacket(id, resultBuf);
 }
 
 void ChattingServer::SendRoomChattingPacket(int id, int target, char * msg, int len)

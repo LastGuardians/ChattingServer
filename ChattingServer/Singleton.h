@@ -9,7 +9,7 @@ public:
 	DECLARE_SINGLETON(Singleton);
 
 public:
-	Channel *channel =	new Channel[5];
+	Channel *channel =	new Channel[10];
 	//std::vector<int>	roomList;				// 积己等 规 府胶飘
 };
 

@@ -82,7 +82,7 @@ public:
 
 	int			WsaRecv(int id);
 	int			SendPacket(int id, unsigned char *packet) const;
-	void		SendNotifyExistRoomPacket(int id, int room, bool exist);
+	void		SendNotifyExistRoomPacket(google::protobuf::int32 id, google::protobuf::int32 room, bool exist) const;
 	void		SendRoomChattingPacket(int id, int target, char* msg, int len);
 	void		SendEnterRoomPacket(int id, bool enter, int room);
 	void		SendChannelChattingPacket(int id, int target, char* msg, int len) const;

@@ -71,8 +71,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\songyikim\Documents\protobuf-3.2.x\protobuf-3.2.x\src;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\songyikim\Documents\protobuf-3.2.x\protobuf-3.2.x\solution\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\song\Documents\protobuf-cpp-3.5.1\protobuf-3.5.1\src;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\song\Documents\protobuf-cpp-3.5.1\protobuf-3.5.1\solution2\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -93,7 +93,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>./;../protobuf-3.2.x;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -152,47 +152,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Documents\protobuf-3.2.x\protobuf-3.2.x\solution\Debug\Protocols.pb.cc" />
     <ClCompile Include="Channel.cpp" />
-    <ClCompile Include="Channel_P.pb.cc" />
     <ClCompile Include="ChattingServer.cpp" />
     <ClCompile Include="PacketHandler.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Protocols.pb.cc" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="server.cpp" />
     <ClCompile Include="Singleton.cpp" />
-    <ClCompile Include="test.pb.cc">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Documents\protobuf-3.2.x\protobuf-3.2.x\solution\Debug\Protocols.pb.h" />
     <ClInclude Include="Channel.h" />
-    <ClInclude Include="Channel_P.pb.h" />
     <ClInclude Include="ChattingServer.h" />
     <ClInclude Include="PacketHandler.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="protocol.h" />
+    <ClInclude Include="Protocols.pb.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="test.pb.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="User.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Protocols.proto" />
     <None Include="room_chatting.proto" />
-    <None Include="test.proto">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
