@@ -1,4 +1,4 @@
-﻿  Channel.cpp
+﻿  ChattingServer.cpp
 c:\users\song\documents\protobuf-cpp-3.5.1\protobuf-3.5.1\src\google\protobuf\stubs\logging.h(100): warning C4251: 'google::protobuf::internal::LogMessage::message_': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'에서는 class 'google::protobuf::internal::LogMessage'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
   c:\program files (x86)\microsoft visual studio 14.0\vc\include\xstring(2633): note: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' 선언을 참조하십시오.
 c:\users\song\documents\protobuf-cpp-3.5.1\protobuf-3.5.1\src\google\protobuf\io\zero_copy_stream_impl_lite.h(242): warning C4251: 'google::protobuf::io::CopyingInputStreamAdaptor::buffer_': class 'google::protobuf::internal::scoped_array<google::protobuf::uint8>'에서는 class 'google::protobuf::io::CopyingInputStreamAdaptor'의 클라이언트에서 DLL 인터페이스를 사용하도록 지정해야 합니다.
@@ -79,12 +79,12 @@ c:\users\song\documents\protobuf-cpp-3.5.1\protobuf-3.5.1\src\google\protobuf\ex
               _Kty=int,
               _Ty=google::protobuf::internal::ExtensionSet::Extension
           ]
-  코드를 생성하고 있습니다...
-  건너뛰고 있습니다... (관련된 변경 내용 없음)
-  server.cpp
-  User.cpp
-  Singleton.cpp
-  Room.cpp
-  ChattingServer.cpp
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(98): warning C4474: 'printf' : 서식 문자열에 전달된 인수가 너무 많습니다.
+  c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(98): note: 자리 표시자 및 해당 매개 변수에는 variadic 인수가 1개 필요하지만 2개가 제공되었습니다.
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(159): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(125): warning C4101: 'client_sock' :참조되지 않은 지역 변수입니다.
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(226): warning C4244: '인수': 'unsigned __int64'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(234): warning C4244: '인수': 'unsigned __int64'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\song\documents\visual studio 2015\projects\chattingserver\chattingserver\chattingserver.cpp(235): warning C4244: '인수': 'unsigned __int64'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   ChattingServer.vcxproj -> C:\Users\song\Documents\Visual Studio 2015\Projects\ChattingServer\Debug\ChattingServer.exe
   ChattingServer.vcxproj -> C:\Users\song\Documents\Visual Studio 2015\Projects\ChattingServer\Debug\ChattingServer.pdb (Full PDB)
