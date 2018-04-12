@@ -4,7 +4,7 @@ IMPLEMENT_SINGLETON(Singleton);
 
 Singleton::Singleton()
 {
-	//roomList.reserve(50);
+	
 }
 
  

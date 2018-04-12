@@ -4,8 +4,7 @@
 #define MAX_USER_SIZE	50
 
 enum PacketType {
-	ENTER_CHANNEL		= 1,
-	//LEAVE_CHANNEL		= 2,
+	ENTER_CHANNEL		= 1,	
 	CREATE_ROOM			= 3,
 	CHANGE_CHANNEL		= 4,
 	NOTIFY_ENTER_ROOM	= 5,
@@ -16,7 +15,7 @@ enum PacketType {
 	ROOM_LIST			= 10,
 	CHANNEL_CHATTING	= 11,
 	LEAVE_ROOM			= 12,
-	//EXIT_SERVER			= 10
+
 };
 
 #pragma pack(push, 1)
@@ -28,13 +27,6 @@ struct Enter_Channel {
 	unsigned int	id;
 	unsigned int	channelIndex; // (0~4 »çÀÌ°ª)
 };
-
-//struct Leave_Channel {
-//	BYTE			type = { LEAVE_CHANNEL };
-//	BYTE			size;
-//	unsigned int	id;
-//	unsigned int	channelIndex;
-//};
 
 struct Change_Channel {
 	BYTE			type = { CHANGE_CHANNEL };

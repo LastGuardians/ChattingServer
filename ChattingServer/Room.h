@@ -14,8 +14,7 @@ private:
 	
 public:
 	inline int GetRoomIndex() { return roomIndex; }
-
-	//void SetChannelIndex(int id);
+		
 	void AddUserInfo(User* user);
 	void DeleteUserInfo(User* user);
 };

@@ -10,6 +10,6 @@ public:
 
 public:
 	Channel *channel =	new Channel[10];
-	//std::vector<int>	roomList;				// 积己等 规 府胶飘
+	
 };
 

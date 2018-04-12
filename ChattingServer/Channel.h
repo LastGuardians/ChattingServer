@@ -28,8 +28,6 @@ public:
 	void			AddNewRoom(int roomIndex, Room* room);			// 새로운 방 추가
 	void			AddUserToRoom(int roomIndex, User* user);		// 방에 유저 추가
 	void			DeleteUserToRoom(int roomIndex, User* user);	// 방에서 유저 삭제
-
-	//Room*			GetChannelRoomInfo() { return roomList; }
-
+	
 };
 

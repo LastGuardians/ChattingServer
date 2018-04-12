@@ -29,7 +29,9 @@ void Room::DeleteUserInfo(User * user)
 	{
 		auto info = *iter;
 		if (info->GetUserId() == user->GetUserId())
+		{
 			iter = userList.erase(iter);
-		return;
+			return;
+		}			
 	}
 }

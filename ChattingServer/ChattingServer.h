@@ -43,31 +43,28 @@ private:
 
 
 public:	
-
-	void						err_display(char *msg, int err_no);
 	
-	void						SetUserInfo(User* user);
 	inline int					GetClientID() { return clientId; }
-	User*						GetUserInfo(int clientId);
+	User*						GetUserInfo(int clientId) const;
 	inline std::vector<User*>	GetAllUser() { return mClients; }
-
+	
 	void		InitServer();
 	void		ReleaseServer();
 	void		CloseSocket(int id);
+	void		err_display(char *msg, int err_no);
 
 	void		AcceptThread();
 	void		WorkerThread();
 
-	int			PacketRessembly(int id, DWORD packetSize);
-	void		ProcessPacket(int id, unsigned char *buf);	
-	void		ProcessEneterChannelPacket(int id, unsigned char *buf);	
-	void		ProcessCreateRoomPacket(int id, unsigned char *buf);
-	void		ProcessChangeChannelPacket(int id, unsigned char *buf);
-	void		ProcessRoomChattingPacket(int id, unsigned char *buf);
-	void		ProcessEnterRoomPacket(int id, unsigned char *buf);
-	void		ProcessChannelChattingPacket(int id, unsigned char *buf) const;
-	void		ProcessLeaveRoomPacket(int id, unsigned char *buf);
-	void		ProcessRoomUserListPacket(int id, unsigned char *buf);
+	//int		PacketRessembly(int id, DWORD packetSize);
+	//void		ProcessPacket(int id, unsigned char *buf);
+	//void		ProcessCreateRoomPacket(int id, unsigned char *buf);
+	//void		ProcessChangeChannelPacket(int id, unsigned char *buf);
+	//void		ProcessRoomChattingPacket(int id, unsigned char *buf);
+	//void		ProcessEnterRoomPacket(int id, unsigned char *buf);
+	//void		ProcessChannelChattingPacket(int id, unsigned char *buf) const;
+	//void		ProcessLeaveRoomPacket(int id, unsigned char *buf);
+	//void		ProcessRoomUserListPacket(int id, unsigned char *buf);
 
 	//// protobuf 적용 함수 ////
 	void		PacketProcess(int id, protobuf::io::CodedInputStream& input_stream);
@@ -77,10 +74,7 @@ public:
 	void		ProcessEnterRoomPacket(int id, const Protocols::Enter_Room message) const;
 	void		ProcessChannelChattingPacket(int id, const Protocols::Channel_Chatting message) const;
 	void		ProcessLeaveRoomPacket(int id, const Protocols::Leave_Room message) const;
-	void		ProcessRoomUserListPacket(int id, const Protocols::Room_List message) const;
-
-	//void		SendRoomChattingPacket(int id, int target, char* msg) const;
-
+	void		ProcessRoomUserListPacket(int id, const Protocols::Room_List message) const;		
 	//////////////////////////
 
 	int			WsaRecv(int id);

@@ -71,8 +71,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\song\Documents\protobuf-cpp-3.5.1\protobuf-3.5.1\src;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\song\Documents\protobuf-cpp-3.5.1\protobuf-3.5.1\solution2\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\songyikim\Documents\protobuf-3.2.x\protobuf-3.2.x\src;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\songyikim\Documents\protobuf-3.2.x\protobuf-3.2.x\solution\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -154,9 +154,6 @@
   <ItemGroup>
     <ClCompile Include="Channel.cpp" />
     <ClCompile Include="ChattingServer.cpp" />
-    <ClCompile Include="PacketHandler.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="Protocols.pb.cc" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="server.cpp" />
@@ -166,9 +163,6 @@
   <ItemGroup>
     <ClInclude Include="Channel.h" />
     <ClInclude Include="ChattingServer.h" />
-    <ClInclude Include="PacketHandler.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="protocol.h" />
     <ClInclude Include="Protocols.pb.h" />
     <ClInclude Include="Room.h" />
@@ -178,7 +172,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Protocols.proto" />
-    <None Include="room_chatting.proto" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -16,8 +16,7 @@ private:
 	int				room_index = 0;
 
 public:
-	void			SetUserInfo(SOCKET s, bool connect, int id);
-	//int				PacketRessembly(int id, DWORD packetSize);
+	
 	void			SetChannelIndex(int channel);
 	void			SetRoomIndex(int room);
 
