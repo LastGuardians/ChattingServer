@@ -29,6 +29,7 @@ class ChattingServer
 public:
 	ChattingServer();
 	virtual ~ChattingServer();
+	friend class MSODBC;
 
 	DECLARE_SINGLETON(ChattingServer);
 
@@ -40,8 +41,7 @@ private:
 
 	Overlap				recv_over;
 	RecvBuffInfo		recv_buff;
-
-
+	
 public:	
 	
 	inline int					GetClientID() { return clientId; }
@@ -68,17 +68,19 @@ public:
 
 	//// protobuf 적용 함수 ////
 	void		PacketProcess(int id, protobuf::io::CodedInputStream& input_stream);
+	void		ProcessLoginPacket(int id, const Protocols::User_Login message) const;
 	void		ProcessCreateRoomPacket(int id, const Protocols::Create_Room message) const; 
 	void		ProcessChangeChannelPacket(int id, const Protocols::Change_Channel message) const;
 	void		ProcessRoomChattingPacket(int id, const Protocols::Room_Chatting message) const;
 	void		ProcessEnterRoomPacket(int id, const Protocols::Enter_Room message) const;
 	void		ProcessChannelChattingPacket(int id, const Protocols::Channel_Chatting message) const;
 	void		ProcessLeaveRoomPacket(int id, const Protocols::Leave_Room message) const;
-	void		ProcessRoomUserListPacket(int id, const Protocols::Room_List message) const;		
+	void		ProcessRoomUserListPacket(int id, const Protocols::Room_List message) const;
 	//////////////////////////
 
 	int			WsaRecv(int id);
 	int			SendPacket(int id, unsigned char *packet) const;
+	//void		SendLoginPacket(int id, )
 	void		SendNotifyExistRoomPacket(google::protobuf::int32 id, google::protobuf::int32 room, bool exist) const;
 	void		SendRoomChattingPacket(int id, int target, std::string msg, int len) const;
 	void		SendEnterRoomPacket(int id, bool enter, int room) const;

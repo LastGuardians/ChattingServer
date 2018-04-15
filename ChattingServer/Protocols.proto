@@ -3,6 +3,7 @@ package Protocols;
 enum PacketType
 {
 	ENTER_CHANNEL		= 1;
+	USER_LOGIN			= 2;
 	CREATE_ROOM			= 3;
 	CHANGE_CHANNEL		= 4;
 	NOTIFY_ENTER_ROOM	= 5;
@@ -13,6 +14,13 @@ enum PacketType
 	ROOM_LIST			= 10;
 	CHANNEL_CHATTING	= 11;
 	LEAVE_ROOM			= 12;
+}
+
+message User_Login
+{
+	optional int32 user_pid			= 1;
+	optional string user_id			= 2;
+	optional string password		= 3;
 }
 
 message Enter_Channel

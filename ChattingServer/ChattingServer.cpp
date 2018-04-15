@@ -315,6 +315,13 @@ void ChattingServer::PacketProcess(int id, protobuf::io::CodedInputStream & inpu
 		// 메세지 종류별로 역직렬화해서 적절한 메서드를 호출해줌
 		switch (messageHeader.type)
 		{
+		case Protocols::USER_LOGIN: {
+			Protocols::User_Login message;
+
+			message.ParseFromCodedStream(&payload_input_stream);
+			ProcessLoginPacket(id, message);
+			break;
+		}
 		case Protocols::CREATE_ROOM: {
 			Protocols::Create_Room message;
 		
@@ -365,6 +372,20 @@ void ChattingServer::PacketProcess(int id, protobuf::io::CodedInputStream & inpu
 		}
 		}
 	}
+}
+
+void ChattingServer::ProcessLoginPacket(int id, const Protocols::User_Login message) const
+{
+	std::wstring widestr = std::wstring(message.user_id().begin(), message.user_id().end());
+	const wchar_t *widecstr = widestr.c_str();
+	wchar_t exec_query[60] = L"EXEC dbo.get_user_info ";
+	std::wcscat(exec_query, widecstr);
+
+	MSODBC * odbc = new MSODBC();
+	odbc->AllocateHandles();
+	odbc->ConnectDataSource();
+	odbc->ExecuteStatementDirect(exec_query);
+	odbc->RetrieveResult();
 }
 
 void ChattingServer::ProcessCreateRoomPacket(int id, const Protocols::Create_Room message) const

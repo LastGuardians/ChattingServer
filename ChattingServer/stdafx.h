@@ -70,3 +70,4 @@ enum EVENT_TYPE
 #include "Channel.h"
 #include "Room.h"
 #include "Singleton.h"
+#include "MSODBC.h"

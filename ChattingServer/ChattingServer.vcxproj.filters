@@ -36,6 +36,9 @@
     <ClCompile Include="Protocols.pb.cc">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="MSODBC.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChattingServer.h">
@@ -61,6 +64,9 @@
     </ClInclude>
     <ClInclude Include="Protocols.pb.h">
       <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MSODBC.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
