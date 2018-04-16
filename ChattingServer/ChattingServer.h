@@ -56,16 +56,6 @@ public:
 	void		AcceptThread();
 	void		WorkerThread();
 
-	//int		PacketRessembly(int id, DWORD packetSize);
-	//void		ProcessPacket(int id, unsigned char *buf);
-	//void		ProcessCreateRoomPacket(int id, unsigned char *buf);
-	//void		ProcessChangeChannelPacket(int id, unsigned char *buf);
-	//void		ProcessRoomChattingPacket(int id, unsigned char *buf);
-	//void		ProcessEnterRoomPacket(int id, unsigned char *buf);
-	//void		ProcessChannelChattingPacket(int id, unsigned char *buf) const;
-	//void		ProcessLeaveRoomPacket(int id, unsigned char *buf);
-	//void		ProcessRoomUserListPacket(int id, unsigned char *buf);
-
 	//// protobuf 적용 함수 ////
 	void		PacketProcess(int id, protobuf::io::CodedInputStream& input_stream);
 	void		ProcessCreateRoomPacket(int id, const Protocols::Create_Room message) const; 

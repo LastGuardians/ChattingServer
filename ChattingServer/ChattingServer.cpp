@@ -251,46 +251,6 @@ void ChattingServer::WorkerThread()
 	}
 }
 
-//int ChattingServer::PacketRessembly(int id, DWORD packetSize)
-//{
-//	unsigned char *buf_ptr = recv_over.iocp_buff;
-//	ProcessPacket(id, buf_ptr);
-//
-//	return WsaRecv(id);
-//}
-//
-//void ChattingServer::ProcessPacket(int id, unsigned char * buf)
-//{
-//	switch (buf[0])
-//	{
-//	case ENTER_CHANNEL:
-//		break;
-//	case CREATE_ROOM:
-//		ProcessCreateRoomPacket(id, buf);
-//		break;
-//	case CHANGE_CHANNEL:
-//		ProcessChangeChannelPacket(id, buf);
-//		break;
-//	case ROOM_CHATTING:
-//		ProcessRoomChattingPacket(id, buf);
-//		break;
-//	case ENTER_ROOM:
-//		ProcessEnterRoomPacket(id, buf);
-//		break;
-//	case ROOM_LIST:
-//		ProcessRoomUserListPacket(id, buf);
-//		break;
-//	case CHANNEL_CHATTING:
-//		ProcessChannelChattingPacket(id, buf);
-//		break;
-//	case LEAVE_ROOM:
-//		ProcessLeaveRoomPacket(id, buf);
-//		break;
-//	default:
-//		break;
-//	}
-//}
-
 void ChattingServer::PacketProcess(int id, protobuf::io::CodedInputStream & input_stream)
 {
 	MessageHeader messageHeader;
