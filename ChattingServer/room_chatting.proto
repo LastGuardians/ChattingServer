@@ -1,8 +1,0 @@
-package Room;
-
-message room_chatting
-{
-	required int32 id;
-	required int32 target;
-	required string message;
-}
