@@ -65,7 +65,7 @@ void ChattingServer::ReleaseServer()
 
 }
 
-void ChattingServer::CloseSocket(int id)
+void ChattingServer::CloseSocket(unsigned long id)
 {
 	User *userInfo = GetUserInfo(id);
 
@@ -101,7 +101,7 @@ void ChattingServer::err_display(char *msg, int err_no)
 		(LPTSTR)&lpMsgBuf,
 		0,
 		NULL);
-	printf("%s\n", msg, (LPCTSTR)lpMsgBuf);
+	printf("%s\n", msg);
 	printf("err_no : %d\n", err_no);
 	LocalFree(lpMsgBuf);
 }
@@ -128,7 +128,6 @@ void ChattingServer::AcceptThread()
 	retval = ::listen(listen_sock, SOMAXCONN);
 	if (retval == SOCKET_ERROR) err_display("listen() : ", WSAGetLastError());
 
-	SOCKET client_sock;
 	SOCKADDR_IN clientaddr;
 	int addrlen;
 
@@ -210,7 +209,7 @@ void ChattingServer::WorkerThread()
 {
 	while (false == m_b_server_shut_down)
 	{
-		unsigned long long id = { 0 };
+		unsigned long id = { 0 };
 		DWORD io_size = { 0 };
 		Overlap *ovlp = { nullptr };
 

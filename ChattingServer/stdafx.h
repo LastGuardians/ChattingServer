@@ -2,6 +2,7 @@
 #define PROTOBUF_USE_DLLS
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
+#define _USE_32BIT_TIME_T
 
 #pragma comment(lib, "ws2_32")
 #pragma comment(lib, "libprotobufd.lib")

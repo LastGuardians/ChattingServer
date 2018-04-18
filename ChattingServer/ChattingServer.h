@@ -50,7 +50,7 @@ public:
 	
 	void		InitServer();
 	void		ReleaseServer();
-	void		CloseSocket(int id);
+	void		CloseSocket(unsigned long id);
 	void		err_display(char *msg, int err_no);
 
 	void		AcceptThread();
