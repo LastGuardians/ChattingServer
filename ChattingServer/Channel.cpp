@@ -39,7 +39,7 @@ void Channel::AddUserToChannel(User* user)
 	userList.insert(userList.end(), user);
 }
 
-// 유저 삭제
+// 채널에서 유저 삭제
 void Channel::DeleteUserToChannel(User* user)
 {
 	for (auto iter = userList.begin(); iter != userList.end(); ++iter)
@@ -53,6 +53,7 @@ void Channel::DeleteUserToChannel(User* user)
 	}
 }
 
+// 새로운 방 추가 -> Room 클래스에서 처리하는 게 나을 것 같다. 
 void Channel::AddNewRoom(int roomIndex, Room * room)
 {
 	for (auto iter = roomList.begin(); iter != roomList.end(); ++iter)
@@ -66,11 +67,13 @@ void Channel::AddNewRoom(int roomIndex, Room * room)
 	roomList[roomIndex] = *room;
 }
 
+// 방에 유저 추가 
 void Channel::AddUserToRoom(int roomIndex, User * user)
 {
 	roomList[roomIndex].AddUserInfo(user);
 }
 
+// 방에서 유저 삭제
 void Channel::DeleteUserToRoom(int roomIndex, User * user)
 {
 	roomList[roomIndex].DeleteUserInfo(user);

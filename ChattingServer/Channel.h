@@ -2,7 +2,7 @@
 #include <list>
 #include "Room.h"
 
-// 채널 클래스
+// 채널 클래스 -> 채널 매니저와 비슷한 역할을 한다.(room, channel을 관리)
 class Channel
 {
 public:

@@ -90,6 +90,7 @@ void ChattingServer::CloseSocket(int id)
 	closesocket(sock);
 }
 
+
 void ChattingServer::err_display(char *msg, int err_no)
 {
 	LPVOID lpMsgBuf;
