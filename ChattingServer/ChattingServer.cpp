@@ -36,7 +36,6 @@ void ChattingServer::InitServer()
 	m_hiocp = CreateIoCompletionPort(INVALID_HANDLE_VALUE, 0, NULL, 0);
 	if (NULL == m_hiocp) { err_display("InitServer() : ", WSAGetLastError()); }
 
-	std::cout << "InitServer()" << std::endl;
 	SYSTEM_INFO si;
 	GetSystemInfo(&si);
 	int m_cpu_core = static_cast<int>(si.dwNumberOfProcessors) / 2;
@@ -115,7 +114,6 @@ void ChattingServer::AcceptThread()
 	SOCKET listen_sock = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP,
 									NULL, 0, WSA_FLAG_OVERLAPPED);
 	if (INVALID_SOCKET == listen_sock) { err_display("WSASocket() : ", WSAGetLastError()); };
-	std::cout << "WSASocket()" << std::endl;
 
 	//bind()
 	SOCKADDR_IN serveraddr;
@@ -125,12 +123,10 @@ void ChattingServer::AcceptThread()
 	serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	retval = ::bind(listen_sock, (SOCKADDR*)&serveraddr, sizeof(serveraddr));
 	if (retval == SOCKET_ERROR) err_display("bind() : ", WSAGetLastError());
-	std::cout << "bind()" << std::endl;
 
 	//listen() 
 	retval = ::listen(listen_sock, SOMAXCONN);
 	if (retval == SOCKET_ERROR) err_display("listen() : ", WSAGetLastError());
-	std::cout << "listen()" << std::endl;
 
 	SOCKADDR_IN clientaddr;
 	int addrlen;
@@ -138,7 +134,6 @@ void ChattingServer::AcceptThread()
 	while (1)
 	{
 		//accept()
-		std::cout << "Accept() Wait...." << std::endl;
 		addrlen = sizeof(clientaddr);
 		SOCKET client_sock = WSAAccept(listen_sock, reinterpret_cast<sockaddr *>(&clientaddr), &addrlen, NULL, NULL);
 		if (client_sock == INVALID_SOCKET) {
