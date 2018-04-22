@@ -41,7 +41,7 @@ void MSODBC::AllocateHandles()
 
 void MSODBC::ConnectDataSource()
 {
-	retcode = SQLConnect(hdbc, (SQLWCHAR*)L"Chatting", SQL_NTS, (SQLWCHAR*)NULL, 0, NULL, 0);
+	retcode = SQLConnect(hdbc, (SQLWCHAR*)L"Chatting", SQL_NTS, (SQLWCHAR*)"songyikim", 0, 0, (SQLSMALLINT)"thddl!4281");
 }
 
 void MSODBC::ExecuteStatementDirect(SQLWCHAR * sql)
@@ -88,7 +88,7 @@ void MSODBC::PrepareStatement(SQLWCHAR * sql)
 	}
 }
 
-void MSODBC::RetrieveResult()
+void MSODBC::RetrieveResult(int id)
 {
 	SQLWCHAR user_id[20];
 	//float choco_cal;
@@ -99,16 +99,27 @@ void MSODBC::RetrieveResult()
 	//retcode = SQLBindCol(hstmt, 2, SQL_WCHAR, &Name, NAME_LEN, &cbName);
 	//retcode = SQLBindCol(hstmt, 3, SQL_C_LONG, &PLevel, PHONE_LEN, &cbPhone);
 				
-	for (int i = 0; ; i++) {
+	//for (int i = 0; ; i++) {
 		retcode = SQLFetch(hstmt);
 		if (retcode == SQL_ERROR || retcode == SQL_SUCCESS_WITH_INFO)
 			std::cout << "error" << std::endl;
 		if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
-			std::wcout << "[" << i + 1 << "] " << L"user_id: " << user_id
+		{
+			std::wcout << "[ Login Success! ] " << L"User ID : " << user_id
 			<< std::endl;
+			
+			int len = wcslen(user_id);
+			ChattingServer::GetInstance()->SetUserLoginStatus(id, true);
+			ChattingServer::GetInstance()->SetUserName(id, (char*)user_id, len);	// user_id 캐스팅 부분 수정하기
+		}
 		else
-			break;
-	}	
+		{
+			std::cout << "해당 계정이 존재하지 않습니다." << std::endl;
+			ChattingServer::GetInstance()->SetUserLoginStatus(id, false);
+			SQLFreeStmt(hstmt, SQL_UNBIND);
+			return;
+		}
+	//}	
 	
 	SQLFreeStmt(hstmt, SQL_UNBIND);
 }

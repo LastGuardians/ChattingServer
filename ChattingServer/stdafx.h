@@ -25,6 +25,7 @@
 
 #define MAX_USER	50
 #define BUFSIZE		1024
+#define MSG_SIZE	50
 
 using namespace google;
 

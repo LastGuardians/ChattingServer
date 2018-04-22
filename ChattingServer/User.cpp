@@ -27,3 +27,14 @@ void User::SetRoomIndex(int room)
 {
 	room_index = room;
 }
+
+void User::SetLoginSuccess(bool status)
+{
+	loginSuccess = status;
+}
+
+void User::SetUserName(char* name, int len)
+{
+	//user_name = new char[strlen(name)];
+	strncpy(user_name, name, len);
+}

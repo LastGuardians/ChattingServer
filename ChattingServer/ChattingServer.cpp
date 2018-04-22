@@ -27,6 +27,18 @@ User* ChattingServer::GetUserInfo(int clientId) const
 	return nullptr;
 }
 
+void ChattingServer::SetUserLoginStatus(int id, bool status)
+{
+	User *userInfo = GetUserInfo(id);
+	userInfo->SetLoginSuccess(status);
+}
+
+void ChattingServer::SetUserName(int id, char* name, int len)
+{
+	User *userInfo = GetUserInfo(id);
+	userInfo->SetUserName(name, len);
+}
+
 // 서버 초기화
 void ChattingServer::InitServer()
 {
@@ -137,6 +149,7 @@ void ChattingServer::AcceptThread()
 	{
 		//accept()
 		addrlen = sizeof(clientaddr);
+		std::cout << "Accept() Wait..." << std::endl;
 		SOCKET client_sock = WSAAccept(listen_sock, reinterpret_cast<sockaddr *>(&clientaddr), &addrlen, NULL, NULL);
 		if (client_sock == INVALID_SOCKET) {
 			err_display("WSAAccept() : ", WSAGetLastError());
@@ -161,6 +174,8 @@ void ChattingServer::AcceptThread()
 				
 		User* userInfo = new User(client_sock, true, clientId);
 		mClients.push_back(userInfo);
+
+		SendLoginPacket(clientId, false);
 		
 		srand(time(NULL));
 		// 접속한 클라이언트에게 랜덤한 채널 인덱스 부여 = 접속과 동시에 채널 입장
@@ -190,12 +205,12 @@ void ChattingServer::AcceptThread()
 		// 채널에 유저 입장		
 		Singleton::GetInstance()->channel[enter.channelindex()].AddUserToChannel(userInfo);
 
-		int result = SendPacket(clientId, resultBuf);
-		if (SOCKET_ERROR == result) {
+		//int result = SendPacket(clientId, resultBuf);
+		/*if (SOCKET_ERROR == result) {
 			if (ERROR_IO_PENDING != WSAGetLastError()) {
 				err_display("Accept::WSASend Error! : ", WSAGetLastError());
 			}
-		} 
+		} */
 				
 		retval = WsaRecv(clientId);	
 		if (SOCKET_ERROR == retval)
@@ -386,7 +401,15 @@ void ChattingServer::ProcessLoginPacket(int id, const Protocols::User_Login mess
 	odbc->AllocateHandles();
 	odbc->ConnectDataSource();
 	odbc->ExecuteStatementDirect(exec_query);
-	odbc->RetrieveResult();
+	odbc->RetrieveResult(id);
+
+	User* userInfo = GetUserInfo(id);
+	if (true == userInfo->GetUserLoginStatus())
+	{
+		SendLoginPacket(id, true);
+	}
+	else
+		SendLoginPacket(id, false);
 }
 
 void ChattingServer::ProcessCreateRoomPacket(int id, const Protocols::Create_Room message) const
@@ -742,5 +765,58 @@ void ChattingServer::SendRoomUserListPacket(int id, int room, int* user, int use
 	unsigned char* resultBuf = new unsigned char[bufSize + MessageHeaderSize];
 	memcpy(resultBuf, header_seri, MessageHeaderSize);
 	memcpy(resultBuf + MessageHeaderSize, outputBuf, bufSize);
+	SendPacket(id, resultBuf);
+}
+
+void ChattingServer::SendLoginPacket(int id, bool success) const
+{
+	User* userInfo = GetUserInfo(id);
+	
+	Protocols::User_Login user_login;
+	user_login.set_success(success);
+	if (userInfo->GetUserNameID() != NULL)
+	{
+		user_login.set_user_id(userInfo->GetUserNameID());
+	}
+
+	size_t bufSize = user_login.ByteSizeLong();
+	char* outputBuf = new char[bufSize];
+
+	// 헤더 생성
+	MessageHeader header;
+	header.size = MessageHeaderSize + bufSize;
+	header.type = Protocols::USER_LOGIN;
+	char* header_seri = reinterpret_cast<char*>(&header);
+
+	int rtn = user_login.SerializeToArray(outputBuf, bufSize);
+
+	// 전송 버퍼 생성
+	unsigned char* resultBuf = new unsigned char[bufSize + MessageHeaderSize];
+	memcpy(resultBuf, header_seri, MessageHeaderSize);
+	memcpy(resultBuf + MessageHeaderSize, outputBuf, bufSize);
+	SendPacket(id, resultBuf);
+}
+
+void ChattingServer::SendEnterChannelPacekt(int id, int channelId) const
+{
+	Protocols::Enter_Channel enter;
+	enter.set_id(id);
+	enter.set_channelindex(channelId);
+
+	size_t bufSize = enter.ByteSizeLong();
+	char* outputBuf = new char[bufSize];
+
+	// 헤더 생성
+	MessageHeader header;
+	header.size = MessageHeaderSize + bufSize;
+	header.type = Protocols::ENTER_CHANNEL;
+	char* header_seri = reinterpret_cast<char*>(&header);
+
+	int rtn = enter.SerializeToArray(outputBuf, bufSize);
+
+	// 전송 버퍼 생성
+	unsigned char* resultBuf = new unsigned char[bufSize + MessageHeaderSize];
+	memcpy(resultBuf, header_seri, MessageHeaderSize);
+	memcpy(resultBuf + MessageHeaderSize, outputBuf, bufSize);	
 	SendPacket(id, resultBuf);
 }

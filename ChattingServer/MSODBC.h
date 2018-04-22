@@ -24,7 +24,7 @@ public:
 	void ExecuteStatementDirect(SQLWCHAR * sql);
 	void PrepareStatement(SQLWCHAR* sql);
 	void ExecuteStatement();
-	void RetrieveResult();
+	void RetrieveResult(int id);
 	void DisconnectDataSource();
 };
 

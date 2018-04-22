@@ -47,6 +47,9 @@ public:
 	inline int					GetClientID() { return clientId; }
 	User*						GetUserInfo(int clientId) const;
 	inline std::vector<User*>	GetAllUser() { return mClients; }
+
+	void		SetUserLoginStatus(int id, bool status);
+	void		SetUserName(int id, char* name, int len);
 	
 	void		InitServer();
 	void		ReleaseServer();
@@ -55,16 +58,6 @@ public:
 
 	void		AcceptThread();
 	void		WorkerThread();
-
-	//int		PacketRessembly(int id, DWORD packetSize);
-	//void		ProcessPacket(int id, unsigned char *buf);
-	//void		ProcessCreateRoomPacket(int id, unsigned char *buf);
-	//void		ProcessChangeChannelPacket(int id, unsigned char *buf);
-	//void		ProcessRoomChattingPacket(int id, unsigned char *buf);
-	//void		ProcessEnterRoomPacket(int id, unsigned char *buf);
-	//void		ProcessChannelChattingPacket(int id, unsigned char *buf) const;
-	//void		ProcessLeaveRoomPacket(int id, unsigned char *buf);
-	//void		ProcessRoomUserListPacket(int id, unsigned char *buf);
 
 	//// protobuf 적용 함수 ////
 	void		PacketProcess(int id, protobuf::io::CodedInputStream& input_stream);
@@ -80,14 +73,15 @@ public:
 
 	int			WsaRecv(int id);
 	int			SendPacket(int id, unsigned char *packet) const;
-	//void		SendLoginPacket(int id, )
+	void		SendLoginPacket(int id, bool success) const;
+	void		SendEnterChannelPacekt(int id, int channelId) const;
 	void		SendNotifyExistRoomPacket(google::protobuf::int32 id, google::protobuf::int32 room, bool exist) const;
 	void		SendRoomChattingPacket(int id, int target, std::string msg, int len) const;
 	void		SendEnterRoomPacket(int id, bool enter, int room) const;
 	void		SendChannelChattingPacket(int id, int target, std::string msg, int len) const;
 	void		SendNotifyEnterRoomPacket(int id, int target) const;
 	void		SendNotifyLeaveRoomPacket(int id, int target) const;
-	void		SendRoomUserListPacket(int id, int room, int* user, int userCnt) const;
+	void		SendRoomUserListPacket(int id, int room, int* user, int userCnt) const;	
 		
 };
 
