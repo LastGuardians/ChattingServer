@@ -23,13 +23,13 @@ struct MessageHeader
 const int MessageHeaderSize = sizeof(MessageHeader);
 
 
-// 통신 클래스 -> ClientManager 와 비슷한 역할을 한다.(mClients라는 User 클래스를 관리한다.)
+// 통신 클래스 -> ClientManager, AgentHandler 와 비슷한 역할을 한다.(mClients라는 User 클래스를 관리한다. & 패킷 요청/응답을 한다.)
 class ChattingServer 
 {
 public:
 	ChattingServer();
 	virtual ~ChattingServer();
-	friend class MSODBC;
+	friend class ODBC;
 
 	DECLARE_SINGLETON(ChattingServer);
 

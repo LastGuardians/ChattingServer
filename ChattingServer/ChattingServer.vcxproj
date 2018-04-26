@@ -71,8 +71,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\song\Documents\protobuf-cpp-3.5.1\protobuf-3.5.1\src;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\song\Documents\protobuf-cpp-3.5.1\protobuf-3.5.1\solution2\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -162,7 +162,7 @@
   <ItemGroup>
     <ClCompile Include="Channel.cpp" />
     <ClCompile Include="ChattingServer.cpp" />
-    <ClCompile Include="MSODBC.cpp" />
+    <ClCompile Include="ODBC.cpp" />
     <ClCompile Include="Protocols.pb.cc" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="server.cpp" />
@@ -172,7 +172,7 @@
   <ItemGroup>
     <ClInclude Include="Channel.h" />
     <ClInclude Include="ChattingServer.h" />
-    <ClInclude Include="MSODBC.h" />
+    <ClInclude Include="ODBC.h" />
     <ClInclude Include="protocol.h" />
     <ClInclude Include="Protocols.pb.h" />
     <ClInclude Include="Room.h" />

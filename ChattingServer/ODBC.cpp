@@ -1,15 +1,15 @@
 #include "stdafx.h"
 
-MSODBC::MSODBC()
+ODBC::ODBC()
 {
 }
 
 
-MSODBC::~MSODBC()
+ODBC::~ODBC()
 {
 }
 
-void MSODBC::AllocateHandles()
+void ODBC::AllocateHandles()
 {
 	retcode = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &henv);
 
@@ -39,12 +39,14 @@ void MSODBC::AllocateHandles()
 	}
 }
 
-void MSODBC::ConnectDataSource()
+void ODBC::ConnectDataSource()
 {
-	retcode = SQLConnect(hdbc, (SQLWCHAR*)L"Chatting", SQL_NTS, (SQLWCHAR*)"songyikim", 0, 0, (SQLSMALLINT)"thddl!4281");
+	SQLWCHAR *datasource = (SQLWCHAR*)"", *user = (SQLWCHAR*)"",
+			*password = (SQLWCHAR*)"";
+	retcode = SQLConnect(hdbc, datasource, SQL_NTS, (SQLWCHAR*)"songyikim", 0, 0, (SQLSMALLINT)"thddl!4281");
 }
 
-void MSODBC::ExecuteStatementDirect(SQLWCHAR * sql)
+void ODBC::ExecuteStatementDirect(SQLWCHAR * sql)
 {
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 		retcode = SQLAllocHandle(SQL_HANDLE_STMT, hdbc, &hstmt);
@@ -67,7 +69,7 @@ void MSODBC::ExecuteStatementDirect(SQLWCHAR * sql)
 	}
 }
 
-void MSODBC::PrepareStatement(SQLWCHAR * sql)
+void ODBC::PrepareStatement(SQLWCHAR * sql)
 {
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 		retcode = SQLAllocHandle(SQL_HANDLE_STMT, hdbc, &hstmt);
@@ -88,7 +90,7 @@ void MSODBC::PrepareStatement(SQLWCHAR * sql)
 	}
 }
 
-void MSODBC::RetrieveResult(int id)
+void ODBC::RetrieveResult(int id)
 {
 	SQLWCHAR user_id[20];
 	//float choco_cal;

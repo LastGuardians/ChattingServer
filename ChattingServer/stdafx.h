@@ -18,6 +18,7 @@
 #include <random>
 #include <ctime>
 #include <unordered_map>
+#include <sql.h>
 
 #include <google/protobuf/io/zero_copy_stream_impl_lite.h>
 #include <google/protobuf/text_format.h>
@@ -71,4 +72,4 @@ enum EVENT_TYPE
 #include "Channel.h"
 #include "Room.h"
 #include "Singleton.h"
-#include "MSODBC.h"
+#include "ODBC.h"

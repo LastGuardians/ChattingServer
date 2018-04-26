@@ -3,7 +3,7 @@
 #include <sqlext.h>
 #include <stdio.h>
 
-class MSODBC
+class ODBC
 {
 private:
 	SQLHENV henv;
@@ -16,8 +16,8 @@ private:
 	SQLWCHAR state[7], message[256];
 
 public:
-	MSODBC();
-	virtual ~MSODBC();
+	ODBC();
+	virtual ~ODBC();
 
 	void AllocateHandles();
 	void ConnectDataSource();

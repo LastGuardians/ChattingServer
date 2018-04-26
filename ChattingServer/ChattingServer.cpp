@@ -397,7 +397,7 @@ void ChattingServer::ProcessLoginPacket(int id, const Protocols::User_Login mess
 	wchar_t exec_query[60] = L"EXEC dbo.get_user_info ";
 	std::wcscat(exec_query, widecstr);
 
-	MSODBC * odbc = new MSODBC();
+	ODBC * odbc = new ODBC();
 	odbc->AllocateHandles();
 	odbc->ConnectDataSource();
 	odbc->ExecuteStatementDirect(exec_query);

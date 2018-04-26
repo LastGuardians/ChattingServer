@@ -36,7 +36,7 @@
     <ClCompile Include="Protocols.pb.cc">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MSODBC.cpp">
+    <ClCompile Include="ODBC.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,7 +65,7 @@
     <ClInclude Include="Protocols.pb.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MSODBC.h">
+    <ClInclude Include="ODBC.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
