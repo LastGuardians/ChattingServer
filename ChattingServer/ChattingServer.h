@@ -33,23 +33,20 @@ public:
 	DECLARE_SINGLETON(ChattingServer);
 
 private:
-	std::vector<User*>	mClients;
-	int					clientId = { -1 };
-	HANDLE				m_hiocp = { 0 };
-	bool				m_b_server_shut_down = { false };
+	std::unordered_map<int, User*>	_mClients;
+	int								_clientId = { -1 };
+	HANDLE							_hiocp = { 0 };
+	bool							_server_shut_down = { false };
+	std::mutex						_cs_lock;
 
-	Overlap				recv_over;
-	RecvBuffInfo		recv_buff;
+	Overlap							_recv_over;
+	RecvBuffInfo					_recv_buff;
 
 
 public:	
-	
-	inline int					GetClientID() { return clientId; }
-	User*						GetUserInfo(int clientId) const;
-	inline std::vector<User*>	GetAllUser() { return mClients; }
+	User*		GetUserInfo(int id) const;
 	
 	void		InitServer();
-	void		ReleaseServer();
 	void		CloseSocket(unsigned long id);
 	void		err_display(char *msg, int err_no);
 
@@ -67,8 +64,8 @@ public:
 	void		ProcessRoomUserListPacket(int id, const Protocols::Room_List message) const;		
 	//////////////////////////
 
-	int			WsaRecv(int id);
 	int			SendPacket(int id, unsigned char *packet) const;
+	void		SendPacketAssemble(int id) const;
 	void		SendNotifyExistRoomPacket(google::protobuf::int32 id, google::protobuf::int32 room, bool exist) const;
 	void		SendRoomChattingPacket(int id, int target, std::string msg, int len) const;
 	void		SendEnterRoomPacket(int id, bool enter, int room) const;

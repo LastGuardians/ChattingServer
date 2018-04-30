@@ -9,21 +9,21 @@ public:
 	virtual ~User();
 
 private:
-	SOCKET			userSocket;
-	bool			userConnected;
-	int				userId;
-	int				channel_index;
-	int				room_index = 0;
+	SOCKET			_userSocket;
+	bool			_userConnected;
+	int				_userId;
+	int				_channel_index;
+	int				_room_index = 0;
 
 public:
 	
 	void			SetChannelIndex(int channel);
 	void			SetRoomIndex(int room);
 
-	inline int		GetChannelIndex() { return channel_index; }
-	inline int		GetRoomIndex() { return room_index; }
-	inline int		GetUserId() { return userId; }
-	inline SOCKET	GetUserSocket() { return userSocket; }
+	inline int		GetChannelIndex() { return _channel_index; }
+	inline int		GetRoomIndex() { return _room_index; }
+	inline int		GetUserId() { return _userId; }
+	inline SOCKET	GetUserSocket() { return _userSocket; }
 
 };
 
