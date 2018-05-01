@@ -9,7 +9,7 @@ public:
 	DECLARE_SINGLETON(Singleton);
 
 public:
-	Channel *channel =	new Channel[10];
+	//Channel *channel =	new Channel[10];
 	
 };
 

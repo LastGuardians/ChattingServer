@@ -54,14 +54,15 @@ void Channel::DeleteUserToChannel(User* user)
 
 bool Channel::AddNewRoom(int roomIndex, int channelIndex)
 {	
-	for (auto iter = _roomList.begin(); iter != _roomList.end(); ++iter)
+	// 이미 있는 방인지 검사하는 로직 활용 안하므로 주석
+	/*for (auto iter = _roomList.begin(); iter != _roomList.end(); ++iter)
 	{
 		if (iter->first == roomIndex)
 		{
 			std::cout << roomIndex << "번 방이 이미 존재합니다." << std::endl;
 			return false;
 		}
-	}
+	}*/
 	Room *newRoom = new Room(roomIndex, channelIndex);
 	_roomList[roomIndex] = *newRoom;
 	return true;

@@ -32,23 +32,27 @@ public:
 
 	DECLARE_SINGLETON(ChattingServer);
 
+	friend class Channel;
+
 private:
 	std::unordered_map<int, User*>	_mClients;
 	int								_clientId = { -1 };
 	HANDLE							_hiocp = { 0 };
 	bool							_server_shut_down = { false };
-	std::mutex						_cs_lock;
+	mutable std::mutex				_cs_lock;
 
 	Overlap							_recv_over;
 	RecvBuffInfo					_recv_buff;
 
+	std::vector<Channel*>			_channel;
 
 public:	
 	User*		GetUserInfo(int id) const;
 	
-	void		InitServer();
+	bool		InitServer();
+	void		ServerThreadStart();
 	void		CloseSocket(unsigned long id);
-	void		err_display(char *msg, int err_no);
+	void		err_display(char *msg, int err_no);	
 
 	void		AcceptThread();
 	void		WorkerThread();
