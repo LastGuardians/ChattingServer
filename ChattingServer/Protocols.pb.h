@@ -198,18 +198,28 @@ class Enter_Channel : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::google::protobuf::int32 channelindex() const;
   void set_channelindex(::google::protobuf::int32 value);
 
+  // optional int32 type = 3;
+  bool has_type() const;
+  void clear_type();
+  static const int kTypeFieldNumber = 3;
+  ::google::protobuf::int32 type() const;
+  void set_type(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:Protocols.Enter_Channel)
  private:
   void set_has_id();
   void clear_has_id();
   void set_has_channelindex();
   void clear_has_channelindex();
+  void set_has_type();
+  void clear_has_type();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable int _cached_size_;
   ::google::protobuf::int32 id_;
   ::google::protobuf::int32 channelindex_;
+  ::google::protobuf::int32 type_;
   friend struct  protobuf_Protocols_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
@@ -303,18 +313,28 @@ class Change_Channel : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int32 channelindex() const;
   void set_channelindex(::google::protobuf::int32 value);
 
+  // optional int32 type = 3;
+  bool has_type() const;
+  void clear_type();
+  static const int kTypeFieldNumber = 3;
+  ::google::protobuf::int32 type() const;
+  void set_type(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:Protocols.Change_Channel)
  private:
   void set_has_id();
   void clear_has_id();
   void set_has_channelindex();
   void clear_has_channelindex();
+  void set_has_type();
+  void clear_has_type();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable int _cached_size_;
   ::google::protobuf::int32 id_;
   ::google::protobuf::int32 channelindex_;
+  ::google::protobuf::int32 type_;
   friend struct  protobuf_Protocols_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
@@ -416,18 +436,28 @@ class Channel_Chatting : public ::google::protobuf::Message /* @@protoc_insertio
   ::google::protobuf::int32 id() const;
   void set_id(::google::protobuf::int32 value);
 
+  // optional int32 type = 3;
+  bool has_type() const;
+  void clear_type();
+  static const int kTypeFieldNumber = 3;
+  ::google::protobuf::int32 type() const;
+  void set_type(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:Protocols.Channel_Chatting)
  private:
   void set_has_id();
   void clear_has_id();
   void set_has_message();
   void clear_has_message();
+  void set_has_type();
+  void clear_has_type();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable int _cached_size_;
   ::google::protobuf::internal::ArenaStringPtr message_;
   ::google::protobuf::int32 id_;
+  ::google::protobuf::int32 type_;
   friend struct  protobuf_Protocols_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
@@ -521,18 +551,28 @@ class Create_Room : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::int32 roomindex() const;
   void set_roomindex(::google::protobuf::int32 value);
 
+  // optional int32 type = 3;
+  bool has_type() const;
+  void clear_type();
+  static const int kTypeFieldNumber = 3;
+  ::google::protobuf::int32 type() const;
+  void set_type(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:Protocols.Create_Room)
  private:
   void set_has_id();
   void clear_has_id();
   void set_has_roomindex();
   void clear_has_roomindex();
+  void set_has_type();
+  void clear_has_type();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable int _cached_size_;
   ::google::protobuf::int32 id_;
   ::google::protobuf::int32 roomindex_;
+  ::google::protobuf::int32 type_;
   friend struct  protobuf_Protocols_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
@@ -634,18 +674,28 @@ class Room_Chatting : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::google::protobuf::int32 id() const;
   void set_id(::google::protobuf::int32 value);
 
+  // optional int32 type = 3;
+  bool has_type() const;
+  void clear_type();
+  static const int kTypeFieldNumber = 3;
+  ::google::protobuf::int32 type() const;
+  void set_type(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:Protocols.Room_Chatting)
  private:
   void set_has_id();
   void clear_has_id();
   void set_has_message();
   void clear_has_message();
+  void set_has_type();
+  void clear_has_type();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable int _cached_size_;
   ::google::protobuf::internal::ArenaStringPtr message_;
   ::google::protobuf::int32 id_;
+  ::google::protobuf::int32 type_;
   friend struct  protobuf_Protocols_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
@@ -746,6 +796,13 @@ class Enter_Room : public ::google::protobuf::Message /* @@protoc_insertion_poin
   bool isenter() const;
   void set_isenter(bool value);
 
+  // optional int32 type = 4;
+  bool has_type() const;
+  void clear_type();
+  static const int kTypeFieldNumber = 4;
+  ::google::protobuf::int32 type() const;
+  void set_type(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:Protocols.Enter_Room)
  private:
   void set_has_id();
@@ -754,6 +811,8 @@ class Enter_Room : public ::google::protobuf::Message /* @@protoc_insertion_poin
   void clear_has_roomindex();
   void set_has_isenter();
   void clear_has_isenter();
+  void set_has_type();
+  void clear_has_type();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
@@ -761,6 +820,7 @@ class Enter_Room : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::google::protobuf::int32 id_;
   ::google::protobuf::int32 roomindex_;
   bool isenter_;
+  ::google::protobuf::int32 type_;
   friend struct  protobuf_Protocols_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
@@ -854,18 +914,28 @@ class Leave_Room : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::google::protobuf::int32 roomindex() const;
   void set_roomindex(::google::protobuf::int32 value);
 
+  // optional int32 type = 3;
+  bool has_type() const;
+  void clear_type();
+  static const int kTypeFieldNumber = 3;
+  ::google::protobuf::int32 type() const;
+  void set_type(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:Protocols.Leave_Room)
  private:
   void set_has_id();
   void clear_has_id();
   void set_has_roomindex();
   void clear_has_roomindex();
+  void set_has_type();
+  void clear_has_type();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable int _cached_size_;
   ::google::protobuf::int32 id_;
   ::google::protobuf::int32 roomindex_;
+  ::google::protobuf::int32 type_;
   friend struct  protobuf_Protocols_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
@@ -966,6 +1036,13 @@ class Notify_Exist_Room : public ::google::protobuf::Message /* @@protoc_inserti
   bool exist() const;
   void set_exist(bool value);
 
+  // optional int32 type = 4;
+  bool has_type() const;
+  void clear_type();
+  static const int kTypeFieldNumber = 4;
+  ::google::protobuf::int32 type() const;
+  void set_type(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:Protocols.Notify_Exist_Room)
  private:
   void set_has_id();
@@ -974,6 +1051,8 @@ class Notify_Exist_Room : public ::google::protobuf::Message /* @@protoc_inserti
   void clear_has_roomindex();
   void set_has_exist();
   void clear_has_exist();
+  void set_has_type();
+  void clear_has_type();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
@@ -981,6 +1060,7 @@ class Notify_Exist_Room : public ::google::protobuf::Message /* @@protoc_inserti
   ::google::protobuf::int32 id_;
   ::google::protobuf::int32 roomindex_;
   bool exist_;
+  ::google::protobuf::int32 type_;
   friend struct  protobuf_Protocols_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
@@ -1067,15 +1147,25 @@ class Notify_Enter_Room : public ::google::protobuf::Message /* @@protoc_inserti
   ::google::protobuf::int32 id() const;
   void set_id(::google::protobuf::int32 value);
 
+  // optional int32 type = 2;
+  bool has_type() const;
+  void clear_type();
+  static const int kTypeFieldNumber = 2;
+  ::google::protobuf::int32 type() const;
+  void set_type(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:Protocols.Notify_Enter_Room)
  private:
   void set_has_id();
   void clear_has_id();
+  void set_has_type();
+  void clear_has_type();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable int _cached_size_;
   ::google::protobuf::int32 id_;
+  ::google::protobuf::int32 type_;
   friend struct  protobuf_Protocols_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
@@ -1162,15 +1252,25 @@ class Notify_Leave_Room : public ::google::protobuf::Message /* @@protoc_inserti
   ::google::protobuf::int32 id() const;
   void set_id(::google::protobuf::int32 value);
 
+  // optional int32 type = 2;
+  bool has_type() const;
+  void clear_type();
+  static const int kTypeFieldNumber = 2;
+  ::google::protobuf::int32 type() const;
+  void set_type(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:Protocols.Notify_Leave_Room)
  private:
   void set_has_id();
   void clear_has_id();
+  void set_has_type();
+  void clear_has_type();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable int _cached_size_;
   ::google::protobuf::int32 id_;
+  ::google::protobuf::int32 type_;
   friend struct  protobuf_Protocols_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
@@ -1283,6 +1383,13 @@ class Room_List : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::google::protobuf::int32 usercount() const;
   void set_usercount(::google::protobuf::int32 value);
 
+  // optional int32 type = 5;
+  bool has_type() const;
+  void clear_type();
+  static const int kTypeFieldNumber = 5;
+  ::google::protobuf::int32 type() const;
+  void set_type(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:Protocols.Room_List)
  private:
   void set_has_id();
@@ -1291,6 +1398,8 @@ class Room_List : public ::google::protobuf::Message /* @@protoc_insertion_point
   void clear_has_roomindex();
   void set_has_usercount();
   void clear_has_usercount();
+  void set_has_type();
+  void clear_has_type();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
@@ -1299,6 +1408,7 @@ class Room_List : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::google::protobuf::int32 id_;
   ::google::protobuf::int32 roomindex_;
   ::google::protobuf::int32 usercount_;
+  ::google::protobuf::int32 type_;
   friend struct  protobuf_Protocols_2eproto::TableStruct;
 };
 // ===================================================================
@@ -1357,6 +1467,30 @@ inline void Enter_Channel::set_channelindex(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:Protocols.Enter_Channel.channelIndex)
 }
 
+// optional int32 type = 3;
+inline bool Enter_Channel::has_type() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Enter_Channel::set_has_type() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Enter_Channel::clear_has_type() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Enter_Channel::clear_type() {
+  type_ = 0;
+  clear_has_type();
+}
+inline ::google::protobuf::int32 Enter_Channel::type() const {
+  // @@protoc_insertion_point(field_get:Protocols.Enter_Channel.type)
+  return type_;
+}
+inline void Enter_Channel::set_type(::google::protobuf::int32 value) {
+  set_has_type();
+  type_ = value;
+  // @@protoc_insertion_point(field_set:Protocols.Enter_Channel.type)
+}
+
 // -------------------------------------------------------------------
 
 // Change_Channel
@@ -1407,6 +1541,30 @@ inline void Change_Channel::set_channelindex(::google::protobuf::int32 value) {
   set_has_channelindex();
   channelindex_ = value;
   // @@protoc_insertion_point(field_set:Protocols.Change_Channel.channelIndex)
+}
+
+// optional int32 type = 3;
+inline bool Change_Channel::has_type() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Change_Channel::set_has_type() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Change_Channel::clear_has_type() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Change_Channel::clear_type() {
+  type_ = 0;
+  clear_has_type();
+}
+inline ::google::protobuf::int32 Change_Channel::type() const {
+  // @@protoc_insertion_point(field_get:Protocols.Change_Channel.type)
+  return type_;
+}
+inline void Change_Channel::set_type(::google::protobuf::int32 value) {
+  set_has_type();
+  type_ = value;
+  // @@protoc_insertion_point(field_set:Protocols.Change_Channel.type)
 }
 
 // -------------------------------------------------------------------
@@ -1499,6 +1657,30 @@ inline void Channel_Chatting::set_allocated_message(::std::string* message) {
   // @@protoc_insertion_point(field_set_allocated:Protocols.Channel_Chatting.message)
 }
 
+// optional int32 type = 3;
+inline bool Channel_Chatting::has_type() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Channel_Chatting::set_has_type() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Channel_Chatting::clear_has_type() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Channel_Chatting::clear_type() {
+  type_ = 0;
+  clear_has_type();
+}
+inline ::google::protobuf::int32 Channel_Chatting::type() const {
+  // @@protoc_insertion_point(field_get:Protocols.Channel_Chatting.type)
+  return type_;
+}
+inline void Channel_Chatting::set_type(::google::protobuf::int32 value) {
+  set_has_type();
+  type_ = value;
+  // @@protoc_insertion_point(field_set:Protocols.Channel_Chatting.type)
+}
+
 // -------------------------------------------------------------------
 
 // Create_Room
@@ -1549,6 +1731,30 @@ inline void Create_Room::set_roomindex(::google::protobuf::int32 value) {
   set_has_roomindex();
   roomindex_ = value;
   // @@protoc_insertion_point(field_set:Protocols.Create_Room.roomIndex)
+}
+
+// optional int32 type = 3;
+inline bool Create_Room::has_type() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Create_Room::set_has_type() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Create_Room::clear_has_type() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Create_Room::clear_type() {
+  type_ = 0;
+  clear_has_type();
+}
+inline ::google::protobuf::int32 Create_Room::type() const {
+  // @@protoc_insertion_point(field_get:Protocols.Create_Room.type)
+  return type_;
+}
+inline void Create_Room::set_type(::google::protobuf::int32 value) {
+  set_has_type();
+  type_ = value;
+  // @@protoc_insertion_point(field_set:Protocols.Create_Room.type)
 }
 
 // -------------------------------------------------------------------
@@ -1641,6 +1847,30 @@ inline void Room_Chatting::set_allocated_message(::std::string* message) {
   // @@protoc_insertion_point(field_set_allocated:Protocols.Room_Chatting.message)
 }
 
+// optional int32 type = 3;
+inline bool Room_Chatting::has_type() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Room_Chatting::set_has_type() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Room_Chatting::clear_has_type() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Room_Chatting::clear_type() {
+  type_ = 0;
+  clear_has_type();
+}
+inline ::google::protobuf::int32 Room_Chatting::type() const {
+  // @@protoc_insertion_point(field_get:Protocols.Room_Chatting.type)
+  return type_;
+}
+inline void Room_Chatting::set_type(::google::protobuf::int32 value) {
+  set_has_type();
+  type_ = value;
+  // @@protoc_insertion_point(field_set:Protocols.Room_Chatting.type)
+}
+
 // -------------------------------------------------------------------
 
 // Enter_Room
@@ -1717,6 +1947,30 @@ inline void Enter_Room::set_isenter(bool value) {
   // @@protoc_insertion_point(field_set:Protocols.Enter_Room.isEnter)
 }
 
+// optional int32 type = 4;
+inline bool Enter_Room::has_type() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Enter_Room::set_has_type() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Enter_Room::clear_has_type() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Enter_Room::clear_type() {
+  type_ = 0;
+  clear_has_type();
+}
+inline ::google::protobuf::int32 Enter_Room::type() const {
+  // @@protoc_insertion_point(field_get:Protocols.Enter_Room.type)
+  return type_;
+}
+inline void Enter_Room::set_type(::google::protobuf::int32 value) {
+  set_has_type();
+  type_ = value;
+  // @@protoc_insertion_point(field_set:Protocols.Enter_Room.type)
+}
+
 // -------------------------------------------------------------------
 
 // Leave_Room
@@ -1767,6 +2021,30 @@ inline void Leave_Room::set_roomindex(::google::protobuf::int32 value) {
   set_has_roomindex();
   roomindex_ = value;
   // @@protoc_insertion_point(field_set:Protocols.Leave_Room.roomIndex)
+}
+
+// optional int32 type = 3;
+inline bool Leave_Room::has_type() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Leave_Room::set_has_type() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Leave_Room::clear_has_type() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Leave_Room::clear_type() {
+  type_ = 0;
+  clear_has_type();
+}
+inline ::google::protobuf::int32 Leave_Room::type() const {
+  // @@protoc_insertion_point(field_get:Protocols.Leave_Room.type)
+  return type_;
+}
+inline void Leave_Room::set_type(::google::protobuf::int32 value) {
+  set_has_type();
+  type_ = value;
+  // @@protoc_insertion_point(field_set:Protocols.Leave_Room.type)
 }
 
 // -------------------------------------------------------------------
@@ -1845,6 +2123,30 @@ inline void Notify_Exist_Room::set_exist(bool value) {
   // @@protoc_insertion_point(field_set:Protocols.Notify_Exist_Room.exist)
 }
 
+// optional int32 type = 4;
+inline bool Notify_Exist_Room::has_type() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Notify_Exist_Room::set_has_type() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Notify_Exist_Room::clear_has_type() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Notify_Exist_Room::clear_type() {
+  type_ = 0;
+  clear_has_type();
+}
+inline ::google::protobuf::int32 Notify_Exist_Room::type() const {
+  // @@protoc_insertion_point(field_get:Protocols.Notify_Exist_Room.type)
+  return type_;
+}
+inline void Notify_Exist_Room::set_type(::google::protobuf::int32 value) {
+  set_has_type();
+  type_ = value;
+  // @@protoc_insertion_point(field_set:Protocols.Notify_Exist_Room.type)
+}
+
 // -------------------------------------------------------------------
 
 // Notify_Enter_Room
@@ -1873,6 +2175,30 @@ inline void Notify_Enter_Room::set_id(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:Protocols.Notify_Enter_Room.id)
 }
 
+// optional int32 type = 2;
+inline bool Notify_Enter_Room::has_type() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Notify_Enter_Room::set_has_type() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Notify_Enter_Room::clear_has_type() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Notify_Enter_Room::clear_type() {
+  type_ = 0;
+  clear_has_type();
+}
+inline ::google::protobuf::int32 Notify_Enter_Room::type() const {
+  // @@protoc_insertion_point(field_get:Protocols.Notify_Enter_Room.type)
+  return type_;
+}
+inline void Notify_Enter_Room::set_type(::google::protobuf::int32 value) {
+  set_has_type();
+  type_ = value;
+  // @@protoc_insertion_point(field_set:Protocols.Notify_Enter_Room.type)
+}
+
 // -------------------------------------------------------------------
 
 // Notify_Leave_Room
@@ -1899,6 +2225,30 @@ inline void Notify_Leave_Room::set_id(::google::protobuf::int32 value) {
   set_has_id();
   id_ = value;
   // @@protoc_insertion_point(field_set:Protocols.Notify_Leave_Room.id)
+}
+
+// optional int32 type = 2;
+inline bool Notify_Leave_Room::has_type() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Notify_Leave_Room::set_has_type() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Notify_Leave_Room::clear_has_type() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Notify_Leave_Room::clear_type() {
+  type_ = 0;
+  clear_has_type();
+}
+inline ::google::protobuf::int32 Notify_Leave_Room::type() const {
+  // @@protoc_insertion_point(field_get:Protocols.Notify_Leave_Room.type)
+  return type_;
+}
+inline void Notify_Leave_Room::set_type(::google::protobuf::int32 value) {
+  set_has_type();
+  type_ = value;
+  // @@protoc_insertion_point(field_set:Protocols.Notify_Leave_Room.type)
 }
 
 // -------------------------------------------------------------------
@@ -2005,6 +2355,30 @@ inline void Room_List::set_usercount(::google::protobuf::int32 value) {
   set_has_usercount();
   usercount_ = value;
   // @@protoc_insertion_point(field_set:Protocols.Room_List.userCount)
+}
+
+// optional int32 type = 5;
+inline bool Room_List::has_type() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Room_List::set_has_type() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Room_List::clear_has_type() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Room_List::clear_type() {
+  type_ = 0;
+  clear_has_type();
+}
+inline ::google::protobuf::int32 Room_List::type() const {
+  // @@protoc_insertion_point(field_get:Protocols.Room_List.type)
+  return type_;
+}
+inline void Room_List::set_type(::google::protobuf::int32 value) {
+  set_has_type();
+  type_ = value;
+  // @@protoc_insertion_point(field_set:Protocols.Room_List.type)
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS

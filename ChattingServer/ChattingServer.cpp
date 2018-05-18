@@ -179,6 +179,8 @@ void ChattingServer::AcceptThread()
 		//Singleton::GetInstance()->channel[enter.channelindex()].AddUserToChannel(userInfo);
 		_channel[enter.channelindex()]->AddUserToChannel(userInfo);
 
+		SendPacketAssemble(_clientId, dynamic_cast<google::protobuf::Message&>(enter));
+
 		int result = SendPacket(_clientId, resultBuf);
 		if (SOCKET_ERROR == result) {
 			if (ERROR_IO_PENDING != WSAGetLastError()) {
@@ -506,12 +508,41 @@ int ChattingServer::SendPacket(int id, unsigned char * packet) const
 	return ret;
 }
 
+// sendPacket 중복되는 기능 합침
+void ChattingServer::SendPacketAssemble(int id, int type, google::protobuf::Message & msg) const
+{
+	switch (type)
+	{
+	case Protocols::NOTIFY_EXIST_ROOM:
+		size_t bufSize = msg.ByteSizeLong();
+
+		unsigned char resultBuf[100];
+		int size = bufSize + MessageHeaderSize;
+
+		// 헤더 생성
+		MessageHeader header;
+		header.size = MessageHeaderSize + bufSize;
+		header.type = Protocols::NOTIFY_EXIST_ROOM;
+		char* header_seri = reinterpret_cast<char*>(&header);
+
+		memcpy(resultBuf, header_seri, MessageHeaderSize);
+		msg.SerializeToArray(resultBuf + MessageHeaderSize, bufSize);
+		SendPacket(id, resultBuf);
+		break;
+	default:
+		break;
+	}
+}
+
 void ChattingServer::SendNotifyExistRoomPacket(google::protobuf::int32 id, google::protobuf::int32 room, bool exist) const
 {
 	Protocols::Notify_Exist_Room exist_room;
 	exist_room.set_id(id);
 	exist_room.set_roomindex(room);
 	exist_room.set_exist(exist);
+	exist_room.set_type(Protocols::NOTIFY_EXIST_ROOM);
+
+	SendPacketAssemble(id, Protocols::NOTIFY_EXIST_ROOM, dynamic_cast<google::protobuf::Message&>(exist_room));
 
 	size_t bufSize = exist_room.ByteSizeLong();
 	//char* outputBuf = new char[bufSize];

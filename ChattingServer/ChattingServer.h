@@ -69,7 +69,7 @@ public:
 	//////////////////////////
 
 	int			SendPacket(int id, unsigned char *packet) const;
-	void		SendPacketAssemble(int id) const;
+	void		SendPacketAssemble(int id, int type, google::protobuf::Message& msg) const;
 	void		SendNotifyExistRoomPacket(google::protobuf::int32 id, google::protobuf::int32 room, bool exist) const;
 	void		SendRoomChattingPacket(int id, int target, std::string msg, int len) const;
 	void		SendEnterRoomPacket(int id, bool enter, int room) const;
