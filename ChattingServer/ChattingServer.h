@@ -17,7 +17,8 @@ struct RecvBuffInfo {
 // 패킷 헤더
 struct MessageHeader
 {
-	Protocols::PacketType type;
+	int type;
+	//Protocols::PacketType type;
 	protobuf::uint32 size;
 };
 const int MessageHeaderSize = sizeof(MessageHeader);
@@ -59,24 +60,17 @@ public:
 
 	//// protobuf 적용 함수 ////
 	void		PacketProcess(int id, protobuf::io::CodedInputStream& input_stream);
-	void		ProcessCreateRoomPacket(int id, const Protocols::Create_Room message) const; 
-	void		ProcessChangeChannelPacket(int id, const Protocols::Change_Channel message) const;
-	void		ProcessRoomChattingPacket(int id, const Protocols::Room_Chatting message) const;
-	void		ProcessEnterRoomPacket(int id, const Protocols::Enter_Room message) const;
-	void		ProcessChannelChattingPacket(int id, const Protocols::Channel_Chatting message) const;
-	void		ProcessLeaveRoomPacket(int id, const Protocols::Leave_Room message) const;
-	void		ProcessRoomUserListPacket(int id, const Protocols::Room_List message) const;		
+	void		ProcessCreateRoomPacket(int id, const Protocols::Create_Room& message) const; 
+	void		ProcessChangeChannelPacket(int id, const Protocols::Change_Channel& message) const;
+	void		ProcessRoomChattingPacket(int id, const Protocols::Room_Chatting& message) const;
+	void		ProcessEnterRoomPacket(int id, const Protocols::Enter_Room& message) const;
+	void		ProcessChannelChattingPacket(int id, const Protocols::Channel_Chatting& message) const;
+	void		ProcessLeaveRoomPacket(int id, const Protocols::Leave_Room& message) const;
+	void		ProcessRoomUserListPacket(int id, const Protocols::Room_List& message) const;		
 	//////////////////////////
 
 	int			SendPacket(int id, unsigned char *packet) const;
-	void		SendPacketAssemble(int id, int type, google::protobuf::Message& msg) const;
-	void		SendNotifyExistRoomPacket(google::protobuf::int32 id, google::protobuf::int32 room, bool exist) const;
-	void		SendRoomChattingPacket(int id, int target, std::string msg, int len) const;
-	void		SendEnterRoomPacket(int id, bool enter, int room) const;
-	void		SendChannelChattingPacket(int id, int target, std::string msg, int len) const;
-	void		SendNotifyEnterRoomPacket(int id, int target) const;
-	void		SendNotifyLeaveRoomPacket(int id, int target) const;
-	void		SendRoomUserListPacket(int id, int room, int* user, int userCnt) const;
+	int			SendPacketAssemble(int id, int type, google::protobuf::Message& msg) const;
 		
 };
 
