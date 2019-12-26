@@ -58,8 +58,8 @@ public:
 	void		AcceptThread();
 	void		WorkerThread();
 
-	int			PacketRessembly(int id, DWORD packetSize);
-	void		ProcessPacket(int id, unsigned char *buf);	
+	//int			PacketRessembly(int id, DWORD packetSize);
+	//void		ProcessPacket(int id, unsigned char *buf);	
 	void		ProcessEneterChannelPacket(int id, unsigned char *buf);	
 	void		ProcessCreateRoomPacket(int id, unsigned char *buf);
 	void		ProcessChangeChannelPacket(int id, unsigned char *buf);

@@ -9,11 +9,10 @@ public:
 	virtual ~User();
 
 private:
-	SOCKET			userSocket;
-	bool			userConnected;
-	int				userId;
-	int				channel_index;
-	int				room_index = 0;
+	SOCKET			userSocket;		// network
+	int				userId;			// contents
+	int				channel_index;	// contents
+	int				room_index = 0;  // contents
 
 public:
 	void			SetUserInfo(SOCKET s, bool connect, int id);
@@ -25,6 +24,5 @@ public:
 	inline int		GetRoomIndex() { return room_index; }
 	inline int		GetUserId() { return userId; }
 	inline SOCKET	GetUserSocket() { return userSocket; }
-
 };
 

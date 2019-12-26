@@ -1,5 +1,5 @@
 ﻿  stdafx.cpp
   protobuf.cpp
   코드를 생성하고 있습니다...
-  protobuf.vcxproj -> C:\Users\songyikim\Source\Repos\ChattingServer\x64\Debug\protobuf.exe
-  protobuf.vcxproj -> C:\Users\songyikim\Source\Repos\ChattingServer\x64\Debug\protobuf.pdb (Full PDB)
+  LINK : C:\Users\song\Documents\Visual Studio 2015\Projects\ChattingServer\x64\Debug\protobuf.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
+LINK : fatal error LNK1104: 'libprotobufd.lib' 파일을 열 수 없습니다.

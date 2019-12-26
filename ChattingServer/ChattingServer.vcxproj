@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClCompile Include="Channel.cpp" />
     <ClCompile Include="ChattingServer.cpp" />
+    <ClCompile Include="ClientInfo.cpp" />
     <ClCompile Include="PacketHandler.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -166,6 +167,7 @@
   <ItemGroup>
     <ClInclude Include="Channel.h" />
     <ClInclude Include="ChattingServer.h" />
+    <ClInclude Include="ClientInfo.h" />
     <ClInclude Include="PacketHandler.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
