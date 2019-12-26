@@ -9,7 +9,6 @@ User::User(SOCKET s, bool connect, int id)
 {
 	_userSocket = s;
 	_userId = id;
-	_userConnected = connect;
 }
 
 

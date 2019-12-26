@@ -9,11 +9,10 @@ public:
 	virtual ~User();
 
 private:
-	SOCKET			_userSocket;
-	bool			_userConnected;
-	int				_userId;
-	int				_channel_index;
-	int				_room_index = 0;
+	SOCKET			_userSocket;		// network
+	int				_userId;			// contents
+	int				_channel_index;		// contents
+	int				_room_index = 0;	// contents
 
 public:
 	
