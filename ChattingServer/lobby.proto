@@ -1,0 +1,127 @@
+package lobby;
+
+
+/*
+	structure
+*/
+
+enum PacketType
+{
+	ENTER_CHANNEL		= 1;
+	CREATE_ROOM			= 3;
+	CHANGE_CHANNEL		= 4;
+	NOTIFY_ENTER_ROOM	= 5;
+	NOTIFY_LEAVE_ROOM	= 6;
+	NOTIFY_EXIST_ROOM	= 7;
+	ROOM_CHATTING		= 8;
+	ENTER_ROOM			= 9;
+	ROOM_LIST			= 10;
+	CHANNEL_CHATTING	= 11;
+	LEAVE_ROOM			= 12;
+}
+
+message chatMessage
+{
+	required int64 userpid	= 1;
+	required string message = 2;
+}
+
+
+
+
+/*
+	protocol
+*/
+
+message enter_channel_req
+{
+	required int32 id			= 1;
+	required int32 channelNo	= 2;
+	optional int32 type			= 3;
+}
+
+message enter_channel_ans
+{
+	optional int32 result	= 1;
+}
+
+message change_channel_req
+{
+	required int32 id				= 1;
+	required int32 channelIndex		= 2;
+	optional int32 type				= 3;
+}
+
+message change_channel_ans
+{
+	required int32 result	= 1;
+}
+
+message channel_chatting_req
+{
+	requried int32 id		= 1;
+	optional chatMessage	= 2;
+}
+
+message create_room_req
+{
+	required int32 id			= 1;
+	required int32 roomIndex	= 2;
+	optional int32 type			= 3;
+}
+
+message create_room_ans
+{
+	required int32 result	= 1;
+}
+
+message room_chatting_req
+{
+	required int32 id			= 1;
+	required string message		= 2;
+	optional int32 type			= 3;
+}
+
+message room_chatting_ans
+{
+	required int32 result	= 1;
+}
+
+message enter_room_req
+{
+	required int32 id			= 1;
+	required int32 roomIndex	= 2;
+	optional bool  isEnter		= 3;
+	optional int32 type			= 4;
+}
+
+message enter_room_ans
+{
+	required int32 result	= 1;
+}
+
+message leave_room_req
+{
+	required int32 id			= 1;
+	required int32 roomIndex	= 2;
+	optional int32 type			= 3;
+}
+
+message leave_room_ans
+{
+	required int32 result	= 1;
+}
+
+message room_list_req
+{
+	required int32 id			= 1;
+}
+
+message room_list_ans
+{
+	required int32 id			= 1;
+	repeated int32 userList		= 2;
+	required int32 roomIndex	= 3;
+	optional int32 userCount	= 4;
+	optional int32 type			= 5;
+}

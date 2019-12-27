@@ -150,7 +150,7 @@ void ChattingServer::AcceptThread()
 		_clientId += 1;
 		CreateIoCompletionPort(reinterpret_cast<HANDLE>(client_sock), _hiocp, _clientId, 0);
 				
-		User* userInfo = new User(client_sock, true, _clientId);
+		User* userInfo = new User(client_sock, _clientId);
 		_mClients[_clientId] = userInfo;
 
 		// 접속한 클라이언트에게 랜덤한 채널 인덱스 부여 = 접속과 동시에 채널 입장

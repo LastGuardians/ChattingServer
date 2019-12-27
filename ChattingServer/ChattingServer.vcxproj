@@ -160,8 +160,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Acceptor.cpp" />
     <ClCompile Include="Channel.cpp" />
     <ClCompile Include="ChattingServer.cpp" />
+    <ClCompile Include="ClientInfo.cpp" />
+    <ClCompile Include="ClientManager.cpp" />
+    <ClCompile Include="Network.cpp" />
+    <ClCompile Include="Socket.cpp" />
     <ClCompile Include="Protocols.pb.cc" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="server.cpp" />
@@ -169,8 +174,13 @@
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Acceptor.h" />
     <ClInclude Include="Channel.h" />
     <ClInclude Include="ChattingServer.h" />
+    <ClInclude Include="ClientInfo.h" />
+    <ClInclude Include="ClientManager.h" />
+    <ClInclude Include="Network.h" />
+    <ClInclude Include="Socket.h" />
     <ClInclude Include="protocol.h" />
     <ClInclude Include="Protocols.pb.h" />
     <ClInclude Include="Room.h" />
@@ -179,6 +189,7 @@
     <ClInclude Include="User.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="lobby.proto" />
     <None Include="Protocols.proto" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

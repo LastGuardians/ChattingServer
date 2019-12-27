@@ -5,7 +5,7 @@ class User
 {
 public:
 	User();
-	User(SOCKET s, bool connect, int id);
+	User(SOCKET s, int id);
 	virtual ~User();
 
 private:

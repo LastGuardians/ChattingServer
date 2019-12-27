@@ -1,16 +1,15 @@
 #include "stdafx.h"
 
-User::User() : _userSocket{0}, _userId{-1}
+User::User()
 {
 	
 }
 
-User::User(SOCKET s, bool connect, int id)
+User::User(SOCKET s, int id) :
+	_userSocket(s),
+	_userId(id)
 {
-	_userSocket = s;
-	_userId = id;
 }
-
 
 User::~User()
 {

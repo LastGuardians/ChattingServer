@@ -5,67 +5,115 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="리소스 파일">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\Protocol">
+      <UniqueIdentifier>{4658814b-59f2-445d-acf3-da04f60b57c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Protocol\server protocol">
+      <UniqueIdentifier>{9211b1c6-ea19-484f-949c-d19c94367687}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Network">
+      <UniqueIdentifier>{bbcb362a-8e08-43cf-800f-1ddea950df5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Lobby">
+      <UniqueIdentifier>{266a047f-a506-4352-982b-47484f67c0cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Protocol\client protocol">
+      <UniqueIdentifier>{1709c290-7f8f-4275-9428-f46350f44b43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="server.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="Socket.cpp">
+      <Filter>소스 파일\Network</Filter>
     </ClCompile>
-    <ClCompile Include="ChattingServer.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="ClientManager.cpp">
+      <Filter>소스 파일\Lobby</Filter>
     </ClCompile>
-    <ClCompile Include="User.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="ClientInfo.cpp">
+      <Filter>소스 파일\Lobby</Filter>
     </ClCompile>
     <ClCompile Include="Channel.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Lobby</Filter>
     </ClCompile>
     <ClCompile Include="Room.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Lobby</Filter>
     </ClCompile>
-    <ClCompile Include="Singleton.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="Acceptor.cpp">
+      <Filter>소스 파일\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="ChattingServer.cpp">
+      <Filter>old</Filter>
     </ClCompile>
     <ClCompile Include="Protocols.pb.cc">
-      <Filter>소스 파일</Filter>
+      <Filter>old</Filter>
+    </ClCompile>
+    <ClCompile Include="server.cpp">
+      <Filter>old</Filter>
+    </ClCompile>
+    <ClCompile Include="Singleton.cpp">
+      <Filter>old</Filter>
+    </ClCompile>
+    <ClCompile Include="User.cpp">
+      <Filter>old</Filter>
+    </ClCompile>
+    <ClCompile Include="Network.cpp">
+      <Filter>소스 파일\Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChattingServer.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>old</Filter>
     </ClInclude>
     <ClInclude Include="User.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>old</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Channel.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Room.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>old</Filter>
     </ClInclude>
     <ClInclude Include="protocol.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>old</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>old</Filter>
+    </ClInclude>
+    <ClInclude Include="Socket.h">
+      <Filter>소스 파일\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientInfo.h">
+      <Filter>소스 파일\Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientManager.h">
+      <Filter>소스 파일\Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="Channel.h">
+      <Filter>소스 파일\Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>소스 파일\Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="Acceptor.h">
+      <Filter>소스 파일\Network</Filter>
     </ClInclude>
     <ClInclude Include="Protocols.pb.h">
-      <Filter>소스 파일</Filter>
+      <Filter>old</Filter>
+    </ClInclude>
+    <ClInclude Include="Network.h">
+      <Filter>소스 파일\Network</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Protocols.proto">
-      <Filter>헤더 파일</Filter>
+      <Filter>old</Filter>
+    </None>
+    <None Include="lobby.proto">
+      <Filter>소스 파일\Protocol\server protocol</Filter>
     </None>
   </ItemGroup>
 </Project>
