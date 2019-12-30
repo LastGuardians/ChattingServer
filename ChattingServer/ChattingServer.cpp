@@ -561,7 +561,7 @@ int ChattingServer::SendPacketAssemble(int id, int type, google::protobuf::Messa
 	header.size = MessageHeaderSize + bufSize;
 	header.type = type;
 
-	char* header_seri = reinterpret_cast<char*>(&header);
+	char* header_seri = reinterpret_cast<char*>(&header);	
 
 	memcpy(resultBuf, header_seri, MessageHeaderSize);
 	msg.SerializeToArray(resultBuf + MessageHeaderSize, bufSize);

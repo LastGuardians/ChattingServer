@@ -1,5 +1,4 @@
-#include "ClientManager.h"
-
+#include "stdafx.h"
 
 ClientManager::ClientManager()
 {
@@ -49,6 +48,6 @@ void ClientManager::allClientsLogout()
 
 	for (auto& client : _pidclients)
 	{
-
+		//CNetwork::GetInstance()->Close(client.second->);
 	}
 }

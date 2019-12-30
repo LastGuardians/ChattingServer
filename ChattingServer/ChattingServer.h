@@ -43,8 +43,6 @@ private:
 	mutable std::mutex				_cs_lock;
 
 	Overlap							_recv_over;
-	RecvBuffInfo					_recv_buff;
-
 	std::vector<Channel*>			_channel;
 
 public:	
