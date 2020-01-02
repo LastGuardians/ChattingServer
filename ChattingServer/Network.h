@@ -1,8 +1,11 @@
 #pragma once
 #include "Acceptor.h"
+#include "Socket.h"
 
 class CNetwork
 {
+	friend class Socket;
+
 public:
 	CNetwork();
 	virtual ~CNetwork();
@@ -12,9 +15,9 @@ public:
 	bool Start();
 	void Stop();	
 
-	bool Send(SOCKET handle, google::protobuf::Message * msg);
+	bool Send(Socket* handle, google::protobuf::Message * msg);
 	bool SendBroadcast(google::protobuf::Message * msg);
-	bool Close(SOCKET handle);
+	bool Close(Socket* handle);
 
 private:
 

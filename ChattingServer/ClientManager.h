@@ -1,3 +1,9 @@
+/*
+	author : songykim
+	connection을 맺은 모든 ClientInfo 메모리를 관리하는 매니저 class
+	ClientInfo 객체를 Get 하는게 주목적이다. - lock 필수
+*/
+
 #pragma once
 #include <unordered_map>
 #include <mutex>

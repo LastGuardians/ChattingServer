@@ -48,6 +48,7 @@ void ClientManager::allClientsLogout()
 
 	for (auto& client : _pidclients)
 	{
-		//CNetwork::GetInstance()->Close(client.second->);
+		auto userSocket = client.second->GetUserSocket();
+		CNetwork::GetInstance()->Close(userSocket);
 	}
 }

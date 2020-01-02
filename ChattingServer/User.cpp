@@ -5,7 +5,7 @@ User::User()
 	
 }
 
-User::User(SOCKET s, int id) :
+User::User(SOCKET s, __int64 id) :
 	_userSocket(s),
 	_userId(id)
 {

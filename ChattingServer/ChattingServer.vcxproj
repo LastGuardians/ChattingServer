@@ -180,6 +180,7 @@
     <ClInclude Include="ClientInfo.h" />
     <ClInclude Include="ClientManager.h" />
     <ClInclude Include="Network.h" />
+    <ClInclude Include="ServerDefine.h" />
     <ClInclude Include="Socket.h" />
     <ClInclude Include="protocol.h" />
     <ClInclude Include="Protocols.pb.h" />

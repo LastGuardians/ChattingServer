@@ -5,15 +5,15 @@ class User
 {
 public:
 	User();
-	User(SOCKET s, int id);
+	User(SOCKET s, __int64 id);
 	virtual ~User();
 
 private:
 	SOCKET			_userSocket;		// network
-	int				_userId;			// contents
+	__int64			_userId;			// contents
 	int				_channel_index;		// contents
-	int				_room_index = 0;	// contents
-
+	int				_room_index ;	// contents
+	
 public:
 	
 	void			SetChannelIndex(int channel);
@@ -21,7 +21,7 @@ public:
 
 	inline int		GetChannelIndex() { return _channel_index; }
 	inline int		GetRoomIndex() { return _room_index; }
-	inline int		GetUserId() { return _userId; }
+	inline int64_t	GetUserId() { return _userId; }
 	inline SOCKET	GetUserSocket() { return _userSocket; }
 
 };

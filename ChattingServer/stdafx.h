@@ -21,16 +21,13 @@
 #include <unordered_map>
 #include <mutex>
 #include <deque>
+#include <shared_mutex>
 
 #include <google/protobuf/io/zero_copy_stream_impl_lite.h>
 #include <google/protobuf/text_format.h>
 #include "Protocols.pb.h"
 
-#define MAX_USER	50
-#define BUFSIZE		1024
-
 using namespace google;
-
 
 #define NO_COPY(CLASSNAME)							\
 	private:										\
@@ -77,3 +74,4 @@ enum EVENT_TYPE
 #include "Acceptor.h"
 #include "Socket.h"
 #include "ClientManager.h"
+#include "ServerDefine.h"

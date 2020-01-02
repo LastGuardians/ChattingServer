@@ -107,6 +107,9 @@
     <ClInclude Include="Network.h">
       <Filter>소스 파일\Network</Filter>
     </ClInclude>
+    <ClInclude Include="ServerDefine.h">
+      <Filter>old</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Protocols.proto">

@@ -35,7 +35,7 @@ message chatMessage
 
 message enter_channel_req
 {
-	required int32 id			= 1;
+	required int64 user_pid		= 1;
 	required int32 channelNo	= 2;
 	optional int32 type			= 3;
 }
@@ -47,7 +47,7 @@ message enter_channel_ans
 
 message change_channel_req
 {
-	required int32 id				= 1;
+	required int64 user_pid			= 1;
 	required int32 channelIndex		= 2;
 	optional int32 type				= 3;
 }
@@ -59,13 +59,13 @@ message change_channel_ans
 
 message channel_chatting_req
 {
-	requried int32 id		= 1;
+	requried int64 user_pid	= 1;
 	optional chatMessage	= 2;
 }
 
 message create_room_req
 {
-	required int32 id			= 1;
+	required int64 user_pid		= 1;
 	required int32 roomIndex	= 2;
 	optional int32 type			= 3;
 }
@@ -77,7 +77,7 @@ message create_room_ans
 
 message room_chatting_req
 {
-	required int32 id			= 1;
+	required int64 user_pid		= 1;
 	required string message		= 2;
 	optional int32 type			= 3;
 }
@@ -89,7 +89,7 @@ message room_chatting_ans
 
 message enter_room_req
 {
-	required int32 id			= 1;
+	required int64 user_pid		= 1;
 	required int32 roomIndex	= 2;
 	optional bool  isEnter		= 3;
 	optional int32 type			= 4;
@@ -102,7 +102,7 @@ message enter_room_ans
 
 message leave_room_req
 {
-	required int32 id			= 1;
+	required int64 user_pid		= 1;
 	required int32 roomIndex	= 2;
 	optional int32 type			= 3;
 }
@@ -114,12 +114,12 @@ message leave_room_ans
 
 message room_list_req
 {
-	required int32 id			= 1;
+	required int64 user_pid		= 1;
 }
 
 message room_list_ans
 {
-	required int32 id			= 1;
+	required int64 user_pid		= 1;
 	repeated int32 userList		= 2;
 	required int32 roomIndex	= 3;
 	optional int32 userCount	= 4;

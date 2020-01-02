@@ -30,7 +30,7 @@ bool Acceptor::Start()
 		return false;
 	}
 
-	if (_socket->Listen() == SOCKET_ERROR)
+	if (_socket->Listen() == false)
 	{
 		Stop();
 		return false;

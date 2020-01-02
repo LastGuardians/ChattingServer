@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Socket.h"
 
 IMPLEMENT_SINGLETON(CNetwork);
 
@@ -20,9 +21,9 @@ void CNetwork::Stop()
 	_acceptor.Stop();
 }
 
-bool CNetwork::Send(SOCKET handle, google::protobuf::Message * msg)
+bool CNetwork::Send(Socket* handle, google::protobuf::Message * msg)
 {
-	WSABUF wsaBuffer;
+	//WSABUF wsaBuffer;
 	//wsaBuffer.buf = msg;
 
 	//int ret = WSASend(handle, &wsaBuffer, 1, NULL, 0,
@@ -35,7 +36,7 @@ bool CNetwork::SendBroadcast(google::protobuf::Message * msg)
 	return false;
 }
 
-bool CNetwork::Close(SOCKET handle)
+bool CNetwork::Close(Socket* handle)
 {
 	return false;
 }

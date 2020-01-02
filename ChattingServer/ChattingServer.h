@@ -1,4 +1,5 @@
 #pragma once
+#include "ServerDefine.h"
 
 struct Overlap
 {
@@ -36,21 +37,23 @@ public:
 	friend class Channel;
 
 private:
-	std::unordered_map<int, User*>	_mClients;
-	int								_clientId = { -1 };
-	HANDLE							_hiocp = { 0 };
-	bool							_server_shut_down = { false };
-	mutable std::mutex				_cs_lock;
+	std::unordered_map<int64_t, User*>	_mClients;
+	__int64							_clientpid;
+	HANDLE							_hiocp;
+	bool							_server_shut_down;
+	mutable std::shared_mutex		_cs_lock;
 
 	Overlap							_recv_over;
 	std::vector<Channel*>			_channel;
 
+	__int64		GenerateNewCompletionKey() const;
+
 public:	
-	User*		GetUserInfo(int id) const;
+	User*		GetUserInfo(int64_t id) const;
 	
 	bool		InitServer();
 	void		ServerThreadStart();
-	void		CloseSocket(unsigned long id);
+	void		CloseSocket(int64_t id);
 	void		err_display(char *msg, int err_no);	
 
 	void		AcceptThread();
@@ -67,8 +70,8 @@ public:
 	void		ProcessRoomUserListPacket(int id, const Protocols::Room_List& message) const;		
 	//////////////////////////
 
-	int			SendPacket(int id, unsigned char *packet) const;
-	int			SendPacketAssemble(int id, int type, google::protobuf::Message& msg) const;
+	int			SendPacket(int64_t id, unsigned char *packet) const;
+	int			SendPacketAssemble(int64_t id, int type, google::protobuf::Message& msg) const;
 		
 };
 

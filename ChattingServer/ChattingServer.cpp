@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <random>
 
 IMPLEMENT_SINGLETON(ChattingServer);
 
@@ -12,8 +13,18 @@ ChattingServer::~ChattingServer()
 {
 }
 
+__int64 ChattingServer::GenerateNewCompletionKey() const
+{
+	std::random_device rd;
+	std::mt19937 mersenne(rd());
 
-User* ChattingServer::GetUserInfo(int id) const
+	std::uniform_int_distribution<> die(1, UINT_MAX);
+	auto randomNum = die(mersenne);
+
+	return randomNum;
+}
+
+User* ChattingServer::GetUserInfo(int64_t id) const
 {
 	auto iter = _mClients.find(id);
 	if (iter != _mClients.end())
@@ -37,7 +48,7 @@ bool ChattingServer::InitServer()
 	}
 	std::cout << "InitServer()" << std::endl;
 
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < CHANNEL_MAX; ++i)
 	{
 		_channel.push_back(new Channel(i));
 	}
@@ -68,12 +79,12 @@ void ChattingServer::ServerThreadStart()
 	acceptThread.join();
 }
 
-void ChattingServer::CloseSocket(unsigned long id)
+void ChattingServer::CloseSocket(int64_t id)
 {
 	User *userInfo = GetUserInfo(id);
 	if (nullptr == userInfo)
 	{
-		std::cout << "CloseSocket() : 해당 유저가 없습니다." << std::endl;
+		std::cout << "CloseSocket() : userInfo is null! user_pid(%d)" << id << std::endl;
 		return;
 	}
 
@@ -147,15 +158,15 @@ void ChattingServer::AcceptThread()
 		printf("\n[Server] Client Connect : IP = %s, Port = %d\n",
 			inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
 
-		_clientId += 1;
-		CreateIoCompletionPort(reinterpret_cast<HANDLE>(client_sock), _hiocp, _clientId, 0);
+		_clientpid = GenerateNewCompletionKey();
+		CreateIoCompletionPort(reinterpret_cast<HANDLE>(client_sock), _hiocp, _clientpid, 0);
 				
-		User* userInfo = new User(client_sock, _clientId);
-		_mClients[_clientId] = userInfo;
+		User* userInfo = new User(client_sock, _clientpid);
+		_mClients[_clientpid] = userInfo;
 
 		// 접속한 클라이언트에게 랜덤한 채널 인덱스 부여 = 접속과 동시에 채널 입장
 		Protocols::Enter_Channel enter;
-		enter.set_id(_clientId);
+		enter.set_id(_clientpid);
 		enter.set_channelindex(rand() % 5);
 		enter.set_type(Protocols::ENTER_CHANNEL);
 
@@ -165,7 +176,7 @@ void ChattingServer::AcceptThread()
 		// 채널에 유저 입장
 		_channel[enter.channelindex()]->AddUserToChannel(userInfo);
 
-		int result = SendPacketAssemble(_clientId, enter.type(), dynamic_cast<google::protobuf::Message&>(enter));
+		int result = SendPacketAssemble(_clientpid, enter.type(), dynamic_cast<google::protobuf::Message&>(enter));
 		if (SOCKET_ERROR == result) {
 			if (ERROR_IO_PENDING != WSAGetLastError()) {
 				err_display("Accept::WSASend Error! : ", WSAGetLastError());
@@ -312,6 +323,11 @@ void ChattingServer::PacketProcess(int id, protobuf::io::CodedInputStream & inpu
 void ChattingServer::ProcessCreateRoomPacket(int id, const Protocols::Create_Room& message) const
 {
 	User *userInfo = GetUserInfo(id);
+	if (nullptr == userInfo)
+	{
+		std::cout << "userInfo is null! user_pid(%d)" << id << std::endl;
+		return;
+	}
 
 	Protocols::Notify_Exist_Room exist_room;
 	exist_room.set_id(id);
@@ -364,6 +380,12 @@ void ChattingServer::ProcessCreateRoomPacket(int id, const Protocols::Create_Roo
 void ChattingServer::ProcessChangeChannelPacket(int id, const Protocols::Change_Channel& message) const
 {
 	User *userInfo = GetUserInfo(id);
+	if (nullptr == userInfo)
+	{
+		std::cout << "userInfo is null! user_pid(%d)" << id << std::endl;
+		return;
+	}
+
 	int currentChannelIndex = userInfo->GetChannelIndex();
 	
 	_channel[currentChannelIndex]->DeleteUserToChannel(userInfo);
@@ -378,9 +400,15 @@ void ChattingServer::ProcessChangeChannelPacket(int id, const Protocols::Change_
 void ChattingServer::ProcessChannelChattingPacket(int id, const Protocols::Channel_Chatting& message) const
 {
 	User *userInfo = GetUserInfo(id);
-	for (auto iter : _mClients)
+	if (nullptr == userInfo)
 	{
-		_cs_lock.lock();
+		std::cout << "userInfo is null! user_pid(%d)" << id << std::endl;
+		return;
+	}
+
+	_cs_lock.lock();
+	for (auto iter : _mClients)
+	{		
 		//if (iter->GetUserId() == id) continue;
 		if ((iter.second)->GetChannelIndex() == userInfo->GetChannelIndex())		// 채널이 같으면.
 		{
@@ -391,17 +419,23 @@ void ChattingServer::ProcessChannelChattingPacket(int id, const Protocols::Chann
 
 			SendPacketAssemble((iter.second)->GetUserId(), chatting.type(), chatting);
 			//SendChannelChattingPacket(id, (iter.second)->GetUserId(), message.message(), message.ByteSize());
-		}
-		_cs_lock.unlock();
+		}		
 	}
+	_cs_lock.unlock();
 }
 
 void ChattingServer::ProcessRoomChattingPacket(int id, const Protocols::Room_Chatting& message) const
 {
 	User *userInfo = GetUserInfo(id);
-	for (auto iter : _mClients)
+	if (nullptr == userInfo)
 	{
-		_cs_lock.lock();
+		std::cout << "userInfo is null! user_pid(%d)" << id << std::endl;
+		return;
+	}
+
+	_cs_lock.lock();
+	for (auto iter : _mClients)
+	{		
 		//if(iter->GetUserId() == id) continue;									// 내 자신은 건너뛴다.
 		if ((iter.second)->GetChannelIndex() == userInfo->GetChannelIndex())	// 채널이 같고
 		{
@@ -415,14 +449,19 @@ void ChattingServer::ProcessRoomChattingPacket(int id, const Protocols::Room_Cha
 				SendPacketAssemble((iter.second)->GetUserId(), room.type(), room);
 				//SendRoomChattingPacket(id, (iter.second)->GetUserId(), message.message(), message.ByteSize());
 			}
-		}
-		_cs_lock.unlock();
+		}		
 	}
+	_cs_lock.unlock();
 }
 
 void ChattingServer::ProcessEnterRoomPacket(int id, const Protocols::Enter_Room& message) const
 {
 	User *userInfo = GetUserInfo(id);
+	if (nullptr == userInfo)
+	{
+		std::cout << "userInfo is null! user_pid(%d)" << id << std::endl;
+		return;
+	}
 
 	Protocols::Enter_Room enter_room;
 	enter_room.set_id(id);
@@ -475,6 +514,11 @@ void ChattingServer::ProcessEnterRoomPacket(int id, const Protocols::Enter_Room&
 void ChattingServer::ProcessLeaveRoomPacket(int id, const Protocols::Leave_Room& message) const
 {
 	User *userInfo = GetUserInfo(id);
+	if (nullptr == userInfo)
+	{
+		std::cout << "userInfo is null! user_pid(%d)" << id << std::endl;
+		return;
+	}
 	_channel[userInfo->GetChannelIndex()]->DeleteUserToRoom(message.roomindex(), userInfo);
 	userInfo->SetRoomIndex(0);		// 유저 방 초기화
 
@@ -500,13 +544,19 @@ void ChattingServer::ProcessLeaveRoomPacket(int id, const Protocols::Leave_Room&
 
 void ChattingServer::ProcessRoomUserListPacket(int id, const Protocols::Room_List& message) const
 {
-	User *user = GetUserInfo(id);
 	int userInfo[MAX_USER_SIZE];
 	int cnt = 0;
 
-	for (auto iter : _mClients)
+	User *user = GetUserInfo(id);
+	if (nullptr == user)
 	{
-		_cs_lock.lock();
+		std::cout << "userInfo is null! user_pid(%d)" << id << std::endl;
+		return;
+	}
+
+	_cs_lock.lock();
+	for (auto iter : _mClients)
+	{		
 		//if (iter->GetUserId() == id) continue;
 		if ((iter.second)->GetChannelIndex() == user->GetChannelIndex())		// 채널이 같고
 		{
@@ -514,9 +564,9 @@ void ChattingServer::ProcessRoomUserListPacket(int id, const Protocols::Room_Lis
 			{
 				userInfo[cnt++] = (iter.second)->GetUserId();
 			}
-		}
-		_cs_lock.unlock();
+		}		
 	}
+	_cs_lock.unlock();
 
 	Protocols::Room_List room_list;
 	room_list.set_id(id);
@@ -533,9 +583,14 @@ void ChattingServer::ProcessRoomUserListPacket(int id, const Protocols::Room_Lis
 	//SendRoomUserListPacket(id, message.roomindex(), userInfo, cnt);
 }
 
-int ChattingServer::SendPacket(int id, unsigned char * packet) const
+int ChattingServer::SendPacket(__int64 id, unsigned char * packet) const
 {	
 	User *userInfo = GetUserInfo(id);
+	if (nullptr == userInfo)
+	{
+		std::cout << "userInfo is null! user_pid(%d)" << id << std::endl;
+		return -1;
+	}
 	
 	Overlap *over = new Overlap;
 	memset(over, 0, sizeof(Overlap));
@@ -550,7 +605,7 @@ int ChattingServer::SendPacket(int id, unsigned char * packet) const
 }
 
 // sendPacket 중복되는 기능 합침 -> msg 에서 type을 바로 가져올 순 없을까?
-int ChattingServer::SendPacketAssemble(int id, int type, google::protobuf::Message & msg) const
+int ChattingServer::SendPacketAssemble(__int64 id, int type, google::protobuf::Message & msg) const
 {
 	size_t bufSize = msg.ByteSizeLong();
 	unsigned char resultBuf[100];

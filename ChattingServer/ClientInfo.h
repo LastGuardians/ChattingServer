@@ -1,9 +1,12 @@
 #pragma once
 #include <iostream>
 #include <WinSock2.h>
+#include "Socket.h"
 
 class ClientInfo
 {
+	friend class Socket;
+
 public:
 	ClientInfo();
 	virtual ~ClientInfo();
@@ -15,6 +18,7 @@ public:
 	int			GetRoomNo() { return _roomNo; }
 	__int64		GetUserPid() { return _userPid; }
 	std::string	GetUserId() { return _userId; }
+	Socket*		GetUserSocket() { return &_userSocket; }
 
 private:
 
@@ -24,7 +28,7 @@ private:
 	int				_channelNo;
 	int				_roomNo;
 
-	// Network
-	SOCKET			_userSocket;
+	// Network	
+	Socket			_userSocket;
 };
 
