@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+IMPLEMENT_SINGLETON(ClientManager);
+
 ClientManager::ClientManager()
 {
 	_pidclients.clear();
@@ -40,6 +42,17 @@ bool ClientManager::RemoveClient(int64_t userpid)
 	_pidclients.erase(userpid);
 
 	return true;
+}
+
+std::shared_ptr<ClientInfo> ClientManager::GetClientByPid(int64_t userPid)
+{
+	if (_pidclients.find(userPid) == _pidclients.end())
+	{
+		// error log
+		return nullptr;
+	}
+
+	return _pidclients[userPid];
 }
 
 void ClientManager::allClientsLogout()

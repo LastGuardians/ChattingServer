@@ -1,10 +1,12 @@
 #pragma once
 #include "Acceptor.h"
 #include "Socket.h"
-
+/*
+	우리 서버에서는 이 클래스가 accept, receivce, send 다 한다.
+*/
 class CNetwork
 {
-	friend class Socket;
+	friend class CSocket;
 
 public:
 	CNetwork();
@@ -12,15 +14,15 @@ public:
 
 	DECLARE_SINGLETON(CNetwork);
 
-	bool Start();
+	bool Start(CSocket* handle);
 	void Stop();	
 
-	bool Send(Socket* handle, google::protobuf::Message * msg);
+	bool Send(CSocket* handle, google::protobuf::Message * msg);
 	bool SendBroadcast(google::protobuf::Message * msg);
-	bool Close(Socket* handle);
+	bool Close(SOCKET* handle);
 
 private:
+	bool GetLocalHostAddr(SOCKADDR_IN& OUT addr);
 
-	Acceptor  _acceptor;
 };
 

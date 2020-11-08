@@ -1,6 +1,6 @@
 #pragma once
 
-class Socket;
+class CSocket;
 
 class Acceptor
 {
@@ -12,6 +12,6 @@ public:
 	bool Stop();
 
 private:
-	std::shared_ptr<Socket> _socket;
+	std::shared_ptr<CSocket> _socket;
 };
 

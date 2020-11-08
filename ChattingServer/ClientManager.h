@@ -18,8 +18,11 @@ public:
 	ClientManager();
 	virtual ~ClientManager();
 
+	DECLARE_SINGLETON(ClientManager);
+
 	bool AppendClient(int64_t userpid, std::shared_ptr<ClientInfo> userInfo);
 	bool RemoveClient(int64_t userpid);
+	std::shared_ptr<ClientInfo> GetClientByPid(int64_t userPid);
 
 	void allClientsLogout();
 

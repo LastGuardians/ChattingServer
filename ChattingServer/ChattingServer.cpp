@@ -142,9 +142,8 @@ void ChattingServer::AcceptThread()
 
 	SOCKADDR_IN clientaddr;
 	int addrlen;
-	srand(time(NULL));
 	
-	while (1)
+	while (false == _server_shut_down)
 	{
 		//accept()
 		addrlen = sizeof(clientaddr);
@@ -161,30 +160,34 @@ void ChattingServer::AcceptThread()
 		_clientpid = GenerateNewCompletionKey();
 		CreateIoCompletionPort(reinterpret_cast<HANDLE>(client_sock), _hiocp, _clientpid, 0);
 				
-		User* userInfo = new User(client_sock, _clientpid);
-		_mClients[_clientpid] = userInfo;
+		std::shared_ptr<ClientInfo> userInfo = std::make_shared<ClientInfo>(_clientpid);
+		//User* userInfo = new User(client_sock, _clientpid);
+		ClientManager::GetInstance()->AppendClient(_clientpid, userInfo);
+
+		//_mClients[_clientpid] = userInfo;
 
 		// 접속한 클라이언트에게 랜덤한 채널 인덱스 부여 = 접속과 동시에 채널 입장
-		Protocols::Enter_Channel enter;
+		// messageHandler 단으로 빼기
+		/*Protocols::Enter_Channel enter;
 		enter.set_id(_clientpid);
 		enter.set_channelindex(rand() % 5);
 		enter.set_type(Protocols::ENTER_CHANNEL);
 
 		userInfo->SetChannelIndex(enter.channelindex());
-		userInfo->SetRoomIndex(-1);
+		userInfo->SetRoomIndex(-1);*/
 
 		// 채널에 유저 입장
-		_channel[enter.channelindex()]->AddUserToChannel(userInfo);
+		//_channel[enter.channelindex()]->AddUserToChannel(userInfo);
 
-		int result = SendPacketAssemble(_clientpid, enter.type(), dynamic_cast<google::protobuf::Message&>(enter));
+		/*int result = SendPacketAssemble(_clientpid, enter.type(), dynamic_cast<google::protobuf::Message&>(enter));
 		if (SOCKET_ERROR == result) {
 			if (ERROR_IO_PENDING != WSAGetLastError()) {
 				err_display("Accept::WSASend Error! : ", WSAGetLastError());
 			}
-		} 
+		} */
 				
 		DWORD flags = { 0 };
-		retval = WSARecv(userInfo->GetUserSocket(), &_recv_over.wsabuf, 1, NULL, &flags, &_recv_over.overlap, NULL);
+		retval = WSARecv(*userInfo->GetUserSocket(), &_recv_over.wsabuf, 1, NULL, &flags, &_recv_over.overlap, NULL);
 		if (SOCKET_ERROR == retval)
 		{
 			if (ERROR_IO_PENDING != WSAGetLastError()) {
@@ -339,7 +342,6 @@ void ChattingServer::ProcessCreateRoomPacket(int id, const Protocols::Create_Roo
 	{		
 		exist_room.set_exist(false);
 		SendPacketAssemble(id, exist_room.type(), exist_room);
-		//SendNotifyExistRoomPacket(id, message.roomindex(), false);
 
 		_channel[userInfo->GetChannelIndex()]->AddNewRoom(message.roomindex(), userInfo->GetChannelIndex());  // 채널에 방 추가
 		_channel[userInfo->GetChannelIndex()]->AddUserToRoom(message.roomindex(), userInfo);	// 방에 유저 추가
@@ -359,7 +361,6 @@ void ChattingServer::ProcessCreateRoomPacket(int id, const Protocols::Create_Roo
 
 			exist_room.set_exist(true);
 			SendPacketAssemble(id, exist_room.type(), exist_room);
-			//SendNotifyExistRoomPacket(id, message.roomindex(), true);
 			return;
 		}
 
@@ -370,7 +371,6 @@ void ChattingServer::ProcessCreateRoomPacket(int id, const Protocols::Create_Roo
 
 		exist_room.set_exist(false);
 		SendPacketAssemble(id, exist_room.type(), exist_room);
-		//SendNotifyExistRoomPacket(id, message.roomindex(), false);
 
 		std::cout << "[" << id << "] 유저가 " << "[" << message.roomindex()
 			<< "] 번 방을 생성하였습니다." << std::endl;
@@ -408,8 +408,7 @@ void ChattingServer::ProcessChannelChattingPacket(int id, const Protocols::Chann
 
 	_cs_lock.lock();
 	for (auto iter : _mClients)
-	{		
-		//if (iter->GetUserId() == id) continue;
+	{	
 		if ((iter.second)->GetChannelIndex() == userInfo->GetChannelIndex())		// 채널이 같으면.
 		{
 			Protocols::Channel_Chatting chatting;
@@ -417,8 +416,7 @@ void ChattingServer::ProcessChannelChattingPacket(int id, const Protocols::Chann
 			chatting.set_message(message.message());
 			chatting.set_type(Protocols::CHANNEL_CHATTING);
 
-			SendPacketAssemble((iter.second)->GetUserId(), chatting.type(), chatting);
-			//SendChannelChattingPacket(id, (iter.second)->GetUserId(), message.message(), message.ByteSize());
+			SendPacketAssemble((iter.second)->GetUserId(), chatting.type(), chatting);			
 		}		
 	}
 	_cs_lock.unlock();
@@ -435,8 +433,7 @@ void ChattingServer::ProcessRoomChattingPacket(int id, const Protocols::Room_Cha
 
 	_cs_lock.lock();
 	for (auto iter : _mClients)
-	{		
-		//if(iter->GetUserId() == id) continue;									// 내 자신은 건너뛴다.
+	{
 		if ((iter.second)->GetChannelIndex() == userInfo->GetChannelIndex())	// 채널이 같고
 		{
 			if ((iter.second)->GetRoomIndex() == userInfo->GetRoomIndex())		// 방이 같아야 메시지를 보낸다.
@@ -446,8 +443,7 @@ void ChattingServer::ProcessRoomChattingPacket(int id, const Protocols::Room_Cha
 				room.set_message(message.message());
 				room.set_type(Protocols::ROOM_CHATTING);
 
-				SendPacketAssemble((iter.second)->GetUserId(), room.type(), room);
-				//SendRoomChattingPacket(id, (iter.second)->GetUserId(), message.message(), message.ByteSize());
+				SendPacketAssemble((iter.second)->GetUserId(), room.type(), room);				
 			}
 		}		
 	}
@@ -480,7 +476,6 @@ void ChattingServer::ProcessEnterRoomPacket(int id, const Protocols::Enter_Room&
 		// 방 입장 성공
 		enter_room.set_isenter(true);
 		SendPacketAssemble(id, enter_room.type(), enter_room);
-		//SendEnterRoomPacket(id, true, message.roomindex());
 
 		_cs_lock.lock();
 		for (auto iter : _mClients)
@@ -494,8 +489,7 @@ void ChattingServer::ProcessEnterRoomPacket(int id, const Protocols::Enter_Room&
 					noti_room.set_id(id);
 					noti_room.set_type(Protocols::NOTIFY_ENTER_ROOM);
 
-					SendPacketAssemble((iter.second)->GetUserId(), noti_room.type(), noti_room);
-					//SendNotifyEnterRoomPacket(id, (iter.second)->GetUserId());			// 방 입장 패킷을 보낸다.
+					SendPacketAssemble((iter.second)->GetUserId(), noti_room.type(), noti_room);					
 				}
 			}			
 		}
@@ -508,7 +502,6 @@ void ChattingServer::ProcessEnterRoomPacket(int id, const Protocols::Enter_Room&
 
 	enter_room.set_isenter(false);
 	SendPacketAssemble(id, enter_room.type(), enter_room);
-	//SendEnterRoomPacket(id, false, message.roomindex());
 }
 
 void ChattingServer::ProcessLeaveRoomPacket(int id, const Protocols::Leave_Room& message) const
@@ -535,7 +528,6 @@ void ChattingServer::ProcessLeaveRoomPacket(int id, const Protocols::Leave_Room&
 				leave_room.set_type(Protocols::NOTIFY_LEAVE_ROOM);
 
 				SendPacketAssemble((iter.second)->GetUserId(), leave_room.type(), leave_room);
-				//SendNotifyLeaveRoomPacket(id, (iter.second)->GetUserId());			// 방 퇴장 패킷을 보낸다.
 			}
 		}		
 	}
@@ -556,8 +548,7 @@ void ChattingServer::ProcessRoomUserListPacket(int id, const Protocols::Room_Lis
 
 	_cs_lock.lock();
 	for (auto iter : _mClients)
-	{		
-		//if (iter->GetUserId() == id) continue;
+	{
 		if ((iter.second)->GetChannelIndex() == user->GetChannelIndex())		// 채널이 같고
 		{
 			if ((iter.second)->GetRoomIndex() == user->GetRoomIndex())		// 방이 같아야 한다.
@@ -580,7 +571,6 @@ void ChattingServer::ProcessRoomUserListPacket(int id, const Protocols::Room_Lis
 	room_list.set_type(Protocols::ROOM_LIST);
 
 	SendPacketAssemble(id, room_list.type(), room_list);
-	//SendRoomUserListPacket(id, message.roomindex(), userInfo, cnt);
 }
 
 int ChattingServer::SendPacket(__int64 id, unsigned char * packet) const

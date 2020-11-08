@@ -5,10 +5,10 @@
 
 class ClientInfo
 {
-	friend class Socket;
+	friend class CSocket;
 
 public:
-	ClientInfo();
+	ClientInfo(int64_t userpid);
 	virtual ~ClientInfo();
 
 	void	SetChannelNo(int channel);
@@ -18,7 +18,7 @@ public:
 	int			GetRoomNo() { return _roomNo; }
 	__int64		GetUserPid() { return _userPid; }
 	std::string	GetUserId() { return _userId; }
-	Socket*		GetUserSocket() { return &_userSocket; }
+	SOCKET*		GetUserSocket() { return &_userSocket; }
 
 private:
 
@@ -29,6 +29,6 @@ private:
 	int				_roomNo;
 
 	// Network	
-	Socket			_userSocket;
+	SOCKET			_userSocket;
 };
 

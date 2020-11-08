@@ -162,6 +162,7 @@
   <ItemGroup>
     <ClCompile Include="Acceptor.cpp" />
     <ClCompile Include="Channel.cpp" />
+    <ClCompile Include="ChatAgentHandler.cpp" />
     <ClCompile Include="ChattingServer.cpp" />
     <ClCompile Include="ClientInfo.cpp" />
     <ClCompile Include="ClientManager.cpp" />
@@ -171,11 +172,13 @@
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="server.cpp" />
     <ClCompile Include="Singleton.cpp" />
+    <ClCompile Include="Thread.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Acceptor.h" />
     <ClInclude Include="Channel.h" />
+    <ClInclude Include="ChatAgentHandler.h" />
     <ClInclude Include="ChattingServer.h" />
     <ClInclude Include="ClientInfo.h" />
     <ClInclude Include="ClientManager.h" />
@@ -187,6 +190,7 @@
     <ClInclude Include="Room.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Thread.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
   <ItemGroup>

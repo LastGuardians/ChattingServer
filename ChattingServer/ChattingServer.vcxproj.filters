@@ -28,6 +28,12 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="소스 파일\Util">
+      <UniqueIdentifier>{915de018-0bbf-4a0b-b8b3-33cf488edeaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\ProtocolHandler">
+      <UniqueIdentifier>{da86b231-8a22-457b-909f-f61525e6abc3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Socket.cpp">
@@ -65,6 +71,12 @@
     </ClCompile>
     <ClCompile Include="Network.cpp">
       <Filter>소스 파일\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread.cpp">
+      <Filter>소스 파일\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="ChatAgentHandler.cpp">
+      <Filter>소스 파일\ProtocolHandler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +121,12 @@
     </ClInclude>
     <ClInclude Include="ServerDefine.h">
       <Filter>old</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread.h">
+      <Filter>소스 파일\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="ChatAgentHandler.h">
+      <Filter>소스 파일\ProtocolHandler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

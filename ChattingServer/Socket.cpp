@@ -1,14 +1,15 @@
 #include "Socket.h"
 
-Socket::Socket()
+
+CSocket::CSocket()
 {
 }
 
-Socket::~Socket()
+CSocket::~CSocket()
 {
 }
 
-bool Socket::Create()
+bool CSocket::Create()
 {
 	_socket = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP,
 		NULL, 0, WSA_FLAG_OVERLAPPED);
@@ -20,16 +21,16 @@ bool Socket::Create()
 	return true;
 }
 
-bool Socket::Bind(sockaddr * address)
+bool CSocket::Bind(SOCKADDR_IN& addr)
 {
-	auto ret = bind(_socket, address, sizeof(address));
+	auto ret = bind(_socket, reinterpret_cast<sockaddr *>(&addr), sizeof(addr));
 	if (SOCKET_ERROR == ret)
 		return false;
 
 	return true;
 }
 
-bool Socket::Listen()
+bool CSocket::Listen()
 {
 	auto ret = listen(_socket, SOMAXCONN);
 	if (SOCKET_ERROR == ret)
@@ -38,13 +39,13 @@ bool Socket::Listen()
 	return true;
 }
 
-SOCKET Socket::Accept(const sockaddr * address)
+SOCKET CSocket::Accept(std::string& addr)
 {
-	int addrlen = sizeof(address);
-	return accept(_socket, reinterpret_cast<sockaddr *>(&address), &addrlen);
+	int addrlen = sizeof(addr);
+	return WSAAccept(_socket, reinterpret_cast<sockaddr *>(&addr), &addrlen, NULL, NULL);
 }
 
-bool Socket::Close()
+bool CSocket::Close()
 {
 	if (INVALID_SOCKET == _socket)
 	{

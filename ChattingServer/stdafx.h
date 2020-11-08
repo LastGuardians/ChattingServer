@@ -2,7 +2,6 @@
 #define PROTOBUF_USE_DLLS
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
-#define _USE_32BIT_TIME_T
 
 #pragma comment(lib, "ws2_32")
 #pragma comment(lib, "libprotobufd.lib")
@@ -17,7 +16,6 @@
 #include <string>
 #include <thread>
 #include <random>
-#include <ctime>
 #include <unordered_map>
 #include <mutex>
 #include <deque>
@@ -75,3 +73,4 @@ enum EVENT_TYPE
 #include "Socket.h"
 #include "ClientManager.h"
 #include "ServerDefine.h"
+#include "ChatAgentHandler.h"

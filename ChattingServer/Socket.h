@@ -1,16 +1,20 @@
 #pragma once
+/*
+	SOCKET ·¦ÇÎ class
+*/
 #include <WinSock2.h>
+#include <string>
 
-class Socket
+class CSocket
 {
 public:
-	Socket();
-	virtual ~Socket();
+	CSocket();
+	virtual ~CSocket();
 	
 	bool Create();
-	bool Bind(sockaddr *address);
+	bool Bind(SOCKADDR_IN& addr);
 	bool Listen();
-	SOCKET Accept(const sockaddr *address);
+	SOCKET Accept(std::string& addr);
 	bool Close();
 
 private:
